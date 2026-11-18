@@ -1,4 +1,4 @@
-// The course selector uses the same paper/ink styling on desktop and touch.
+// 课程选择器在桌面和触屏上都使用同样的纸/墨风格。
 export function mountProjectPicker(host,{projects,value,onChange=()=>{}}={}) {
   const choices=projects.filter(project=>project?.id);
   let selected=choices.some(project=>project.id===value)?value:choices[0]?.id;
@@ -13,21 +13,21 @@ export function mountProjectPicker(host,{projects,value,onChange=()=>{}}={}) {
   const arrow=document.createElement('span');arrow.className='build-project-arrow';arrow.setAttribute('aria-hidden','true');arrow.textContent='⌄';
   trigger.append(number,title,arrow);heading.append(trigger);
   const list=document.createElement('div');list.id='build-project-options';list.className='build-project-options';list.hidden=true;
-  list.setAttribute('role','listbox');list.setAttribute('aria-label','Practice by lesson');
+  list.setAttribute('role','listbox');list.setAttribute('aria-label','按课程练习');
   const options=choices.map(project=>{
     const option=document.createElement('button');option.type='button';option.className='build-project-option';option.dataset.projectId=project.id;
     option.setAttribute('role','option');option.tabIndex=-1;
     const num=document.createElement('span');num.className='build-project-number';num.textContent=project.lessonNumber||'';num.setAttribute('aria-hidden','true');
     const label=document.createElement('span');label.className='build-project-title';label.textContent=project.lessonTitle||project.title;
     const tick=document.createElement('span');tick.className='build-project-check';tick.setAttribute('aria-hidden','true');tick.textContent='✓';
-    option.setAttribute('aria-label',`Lesson ${project.lessonNumber}: ${label.textContent}`);
+    option.setAttribute('aria-label',`第 ${project.lessonNumber} 课：${label.textContent}`);
     option.append(num,label,tick);option.addEventListener('click',()=>choose(project.id));list.append(option);return option;
   });
   host.replaceChildren(heading,list);
   function render(){
     const project=choices.find(project=>project.id===selected);
-    number.textContent=project?.lessonNumber||'';title.textContent=project?.lessonTitle||project?.title||'Choose a lesson';
-    trigger.setAttribute('aria-label',`Choose a practice lesson. ${project?.lessonNumber||''}: ${title.textContent}`);
+    number.textContent=project?.lessonNumber||'';title.textContent=project?.lessonTitle||project?.title||'选择课程';
+    trigger.setAttribute('aria-label',`选择一节练习课。${project?.lessonNumber||''}：${title.textContent}`);
     trigger.setAttribute('aria-expanded',String(open));list.hidden=!open;host.dataset.open=String(open);
     options.forEach(option=>{option.setAttribute('aria-selected',String(option.dataset.projectId===selected));option.tabIndex=open&&option.dataset.projectId===selected?0:-1;});
   }
@@ -47,8 +47,8 @@ export function mountProjectPicker(host,{projects,value,onChange=()=>{}}={}) {
     const destinations={ArrowDown:index+1,ArrowUp:index-1,Home:0,End:options.length-1};
     if(event.key in destinations){event.preventDefault();event.stopPropagation();focusOption(destinations[event.key]);return;}
     if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();if(options[index])choose(options[index].dataset.projectId);return;}
-    if(event.key==='Tab')return; // Native focus navigation closes it through focusout.
-    // Typing a title initial works without adding a search field for three items.
+    if(event.key==='Tab')return; // 原生焦点导航会通过 focusout 关闭它。
+    // 输入标题首字母即可，只有三个选项，无需添加搜索框。
     if(event.key.length===1&&!event.ctrlKey&&!event.metaKey&&!event.altKey){
       event.preventDefault();event.stopPropagation();const now=performance.now();typeahead=now-typeaheadAt<650?typeahead+event.key.toLowerCase():event.key.toLowerCase();typeaheadAt=now;
       let found=choices.findIndex(project=>(project.lessonTitle||project.title).toLowerCase().startsWith(typeahead));
@@ -60,8 +60,8 @@ export function mountProjectPicker(host,{projects,value,onChange=()=>{}}={}) {
   function focusout(event){
     if(event.relatedTarget&&host.contains(event.relatedTarget))return;
     if(event.relatedTarget){if(open)close();return;}
-    // Native pointer focus may temporarily report body between focusout and
-    // focusin. Wait for that transition before hiding the clicked option.
+    // 在 focusout 与 focusin 之间，原生指针焦点可能暂时报告为 body。
+    // 等这个过渡完成后再隐藏被点击的选项。
     requestAnimationFrame(()=>{if(open&&!host.contains(document.activeElement))close();});
   }
   trigger.addEventListener('click',triggerClick);host.addEventListener('keydown',keydown);host.addEventListener('focusout',focusout);

@@ -1,5 +1,5 @@
-// Course targets the original ESP32-WROOM-32 DevKit V1, 30-pin layout.
-// Sketches use Arduino-ESP32 3.x. Browser scenes illustrate each lesson's behavior.
+// 本课程针对原版 ESP32-WROOM-32 DevKit V1，30 引脚布局。
+// 示例使用 Arduino-ESP32 3.x。浏览器场景演示每节课的行为。
 const spec = (label, value) => ({ label, value });
 const wire = (from, to, note = '') => ({ from, to, note });
 const control = (label, min, max, step, value, unit) => ({ label, min, max, step, value, unit });
@@ -7,13 +7,13 @@ const question = (text, options, answer, explanation) => ({ text, options, answe
 
 export const lessons = [
   {
-    id: 'board', title: 'Meet your ESP32', shortTitle: 'The board', category: 'Start here', duration: '5 min', icon: 'cpu',
-    description: 'A tiny board with a lot of possibility. Explore the processor, antenna, power supply and pins that connect your code to the physical world.',
-    objectives: ['Identify the main parts of a DevKit V1.', 'Understand 3.3 V logic and safe power connections.', 'Send your first message over USB.'],
-    steps: ['Install Arduino IDE 2 on your computer and connect the ESP32 with a data-capable Micro-USB cable. A charge-only cable cannot upload code.', 'Open File → Preferences (Arduino IDE → Settings on macOS). In Additional Boards Manager URLs, add https://espressif.github.io/arduino-esp32/package_esp32_index.json and save.', 'Open Tools → Board → Boards Manager, search for esp32, and install “esp32 by Espressif Systems”. These lessons use version 3.x of that board package.', 'Use the board selector to choose “DOIT ESP32 DEVKIT V1”. Under Tools → Port, select the port that appears when your ESP32 is plugged in.', 'Copy this lesson’s sketch into a new Arduino sketch and click Upload, the right-arrow button. Wait for uploading to finish. If it stays at “Connecting”, hold BOOT until the transfer begins, then release it.', 'Open Tools → Serial Monitor and set its speed to 115200 baud. Press the board’s EN button to restart and see “Hello, ESP32!” followed by uptime messages.'],
-    wiring: [wire('USB', 'Computer', 'Provides power and USB-to-serial communication.'), wire('GND', 'Circuit ground', 'All parts in a circuit need a shared reference.'), wire('3V3', '3.3 V peripherals', 'GPIO pins are not 5 V tolerant.')],
-    code: `// Board: DOIT ESP32 DEVKIT V1
-// Core: Arduino-ESP32 3.x
+    id: 'board', title: '认识你的 ESP32', shortTitle: '开发板', category: '从这里开始', duration: '5 分钟', icon: 'cpu',
+    description: '一块小巧却潜力巨大的开发板。探索处理器、天线、供电，以及把你的代码连接到物理世界的各类引脚。',
+    objectives: ['识别 DevKit V1 的主要部件。', '理解 3.3 V 逻辑电平与安全的电源连接。', '通过 USB 发送你的第一条消息。'],
+    steps: ['在你的电脑上安装 Arduino IDE 2，并用支持数据传输的 Micro-USB 线连接 ESP32。仅能充电的线缆无法上传代码。', '打开 文件 → 首选项（macOS 上为 Arduino IDE → 设置）。在“附加开发板管理器网址”中添加 https://espressif.github.io/arduino-esp32/package_esp32_index.json 并保存。', '打开 工具 → 开发板 → 开发板管理器，搜索 esp32，并安装“esp32 by Espressif Systems”。本课程使用该开发板包的 3.x 版本。', '用开发板选择器选择“DOIT ESP32 DEVKIT V1”。在 工具 → 端口 下，选择插入 ESP32 后出现的端口。', '将本课的示例复制到新建的 Arduino 草图中，点击“上传”（右箭头按钮）。等待上传完成。如果一直停留在“Connecting”，按住 BOOT 直到开始传输，再松开。', '打开 工具 → 串口监视器，将波特率设为 115200。按下开发板上的 EN 按钮重启，即可看到“Hello, ESP32!”以及运行时间信息。'],
+    wiring: [wire('USB', '电脑', '提供电源和 USB 转串口通信。'), wire('GND', '电路地', '电路中的所有元件都需要一个共同的参考点。'), wire('3V3', '3.3 V 外设', 'GPIO 引脚不兼容 5 V。')],
+    code: `// 开发板：DOIT ESP32 DEVKIT V1
+// 核心：Arduino-ESP32 3.x
 void setup() {
   Serial.begin(115200);
   delay(500);
@@ -29,18 +29,18 @@ void loop() {
   Serial.println(" seconds");
   delay(1000);
 }`,
-    explanation: 'setup() runs once after startup. loop() runs repeatedly. The USB-to-serial chip carries Serial messages to your computer; 115200 is the communication speed, not the processor speed.',
-    specs: [spec('Module', 'ESP32-WROOM-32'), spec('Processor', 'Dual-core Xtensa LX6, up to 240 MHz'), spec('Logic level', '3.3 V'), spec('Typical flash', '4 MB; board variants differ'), spec('Wireless', '2.4 GHz Wi-Fi + Bluetooth/BLE'), spec('Board reference', '30-pin DevKit V1')],
+    explanation: 'setup() 在启动后运行一次，loop() 则反复运行。USB 转串口芯片把 Serial 消息传送到你的电脑；115200 是通信速率，而不是处理器主频。',
+    specs: [spec('模组', 'ESP32-WROOM-32'), spec('处理器', '双核 Xtensa LX6，最高 240 MHz'), spec('逻辑电平', '3.3 V'), spec('典型 Flash', '4 MB；不同开发板有所差异'), spec('无线', '2.4 GHz Wi-Fi + Bluetooth/BLE'), spec('开发板型号', '30 引脚 DevKit V1')],
     control: null,
-    challenge: 'Change the welcome message and print the uptime every two seconds.',
-    question: question('What voltage represents a HIGH output on an ESP32 GPIO?', ['3.3 V', '5 V', '12 V'], 0, 'ESP32 GPIO uses 3.3 V logic. Applying 5 V to a GPIO can damage the chip.')
+    challenge: '修改欢迎语，并每隔两秒打印一次运行时间。',
+    question: question('ESP32 GPIO 上，多少电压代表 HIGH 输出？', ['3.3 V', '5 V', '12 V'], 0, 'ESP32 GPIO 使用 3.3 V 逻辑电平。向 GPIO 施加 5 V 可能损坏芯片。')
   },
   {
-    id: 'blink', title: 'Your first blink', shortTitle: 'Blink an LED', category: 'Outputs', duration: '6 min', icon: 'bulb',
-    description: 'Make a real-world output respond to your code. An external LED on GPIO23 switches on and off with a pause between each change.',
-    objectives: ['Configure an output with pinMode().', 'Use HIGH and LOW to control an LED.', 'Understand why an LED needs a series resistor.'],
-    steps: ['Connect GPIO23 to a 330 Ω resistor, then to the LED anode (the longer leg).', 'Connect the LED cathode (the shorter leg, next to the flat edge) to GND.', 'Start the demonstration. Adjust the interval to see the timing change.', 'Upload the example to a physical board and try a different delay value.'],
-    wiring: [wire('GPIO23', '330 Ω → LED anode (+)', 'The resistor limits current.'), wire('LED cathode (−)', 'GND', 'Check the LED polarity.')],
+    id: 'blink', title: '你的第一次闪烁', shortTitle: '点亮 LED', category: '输出', duration: '6 分钟', icon: 'bulb',
+    description: '让真实世界的输出响应你的代码。GPIO23 上的外接 LED 会亮灭切换，每次变化之间有短暂停顿。',
+    objectives: ['用 pinMode() 配置输出引脚。', '用 HIGH 和 LOW 控制 LED。', '理解 LED 为什么需要串联电阻。'],
+    steps: ['将 GPIO23 连接到 330 Ω 电阻，再接到 LED 阳极（较长的引脚）。', '将 LED 阴极（较短的引脚，靠近平边一侧）连接到 GND。', '开始演示。调整时间间隔，观察时序的变化。', '将示例上传到实物开发板，尝试不同的延时值。'],
+    wiring: [wire('GPIO23', '330 Ω → LED 阳极 (+)', '电阻用于限制电流。'), wire('LED 阴极 (−)', 'GND', '注意 LED 的极性。')],
     code: `const int LED_PIN = 23;
 const int INTERVAL_MS = 500;
 
@@ -54,18 +54,18 @@ void loop() {
   digitalWrite(LED_PIN, LOW);
   delay(INTERVAL_MS);
 }`,
-    explanation: 'const int declares a named whole-number value that stays fixed: LED_PIN is the pin number and INTERVAL_MS is the wait time. Curly braces group the instructions belonging to setup() or loop(); semicolons end individual instructions. setup() configures the pin once, then loop() repeatedly sets HIGH, waits, sets LOW and waits. Two 500 ms waits make one one-second cycle. HIGH is about 3.3 V and LOW about 0 V.',
-    specs: [spec('Output', 'GPIO23'), spec('Series resistor', '330 Ω'), spec('LED', 'Red, approximately 2 V forward voltage'), spec('Example period', '1 second')],
-    control: control('Blink interval', 100, 1500, 50, 500, 'ms'),
-    challenge: 'Make the LED stay on for 100 ms and off for 900 ms. The cycle still lasts one second.',
-    question: question('Why is the resistor connected in series with the LED?', ['To increase the GPIO voltage', 'To limit current through the LED', 'To store the program'], 1, 'An LED does not safely limit its own current. The resistor protects both the LED and the GPIO output.')
+    explanation: 'const int 声明一个固定不变的整数值：LED_PIN 是引脚编号，INTERVAL_MS 是等待时间。花括号把属于 setup() 或 loop() 的指令分组；分号结束单条指令。setup() 只配置一次引脚，随后 loop() 反复置 HIGH、等待、置 LOW、等待。两次 500 ms 的等待构成一次一秒的循环。HIGH 约为 3.3 V，LOW 约为 0 V。',
+    specs: [spec('输出', 'GPIO23'), spec('串联电阻', '330 Ω'), spec('LED', '红色，正向压降约 2 V'), spec('示例周期', '1 秒')],
+    control: control('闪烁间隔', 100, 1500, 50, 500, 'ms'),
+    challenge: '让 LED 亮 100 ms、灭 900 ms，循环周期仍为一秒。',
+    question: question('为什么电阻要与 LED 串联？', ['为了提高 GPIO 电压', '为了限制流过 LED 的电流', '为了存储程序'], 1, 'LED 无法安全地限制自身电流。电阻同时保护 LED 和 GPIO 输出。')
   },
   {
-    id: 'button', title: 'Listen to a button', shortTitle: 'Push a button', category: 'Inputs', duration: '7 min', icon: 'button',
-    description: 'Give your circuit an input. Press a button to light an LED and learn why a pressed button can read LOW.',
-    objectives: ['Read a digital input.', 'Use the internal pull-up resistor.', 'Recognize active-low button wiring.'],
-    steps: ['Connect opposite switched sides of the push button to GPIO18 and GND. Legs on the same side of many four-leg buttons are already connected.', 'Connect the LED to GPIO23 through a 330 Ω resistor, with its cathode to GND.', 'Run the demonstration and hold the button control. The LED follows the press.', 'Try INPUT_PULLUP in the sketch: released is HIGH, pressed is LOW.'],
-    wiring: [wire('GPIO18', 'Button contact A', 'INPUT_PULLUP holds the released input HIGH.'), wire('Button contact B', 'GND', 'Pressing connects the input to ground.'), wire('GPIO23', '330 Ω → LED → GND', 'Indicator output.')],
+    id: 'button', title: '监听按钮', shortTitle: '按下按钮', category: '输入', duration: '7 分钟', icon: 'button',
+    description: '为你的电路添加一个输入。按下按钮点亮 LED，并了解为什么按下时读数会是 LOW。',
+    objectives: ['读取数字输入。', '使用内部上拉电阻。', '识别低电平有效的按钮接法。'],
+    steps: ['将轻触按钮两侧相对的开关触点分别接到 GPIO18 和 GND。许多四脚按钮同一侧的两个引脚内部已经连通。', '将 LED 通过 330 Ω 电阻接到 GPIO23，阴极接 GND。', '运行演示并按住按钮控件，LED 会随按下状态变化。', '在示例中使用 INPUT_PULLUP：松开时为 HIGH，按下时为 LOW。'],
+    wiring: [wire('GPIO18', '按钮触点 A', 'INPUT_PULLUP 使松开时输入保持为 HIGH。'), wire('按钮触点 B', 'GND', '按下时把输入端接地。'), wire('GPIO23', '330 Ω → LED → GND', '指示输出。')],
     code: `const int BUTTON_PIN = 18;
 const int LED_PIN = 23;
 
@@ -86,18 +86,18 @@ void loop() {
   }
   delay(50);
 }`,
-    explanation: 'bool stores true or false. The comparison digitalRead(BUTTON_PIN) == LOW asks whether the input equals LOW and stores that answer in pressed. The if block runs when pressed is true; otherwise the else block runs. Braces group the instructions in each branch. INPUT_PULLUP keeps the released input HIGH, and pressing connects it to GND, making this comparison true.',
-    specs: [spec('Button', 'GPIO18 → GND'), spec('Input mode', 'INPUT_PULLUP'), spec('Pressed state', 'LOW'), spec('LED output', 'GPIO23')],
+    explanation: 'bool 存储真或假。比较 digitalRead(BUTTON_PIN) == LOW 判断输入是否等于 LOW，并把结果存入 pressed。当 pressed 为真时执行 if 块，否则执行 else 块。花括号把每个分支的指令分组。INPUT_PULLUP 让松开的输入保持 HIGH，按下时接地，使该比较为真。',
+    specs: [spec('按钮', 'GPIO18 → GND'), spec('输入模式', 'INPUT_PULLUP'), spec('按下状态', 'LOW'), spec('LED 输出', 'GPIO23')],
     control: null,
-    challenge: 'Reverse the LED behavior so it is on when the button is released.',
-    question: question('What does this button read while it is pressed?', ['HIGH', 'LOW', 'An undefined value'], 1, 'The switch connects GPIO18 to ground, so digitalRead() returns LOW.')
+    challenge: '反转 LED 的行为，使按钮松开时点亮。',
+    question: question('按钮按下时，读数是什么？', ['HIGH', 'LOW', '一个未定义的值'], 1, '开关把 GPIO18 接地，因此 digitalRead() 返回 LOW。')
   },
   {
-    id: 'potentiometer', title: 'Turn an analog dial', shortTitle: 'Turn a knob', category: 'Analog', duration: '8 min', icon: 'dial',
-    description: 'A potentiometer turns position into voltage. Read its middle terminal and use the result to smoothly control LED brightness.',
-    objectives: ['Build a voltage divider.', 'Turn an input voltage into a number.', 'Dim an LED with rapid on/off pulses.'],
-    steps: ['Connect the outside terminals of a 10 kΩ potentiometer to 3V3 and GND.', 'Connect the center terminal (wiper) to GPIO34.', 'Connect GPIO23 through a 330 Ω resistor and LED to GND.', 'Run the demonstration and move the dial. The displayed ADC value is an idealized reading; real ADCs have noise and nonlinearity.'],
-    wiring: [wire('3V3 / GND', 'Potentiometer outer terminals', 'Swap these to reverse the direction.'), wire('Potentiometer wiper', 'GPIO34', 'ADC1 input; GPIO34 is input-only.'), wire('GPIO23', '330 Ω → LED → GND', 'PWM brightness output.')],
+    id: 'potentiometer', title: '旋转模拟旋钮', shortTitle: '转动旋钮', category: '模拟', duration: '8 分钟', icon: 'dial',
+    description: '电位器把位置转换为电压。读取其中间引脚，并用结果平滑控制 LED 亮度。',
+    objectives: ['搭建分压电路。', '把输入电压转换为数字。', '用快速亮灭脉冲调节 LED 亮度。'],
+    steps: ['把 10 kΩ 电位器的两个外侧引脚分别接到 3V3 和 GND。', '把中间引脚（滑动端）接到 GPIO34。', '把 GPIO23 经 330 Ω 电阻和 LED 接到 GND。', '运行演示并转动旋钮。显示的 ADC 读数是理想化数值；真实 ADC 存在噪声和非线性。'],
+    wiring: [wire('3V3 / GND', '电位器外侧引脚', '对调两者可反转方向。'), wire('电位器滑动端', 'GPIO34', 'ADC1 输入；GPIO34 仅作输入。'), wire('GPIO23', '330 Ω → LED → GND', 'PWM 亮度输出。')],
     code: `const int POT_PIN = 34;
 const int LED_PIN = 23;
 
@@ -115,18 +115,18 @@ void loop() {
   Serial.println(raw);
   delay(50);
 }`,
-    explanation: 'The analog-to-digital converter (ADC) represents voltage with a number. At 12 bits it has 4096 possible codes, 0–4095. map() rescales that to 256 PWM brightness settings, 0–255. Pulse-width modulation (PWM) varies the fraction of each fast on/off cycle spent on. The configured ADC input scaling, called attenuation, does not make GPIO34 safe for 5 V.',
-    specs: [spec('Potentiometer', '10 kΩ linear'), spec('ADC pin', 'GPIO34 / ADC1'), spec('ADC resolution', '12 bits, 0–4095'), spec('PWM', '5 kHz, 8 bits, 0–255')],
-    control: control('Dial position', 0, 100, 1, 50, '%'),
-    challenge: 'Invert the mapping so the LED gets dimmer as the ADC reading rises.',
-    question: question('With the current map(), the dial reading rises from 1024 to 3072. What should the LED do?', ['Get brighter: PWM duty rises from about 25% to 75%', 'Get dimmer: PWM duty falls from about 75% to 25%', 'Stay equally bright: every nonzero reading is treated as fully on'], 0, 'map(raw, 0, 4095, 0, 255) preserves the direction. The output rises from about 64 to 191, giving a longer on-time fraction. Reversing the map endpoints would reverse that behavior.')
+    explanation: '模数转换器（ADC）用数字表示电压。12 位时有 4096 个编码，即 0–4095。map() 将其重映射到 256 个 PWM 亮度等级，即 0–255。脉宽调制（PWM）改变每个快速亮灭周期中通电所占的比例。配置的 ADC 输入缩放（称为衰减）并不会让 GPIO34 能承受 5 V。',
+    specs: [spec('电位器', '10 kΩ 线性'), spec('ADC 引脚', 'GPIO34 / ADC1'), spec('ADC 分辨率', '12 位，0–4095'), spec('PWM', '5 kHz，8 位，0–255')],
+    control: control('旋钮位置', 0, 100, 1, 50, '%'),
+    challenge: '反转映射关系，使 ADC 读数升高时 LED 变暗。',
+    question: question('在当前 map() 下，旋钮读数从 1024 升到 3072，LED 会怎样？', ['变亮：PWM 占空比从约 25% 升到 75%', '变暗：PWM 占空比从约 75% 降到 25%', '亮度不变：所有非零读数都被视为全亮'], 0, 'map(raw, 0, 4095, 0, 255) 保持方向不变。输出从约 64 升到 191，通电时间占比更长。反转 map 的首尾参数会反转这一行为。')
   },
   {
-    id: 'rgb', title: 'Mix light into color', shortTitle: 'Mix colors', category: 'Outputs', duration: '8 min', icon: 'palette',
-    description: 'One package, three LEDs. Blend red, green and blue with independent PWM channels to create a spectrum of colors.',
-    objectives: ['Identify a common-cathode RGB LED.', 'Give each color its own resistor.', 'Mix three PWM brightness values.'],
-    steps: ['Identify the RGB LED pinout using its datasheet; lead order is not universal.', 'Connect the common cathode to GND.', 'Connect red, green and blue anodes through separate 330 Ω resistors to GPIO25, GPIO26 and GPIO27.', 'Run the demonstration and explore the hue control. The example converts a chosen hue into three PWM values.'],
-    wiring: [wire('GPIO25', '330 Ω → red anode'), wire('GPIO26', '330 Ω → green anode'), wire('GPIO27', '330 Ω → blue anode'), wire('Common cathode', 'GND', 'This example is for a common-cathode LED.')],
+    id: 'rgb', title: '把光混合成色彩', shortTitle: '混合颜色', category: '输出', duration: '8 分钟', icon: 'palette',
+    description: '一个封装里有三颗 LED。用独立的 PWM 通道混合红、绿、蓝，创造出丰富的色彩。',
+    objectives: ['识别共阴极 RGB LED。', '为每种颜色各配一个电阻。', '混合三个 PWM 亮度值。'],
+    steps: ['查阅数据手册确认 RGB LED 的引脚排列；引脚顺序并不统一。', '把共阴极接到 GND。', '把红、绿、蓝阳极分别通过 330 Ω 电阻接到 GPIO25、GPIO26 和 GPIO27。', '运行演示并体验色相控件。示例会把选定的色相转换为三个 PWM 值。'],
+    wiring: [wire('GPIO25', '330 Ω → 红色阳极'), wire('GPIO26', '330 Ω → 绿色阳极'), wire('GPIO27', '330 Ω → 蓝色阳极'), wire('共阴极', 'GND', '本示例适用于共阴极 LED。')],
     code: `const int RED = 25, GREEN = 26, BLUE = 27;
 const int HUE_DEGREES = 180;
 
@@ -156,20 +156,20 @@ void setup() {
 }
 
 void loop() {
-  delay(1000); // LEDC keeps the chosen color running.
+  delay(1000); // LEDC 会保持所选颜色持续显示。
 }`,
-    explanation: 'HUE_DEGREES selects a color around a 0–360° wheel. setHue() divides it into six regions and derives three 0–255 PWM values. The RGB LED needs one resistor per color. LEDC maintains those values after setup(); actual color balance depends on the LED, resistors and supply.',
-    specs: [spec('Type', 'Common-cathode RGB LED'), spec('Outputs', 'GPIO25 / 26 / 27'), spec('Resistors', '3 × 330 Ω'), spec('PWM resolution', '8 bits per color')],
-    control: control('Hue', 0, 360, 1, 180, '°'),
-    challenge: 'Call setHue() with a slowly changing angle to make a rainbow sweep. Then lower all three PWM values proportionally for softer light.',
-    question: question('At a hue of 60°, the helper chooses region 1 with rise = 0 and fall = 255. Which result should you expect?', ['Red 255, green 0, blue 255: magenta', 'Red 255, green 255, blue 0: yellow', 'Red 0, green 255, blue 255: cyan'], 1, 'Region 1 sets red to fall and green to 255, while blue stays at its initialized zero. Red and green light combine to make yellow. The three brightness numbers each control a separate current-limited channel.')
+    explanation: 'HUE_DEGREES 在 0–360° 的色环上选定一种颜色。setHue() 把它分成六个区间，得出三个 0–255 的 PWM 值。RGB LED 每种颜色都需要一个电阻。setup() 之后由 LEDC 维持这些值；实际色彩平衡取决于 LED、电阻和电源。',
+    specs: [spec('类型', '共阴极 RGB LED'), spec('输出', 'GPIO25 / 26 / 27'), spec('电阻', '3 × 330 Ω'), spec('PWM 分辨率', '每种颜色 8 位')],
+    control: control('色相', 0, 360, 1, 180, '°'),
+    challenge: '用缓慢变化的角度调用 setHue()，做出彩虹渐变。再按比例降低三个 PWM 值，让光线更柔和。',
+    question: question('色相为 60° 时，辅助函数选择区间 1，rise = 0、fall = 255。应该得到什么结果？', ['红 255、绿 0、蓝 255：品红', '红 255、绿 255、蓝 0：黄', '红 0、绿 255、蓝 255：青'], 1, '区间 1 把红色设为 fall、绿色设为 255，蓝色保持初始化时的零。红光与绿光混合得到黄色。三个亮度值分别控制各自带限流的通道。')
   },
   {
-    id: 'light', title: 'Sense the daylight', shortTitle: 'Sense light', category: 'Sensors', duration: '8 min', icon: 'sun',
-    description: 'Make a night-light that responds to its surroundings. A light-dependent resistor changes resistance as the light changes.',
-    objectives: ['Turn changing resistance into voltage.', 'Read light with an ADC input.', 'Use a threshold to switch an output.'],
-    steps: ['Connect an LDR between 3V3 and GPIO34.', 'Connect a 10 kΩ resistor between GPIO34 and GND to complete the voltage divider.', 'Connect an LED through 330 Ω to GPIO23 and GND.', 'On hardware, open Serial Monitor at 115200 baud and record readings with the LDR covered and brightly lit. If those are about 400 and 2000, a midpoint threshold is (400 + 2000) / 2 = 1200. Your readings may differ.', 'Edit DARK_THRESHOLD near the top of the sketch to suit your measurements, then upload again. In the simulation, cover the sensor and explore the ambient-light control to see the threshold decision.'],
-    wiring: [wire('3V3', 'LDR → GPIO34', 'More light lowers LDR resistance.'), wire('GPIO34', '10 kΩ → GND', 'The divider junction is the ADC input.'), wire('GPIO23', '330 Ω → LED → GND')],
+    id: 'light', title: '感知环境光', shortTitle: '感知光线', category: '传感器', duration: '8 分钟', icon: 'sun',
+    description: '制作一盏能响应环境的小夜灯。光敏电阻的阻值会随光线变化。',
+    objectives: ['把变化的电阻转换为电压。', '用 ADC 输入读取光线。', '用阈值控制输出的开关。'],
+    steps: ['把光敏电阻（LDR）接在 3V3 与 GPIO34 之间。', '在 GPIO34 与 GND 之间接一个 10 kΩ 电阻，构成分压电路。', '把 LED 经 330 Ω 接到 GPIO23 和 GND。', '在实物上，打开 115200 波特率的串口监视器，分别记录遮住 LDR 和强光照射时的读数。若约为 400 和 2000，则中点阈值为 (400 + 2000) / 2 = 1200。你的读数可能不同。', '修改草图顶部的 DARK_THRESHOLD 以匹配你的测量值，然后重新上传。在仿真中，遮住传感器并调整环境光控件，观察阈值的判断结果。'],
+    wiring: [wire('3V3', 'LDR → GPIO34', '光线越强，LDR 阻值越低。'), wire('GPIO34', '10 kΩ → GND', '分压的节点就是 ADC 输入。'), wire('GPIO23', '330 Ω → LED → GND')],
     code: `const int LIGHT_PIN = 34;
 const int LED_PIN = 23;
 const int DARK_THRESHOLD = 1200;
@@ -187,18 +187,18 @@ void loop() {
   Serial.println(light);
   delay(100);
 }`,
-    explanation: 'In this wiring arrangement, more light creates a higher ADC reading. The threshold is a value you calibrate for your circuit. An LDR provides a relative light measurement; a raw ADC value is not a reading in lux.',
-    specs: [spec('Sensor', 'LDR / photoresistor'), spec('Fixed resistor', '10 kΩ'), spec('ADC input', 'GPIO34'), spec('Output', 'GPIO23')],
-    control: control('Ambient light', 0, 100, 1, 65, '%'),
-    challenge: 'Add two thresholds so the light does not flicker when the reading hovers near the switching point.',
-    question: question('What happens to an LDR’s resistance in brighter light?', ['It decreases', 'It increases', 'It always stays at 10 kΩ'], 0, 'An LDR conducts more easily in bright light, so its resistance decreases.')
+    explanation: '在这种接法下，光线越强，ADC 读数越高。阈值需要根据你的电路校准。LDR 提供的是相对光强测量；原始 ADC 值并不是以勒克斯为单位的照度读数。',
+    specs: [spec('传感器', 'LDR / 光敏电阻'), spec('固定电阻', '10 kΩ'), spec('ADC 输入', 'GPIO34'), spec('输出', 'GPIO23')],
+    control: control('环境光', 0, 100, 1, 65, '%'),
+    challenge: '增加两个阈值，让读数在开关点附近波动时 LED 不会闪烁。',
+    question: question('光线变亮时，LDR 的阻值会怎样？', ['减小', '增大', '始终保持在 10 kΩ'], 0, 'LDR 在强光下更容易导通，因此阻值减小。')
   },
   {
-    id: 'distance', title: 'Measure the space ahead', shortTitle: 'Read distance', category: 'Sensors', duration: '10 min', icon: 'ruler',
-    description: 'Send a short ultrasound pulse, then measure its return time. Turn an echo into a distance reading.',
-    objectives: ['Trigger an HC-SR04 measurement.', 'Convert round-trip time into distance.', 'Reduce the 5 V Echo signal for a 3.3 V input.'],
-    steps: ['Power a standard HC-SR04 from 5 V and connect its GND to the ESP32 ground.', 'Connect GPIO23 to Trig. Most HC-SR04 modules accept a 3.3 V trigger; check your module if it does not respond.', 'Connect Echo through a 2.2 kΩ resistor to GPIO34, then connect 3.3 kΩ from GPIO34 to GND. This divider lowers a 5 V echo to about 3 V.', 'Run the demonstration and move the obstacle. On hardware, aim at a flat surface.'],
-    wiring: [wire('5 V supply / GND', 'HC-SR04 VCC / GND', 'Use a suitable 5 V source and shared ground.'), wire('GPIO23', 'Trig'), wire('Echo', '2.2 kΩ → GPIO34', 'Never connect a 5 V Echo directly to a GPIO.'), wire('GPIO34', '3.3 kΩ → GND', 'Forms the lower divider resistor.')],
+    id: 'distance', title: '测量前方距离', shortTitle: '读取距离', category: '传感器', duration: '10 分钟', icon: 'ruler',
+    description: '发出一段短暂的超声脉冲，然后测量回波返回的时间。把回声转换为距离读数。',
+    objectives: ['触发 HC-SR04 测量。', '把往返时间转换为距离。', '把 5 V 的 Echo 信号降压以适配 3.3 V 输入。'],
+    steps: ['用 5 V 为标准 HC-SR04 供电，并把它的 GND 接到 ESP32 的地。', '把 GPIO23 接到 Trig。多数 HC-SR04 模块接受 3.3 V 触发信号；若无响应，请检查你的模块。', '把 Echo 经 2.2 kΩ 电阻接到 GPIO34，再用 3.3 kΩ 从 GPIO34 接到 GND。该分压电路把 5 V 回波降到约 3 V。', '运行演示并移动障碍物。在实物上，请对准平整的表面。'],
+    wiring: [wire('5 V 电源 / GND', 'HC-SR04 VCC / GND', '使用合适的 5 V 电源并共地。'), wire('GPIO23', 'Trig'), wire('Echo', '2.2 kΩ → GPIO34', '切勿把 5 V 的 Echo 直接接到 GPIO。'), wire('GPIO34', '3.3 kΩ → GND', '构成分压电路的下臂电阻。')],
     code: `const int TRIG = 23;
 const int ECHO = 34;
 
@@ -223,18 +223,18 @@ void loop() {
   }
   delay(100);
 }`,
-    explanation: 'Sound travels approximately 0.0343 cm per microsecond at room temperature. The echo travels to the obstacle and back, so the calculation divides by two. pulseIn() has a timeout so a missing echo cannot block the program indefinitely.',
-    specs: [spec('Sensor supply', '5 V for standard HC-SR04'), spec('Echo divider', '2.2 kΩ top / 3.3 kΩ bottom'), spec('Typical range', '2–400 cm; conditions matter'), spec('Trigger / echo', 'GPIO23 / GPIO34')],
-    control: control('Obstacle distance', 5, 150, 1, 45, 'cm'),
-    challenge: 'Light an LED when an object is closer than 20 cm. Handle the “No echo” case separately.',
-    question: question('An Echo pulse lasts 2000 µs. Using 0.0343 cm per µs, how far away is the obstacle?', ['About 68.6 cm', 'About 34.3 cm', 'About 17.2 cm'], 1, '2000 × 0.0343 = 68.6 cm for the entire out-and-back journey. Dividing once by two gives a one-way distance of about 34.3 cm. Forgetting that division doubles the reported distance.')
+    explanation: '室温下声音每微秒传播约 0.0343 cm。回波往返于障碍物之间，因此计算时要除以二。pulseIn() 设有超时，回波丢失时不会无限阻塞程序。',
+    specs: [spec('传感器供电', '标准 HC-SR04 为 5 V'), spec('Echo 分压', '上臂 2.2 kΩ / 下臂 3.3 kΩ'), spec('典型量程', '2–400 cm；受环境影响'), spec('Trig / Echo', 'GPIO23 / GPIO34')],
+    control: control('障碍物距离', 5, 150, 1, 45, 'cm'),
+    challenge: '物体距离小于 20 cm 时点亮 LED，并单独处理“No echo”的情况。',
+    question: question('Echo 脉冲持续 2000 µs。按每 µs 0.0343 cm 计算，障碍物距离多远？', ['约 68.6 cm', '约 34.3 cm', '约 17.2 cm'], 1, '2000 × 0.0343 = 68.6 cm 是往返全程。除以二得到单程距离约 34.3 cm。忘记除以二会使报告的距离翻倍。')
   },
   {
-    id: 'sound', title: 'Make some sound', shortTitle: 'Make a sound', category: 'Outputs', duration: '7 min', icon: 'volume',
-    description: 'A passive piezo turns a changing voltage into vibration. Change the frequency to change the pitch.',
-    objectives: ['Distinguish passive piezos from active buzzers.', 'Generate a tone with LEDC.', 'Relate frequency to pitch.'],
-    steps: ['Use a small passive piezo element, not a high-current speaker.', 'Connect GPIO25 through a 100 Ω resistor to the piezo positive terminal and its negative terminal to GND.', 'Start the demonstration and adjust the frequency. Enable site audio to hear the browser version.', 'Upload the selected-frequency sketch to hear the same pitch parameter on your board.'],
-    wiring: [wire('GPIO25', '100 Ω → passive piezo (+)'), wire('Piezo (−)', 'GND', 'Use a transistor driver for a higher-current buzzer.')],
+    id: 'sound', title: '发出声音', shortTitle: '制造声音', category: '输出', duration: '7 分钟', icon: 'volume',
+    description: '无源压电片把变化的电压转换为振动。改变频率即可改变音调。',
+    objectives: ['区分无源压电片与有源蜂鸣器。', '用 LEDC 产生音调。', '理解频率与音调的关系。'],
+    steps: ['使用小型无源压电片，而不是大电流扬声器。', '把 GPIO25 经 100 Ω 电阻接到压电片正极，负极接 GND。', '开始演示并调整频率。开启网站音频即可听到浏览器版本的声音。', '把所选频率的草图上传到开发板，就能听到相同的音调参数。'],
+    wiring: [wire('GPIO25', '100 Ω → 无源压电片 (+)'), wire('压电片 (−)', 'GND', '大电流蜂鸣器需要使用三极管驱动。')],
     code: `const int PIEZO_PIN = 25;
 const int FREQUENCY_HZ = 440;
 
@@ -244,21 +244,21 @@ void setup() {
 }
 
 void loop() {
-  delay(1000); // The hardware continues producing the tone.
-  // To stop it: ledcWriteTone(PIEZO_PIN, 0);
+  delay(1000); // 硬件会持续产生该音调。
+  // 停止发声：ledcWriteTone(PIEZO_PIN, 0);
 }`,
-    explanation: 'FREQUENCY_HZ selects the pitch, and ledcWriteTone() starts a square wave at that frequency. LEDC keeps producing it while the loop waits. A frequency of zero stops the tone. An active buzzer contains its own oscillator and generally cannot reproduce different notes in the same way.',
-    specs: [spec('Output', 'GPIO25'), spec('Transducer', 'Small passive piezo'), spec('Starting frequency', '440 Hz · A4'), spec('Tone API', 'ledcWriteTone(pin, frequency)')],
-    control: control('Frequency', 150, 2000, 10, 440, 'Hz'),
-    challenge: 'Create a three-note melody using 262, 330 and 392 Hz with timed pauses. Then double each frequency to move the melody up an octave.',
-    question: question('What happens when you double a musical note’s frequency?', ['It gets one octave higher', 'It becomes silent', 'Its pitch stays the same'], 0, 'An octave corresponds to a frequency ratio of two to one.')
+    explanation: 'FREQUENCY_HZ 决定音调，ledcWriteTone() 以该频率启动方波。loop() 等待期间，LEDC 持续输出。频率为零会停止发声。有源蜂鸣器自带振荡器，通常无法以同样方式发出不同音符。',
+    specs: [spec('输出', 'GPIO25'), spec('换能器', '小型无源压电片'), spec('起始频率', '440 Hz · A4'), spec('音调 API', 'ledcWriteTone(pin, frequency)')],
+    control: control('频率', 150, 2000, 10, 440, 'Hz'),
+    challenge: '用 262、330 和 392 Hz 配合定时暂停，创作三音符旋律。再把每个频率翻倍，将旋律提高一个八度。',
+    question: question('把一个音符的频率翻倍会发生什么？', ['音调升高一个八度', '变成静音', '音调保持不变'], 0, '八度对应 2:1 的频率比。')
   },
   {
-    id: 'piano', title: 'Build a tiny piano', shortTitle: 'Mini piano', category: 'Projects', duration: '12 min', icon: 'piano',
-    description: 'Combine eight buttons and a piezo to make a one-octave instrument. Each button selects a different note.',
-    objectives: ['Store related pins and frequencies in arrays.', 'Scan several digital inputs.', 'Build a simple monophonic instrument.'],
-    steps: ['Connect eight buttons between the listed GPIO pins and GND, using one input per button.', 'Connect a small passive piezo to GPIO25 through 100 Ω, with its other terminal at GND.', 'Run the demonstration and play the on-screen keys.', 'The hardware sketch plays the first pressed key in the array if several buttons are held together.'],
-    wiring: [wire('GPIO13, 14, 16, 17', 'Buttons C, D, E, F → GND', 'Each pin uses INPUT_PULLUP.'), wire('GPIO18, 19, 21, 22', 'Buttons G, A, B, C5 → GND'), wire('GPIO25', '100 Ω → passive piezo → GND')],
+    id: 'piano', title: '制作一架迷你钢琴', shortTitle: '迷你钢琴', category: '项目', duration: '12 分钟', icon: 'piano',
+    description: '把八个按钮和一个压电片组合起来，做成一个八度音域的乐器。每个按钮选择一个不同的音符。',
+    objectives: ['用数组保存相关的引脚和频率。', '扫描多个数字输入。', '制作一个简单的单音乐器。'],
+    steps: ['把八个按钮分别接在列出的 GPIO 引脚与 GND 之间，每个按钮占用一个输入。', '把小型无源压电片经 100 Ω 接到 GPIO25，另一端接 GND。', '运行演示并弹奏屏幕上的琴键。', '如果同时按住多个按钮，硬件示例会播放数组中第一个被按下的琴键。'],
+    wiring: [wire('GPIO13, 14, 16, 17', '按钮 C、D、E、F → GND', '每个引脚都使用 INPUT_PULLUP。'), wire('GPIO18, 19, 21, 22', '按钮 G、A、B、C5 → GND'), wire('GPIO25', '100 Ω → 无源压电片 → GND')],
     code: `const int keys[] = {13, 14, 16, 17, 18, 19, 21, 22};
 const int notes[] = {262, 294, 330, 349, 392, 440, 494, 523};
 const int PIEZO = 25;
@@ -281,20 +281,20 @@ void loop() {
   ledcWriteTone(PIEZO, frequency);
   delay(10);
 }`,
-    explanation: 'The two arrays have matching positions: keys[0] selects notes[0]. Reading inputs in a loop avoids repeating the same logic eight times. This example plays one note at a time; it does not synthesize chords.',
-    specs: [spec('Keys', '8 momentary buttons'), spec('Range', 'C4 to C5'), spec('Input polarity', 'Active LOW'), spec('Sound output', 'GPIO25')],
-    control: control('Note', 0, 7, 1, 0, ''),
-    challenge: 'Change the notes array to create a different scale without changing the button-reading logic.',
-    question: question('What does the index 3 refer to in the notes array?', ['The third note', 'The fourth note', 'A frequency of 3 Hz'], 1, 'C++ arrays start at index zero, so index three is the fourth element.')
+    explanation: '两个数组的位置一一对应：keys[0] 对应 notes[0]。在循环中读取输入，避免把同样的逻辑重复八次。本示例一次只播放一个音符，不能合成和弦。',
+    specs: [spec('琴键', '8 个轻触按钮'), spec('音域', 'C4 到 C5'), spec('输入极性', '低电平有效'), spec('声音输出', 'GPIO25')],
+    control: control('音符', 0, 7, 1, 0, ''),
+    challenge: '修改 notes 数组，创建不同的音阶，而不改动读取按钮的逻辑。',
+    question: question('notes 数组中的索引 3 指的是什么？', ['第三个音符', '第四个音符', '3 Hz 的频率'], 1, 'C++ 数组从索引 0 开始，因此索引 3 是第四个元素。')
   },
   {
-    id: 'motor', title: 'Control a motor', shortTitle: 'Drive a motor', category: 'Motion', duration: '12 min', icon: 'fan',
-    description: 'A motor needs more current than a GPIO can supply. Let a MOSFET switch the motor power while the ESP32 controls the speed.',
-    objectives: ['Separate control signals from motor power.', 'Use a flyback diode and common ground.', 'Adjust motor speed with PWM.'],
-    steps: ['A worked small-motor example uses a 3 V DC motor with specified stall current no more than 300 mA, a 2×AA battery holder (about 3 V), an AO3400A MOSFET breakout with G/D/S labels, a 1N5819 Schottky diode, and 100 Ω plus 10 kΩ resistors. Other motors need parts and a supply matched to their own ratings.', 'Identify G (gate: the control terminal), D (drain: toward motor negative) and S (source: toward ground). Follow the breakout labels and the manufacturer’s pinout drawing, including its viewing direction; transistor leg order is not universal.', 'With power disconnected, connect motor positive to the battery holder positive and motor negative to D. Connect S to the battery holder negative and ESP32 GND. Keep the ESP32 powered through USB in this example.', 'Place the 1N5819 across the motor: its banded cathode goes to motor positive and its anode to motor negative/D. This flyback path handles winding current after switch-off.', 'Connect GPIO25 through 100 Ω to G and 10 kΩ from G to S/GND. Check all connections before applying motor power. An ordinary 5 V-gate MOSFET module is not automatically compatible with a 3.3 V GPIO.'],
-    wiring: [wire('GPIO25', '100 Ω → MOSFET gate', '10 kΩ gate-to-GND pull-down.'), wire('MOSFET source', 'GND', 'Join motor-supply and ESP32 grounds.'), wire('MOSFET drain', 'Motor (−)'), wire('Rated external supply', 'Motor (+)', 'Flyback diode: cathode to +, anode to −.')],
+    id: 'motor', title: '控制电机', shortTitle: '驱动电机', category: '运动', duration: '12 分钟', icon: 'fan',
+    description: '电机所需的电流超过 GPIO 能提供的能力。用 MOSFET 切换电机电源，而由 ESP32 控制转速。',
+    objectives: ['把控制信号与电机电源分开。', '使用续流二极管并共地。', '用 PWM 调节电机转速。'],
+    steps: ['一个完整的小电机示例使用：额定堵转电流不超过 300 mA 的 3 V 直流电机、2×AA 电池盒（约 3 V）、带 G/D/S 标注的 AO3400A MOSFET 转接板、1N5819 肖特基二极管，以及 100 Ω 和 10 kΩ 电阻。其他电机需要与其额定参数相匹配的元件和电源。', '辨认 G（栅极：控制端）、D（漏极：朝向电机负极）和 S（源极：朝向地）。以转接板标注和厂商的引脚图为准，并注意其观察方向；三极管引脚顺序并不统一。', '断开电源后，把电机正极接到电池盒正极，电机负极接到 D。把 S 接到电池盒负极和 ESP32 的 GND。本示例中 ESP32 保持通过 USB 供电。', '把 1N5819 并接在电机两端：带色环的阴极接电机正极，阳极接电机负极/D。这条续流通路用于关断后释放绕组电流。', '把 GPIO25 经 100 Ω 接到 G，并在 G 与 S/GND 之间接 10 kΩ。接通电机电源前检查所有连接。普通的 5 V 栅极 MOSFET 模块并不自动兼容 3.3 V 的 GPIO。'],
+    wiring: [wire('GPIO25', '100 Ω → MOSFET 栅极', '10 kΩ 栅极对地下拉电阻。'), wire('MOSFET 源极', 'GND', '把电机电源与 ESP32 的地相连。'), wire('MOSFET 漏极', '电机 (−)'), wire('额定外部电源', '电机 (+)', '续流二极管：阴极接 +，阳极接 −。')],
     code: `const int MOTOR_PIN = 25;
-const int DUTY = 140; // 0–255 at 8-bit resolution
+const int DUTY = 140; // 8 位分辨率下为 0–255
 
 void setup() {
   ledcAttach(MOTOR_PIN, 20000, 8);
@@ -302,23 +302,23 @@ void setup() {
 }
 
 void loop() {
-  delay(1000); // LEDC maintains the selected drive duty.
-  // To stop the motor: ledcWrite(MOTOR_PIN, 0);
+  delay(1000); // LEDC 会保持所选的驱动占空比。
+  // 停止电机：ledcWrite(MOTOR_PIN, 0);
 }`,
-    explanation: 'The MOSFET carries motor current; the GPIO only controls its gate. The diode gives inductive current a safe path when the transistor turns off. A real motor may not start at a low duty cycle, and this circuit controls speed in one direction only.',
-    specs: [spec('Control output', 'GPIO25'), spec('PWM', '20 kHz, 8 bit'), spec('Worked motor example', '3 V, specified stall current ≤300 mA'), spec('Example motor power', '2×AA holder; ESP32 powered by USB'), spec('Example switch / diode', 'AO3400A breakout / 1N5819')],
-    control: control('Motor duty cycle', 0, 100, 1, 55, '%'),
-    challenge: 'Change the code to hold three speeds for two seconds each. Observe the lowest duty cycle at which your motor starts.',
-    question: question('Why is a flyback diode placed across the motor?', ['To reverse the motor automatically', 'To handle the inductive voltage spike when switching off', 'To convert 3.3 V into 5 V'], 1, 'A motor winding stores energy. The diode provides a path for its current after the MOSFET switches off.')
+    explanation: 'MOSFET 承载电机电流，GPIO 只控制它的栅极。三极管关断时，二极管为感性电流提供安全通路。真实电机在低占空比下可能无法启动，而且本电路只能单向调速。',
+    specs: [spec('控制输出', 'GPIO25'), spec('PWM', '20 kHz，8 位'), spec('完整电机示例', '3 V，额定堵转电流 ≤300 mA'), spec('示例电机电源', '2×AA 电池盒；ESP32 由 USB 供电'), spec('示例开关 / 二极管', 'AO3400A breakout / 1N5819')],
+    control: control('电机占空比', 0, 100, 1, 55, '%'),
+    challenge: '修改代码，依次保持三档转速各两秒。观察电机能够启动的最低占空比。',
+    question: question('为什么要在电机两端并接续流二极管？', ['为了自动反转电机', '为了吸收关断时的感性电压尖峰', '为了把 3.3 V 转换为 5 V'], 1, '电机绕组会储存能量。MOSFET 关断后，二极管为其电流提供通路。')
   },
   {
-    id: 'temperature', title: 'Read the room', shortTitle: 'Sense heat', category: 'Sensors', duration: '10 min', icon: 'thermometer',
-    description: 'Read temperature and humidity from a DHT22. Learn how to use a sensor library and handle a failed measurement.',
-    objectives: ['Install a sensor library.', 'Read temperature and relative humidity.', 'Check for invalid readings.'],
-    steps: ['Install “DHT sensor library” by Adafruit and its Adafruit Unified Sensor dependency in Arduino Library Manager.', 'For a bare DHT22, connect pin 1 to 3V3, pin 2 (data) to GPIO27 and pin 4 to GND; pin 3 is unused. Confirm the pinout of your module.', 'Add a 10 kΩ pull-up between data and 3V3 if your module does not include one.', 'Run the demonstration and adjust the room temperature. Real DHT22 readings should be spaced at least two seconds apart.'],
-    wiring: [wire('3V3', 'DHT22 VCC'), wire('GPIO27', 'DHT22 data', '10 kΩ pull-up to 3V3 for a bare sensor.'), wire('GND', 'DHT22 GND')],
-    code: `// Install: DHT sensor library (Adafruit)
-// Dependency: Adafruit Unified Sensor
+    id: 'temperature', title: '感知室内环境', shortTitle: '感知温度', category: '传感器', duration: '10 分钟', icon: 'thermometer',
+    description: '从 DHT22 读取温度和湿度。学习如何使用传感器库，以及如何处理读取失败的情况。',
+    objectives: ['安装传感器库。', '读取温度和相对湿度。', '检查无效读数。'],
+    steps: ['在 Arduino 库管理器中安装 Adafruit 的“DHT sensor library”及其依赖“Adafruit Unified Sensor”。', '对于裸露的 DHT22，把 1 脚接到 3V3、2 脚（数据）接到 GPIO27、4 脚接到 GND；3 脚不使用。请确认你所用模块的引脚排列。', '如果你的模块没有内置上拉电阻，就在数据线与 3V3 之间加一个 10 kΩ 上拉电阻。', '运行演示并调节室温。真实 DHT22 的两次读数之间应至少间隔两秒。'],
+    wiring: [wire('3V3', 'DHT22 VCC'), wire('GPIO27', 'DHT22 数据', '裸露传感器需在 3V3 与数据线之间接 10 kΩ 上拉电阻。'), wire('GND', 'DHT22 GND')],
+    code: `// 安装：DHT sensor library（Adafruit）
+// 依赖：Adafruit Unified Sensor
 #include <DHT.h>
 
 DHT sensor(27, DHT22);
@@ -338,19 +338,19 @@ void loop() {
   }
   Serial.printf("%.1f C | %.1f %% RH\\n", temperature, humidity);
 }`,
-    explanation: 'The library handles the sensor’s digital timing protocol. A failed reading returns NaN (“not a number”), so the sketch checks before using it. This is a slow environmental sensor rather than a fast temperature probe.',
-    specs: [spec('Sensor', 'DHT22 / AM2302'), spec('Data pin', 'GPIO27'), spec('Supply in this circuit', '3.3 V'), spec('Read interval', 'At least 2 seconds')],
-    control: control('Temperature', 5, 45, 0.5, 23.5, '°C'),
-    challenge: 'Print “Getting warm” when the temperature rises above 28 °C, while still handling failed readings.',
-    question: question('What should the program do when a sensor returns NaN?', ['Treat it as zero degrees', 'Detect the failed reading before using the value', 'Increase the supply voltage'], 1, 'NaN means the reading is invalid. Report or retry the failure instead of acting on a made-up value.')
+    explanation: '传感器库负责处理其数字时序协议。读取失败会返回 NaN（“not a number”，非数值），因此示例在使用前先做检查。这是响应较慢的环境传感器，而不是快速温度探头。',
+    specs: [spec('传感器', 'DHT22 / AM2302'), spec('数据引脚', 'GPIO27'), spec('本电路供电', '3.3 V'), spec('读取间隔', '至少 2 秒')],
+    control: control('温度', 5, 45, 0.5, 23.5, '°C'),
+    challenge: '当温度高于 28 °C 时打印“Getting warm”，同时仍要处理读取失败的情况。',
+    question: question('传感器返回 NaN 时，程序应该怎么做？', ['把它当作零度', '在使用数值前检测到读取失败', '提高供电电压'], 1, 'NaN 表示读数无效。应报告或重试该错误，而不是依据虚构的数值采取行动。')
   },
   {
-    id: 'servo', title: 'Move with precision', shortTitle: 'Position a servo', category: 'Motion', duration: '10 min', icon: 'gauge',
-    description: 'Tell a hobby servo where to turn. The width of a repeating pulse sets a target angle, while the servo handles the motion.',
-    objectives: ['Understand servo control pulses.', 'Use a separate power supply for motion.', 'Set a target position with ESP32Servo.'],
-    steps: ['Install a current version of ESP32Servo compatible with Arduino-ESP32 3.x.', 'Connect servo power to a suitable external regulated supply, typically 5 V for an SG90. Check the servo’s rating.', 'Connect servo signal to GPIO18 and join the servo supply ground to ESP32 GND.', 'Try different target positions. Start with a conservative 20–160° range and check the servo’s mechanical limits before expanding it.'],
-    wiring: [wire('GPIO18', 'Servo signal', 'Often orange, yellow or white; check your servo.'), wire('External regulated 5 V', 'Servo V+'), wire('Supply GND', 'Servo GND + ESP32 GND', 'Never power a servo from a GPIO.')],
-    code: `// Install: ESP32Servo (current 3.x-compatible version)
+    id: 'servo', title: '精准运动', shortTitle: '控制舵机位置', category: '运动', duration: '10 分钟', icon: 'gauge',
+    description: '告诉舵机要转到哪里。重复脉冲的宽度决定目标角度，运动本身由舵机完成。',
+    objectives: ['理解舵机控制脉冲。', '为运动部分使用独立电源。', '用 ESP32Servo 设置目标位置。'],
+    steps: ['安装与 Arduino-ESP32 3.x 兼容的最新版 ESP32Servo。', '把舵机电源接到合适的外部稳压电源，SG90 通常为 5 V。请查看舵机的额定参数。', '把舵机信号线接到 GPIO18，并把舵机电源的地与 ESP32 的 GND 相连。', '尝试不同的目标位置。先从保守的 20–160° 范围开始，确认舵机的机械限位后再扩大范围。'],
+    wiring: [wire('GPIO18', '舵机信号', '通常为橙色、黄色或白色；请查看你的舵机。'), wire('外部稳压 5 V', 'Servo V+'), wire('电源 GND', '舵机 GND + ESP32 GND', '切勿用 GPIO 给舵机供电。')],
+    code: `// 安装：ESP32Servo（兼容 3.x 的当前版本）
 #include <ESP32Servo.h>
 
 Servo arm;
@@ -363,26 +363,26 @@ void setup() {
 }
 
 void loop() {
-  delay(1000); // The servo keeps receiving its target pulses.
+  delay(1000); // 舵机会持续接收其目标脉冲。
 }`,
-    explanation: 'A servo uses pulse width, commonly around 1–2 ms repeated at 50 Hz, to select its target position. The exact angle range varies by servo. Pulse width is different from the PWM duty cycle used to dim an LED.',
-    specs: [spec('Signal', 'GPIO18'), spec('Control rate', '50 Hz'), spec('Configured pulses', '1000–2000 µs'), spec('Power', 'External supply with shared ground')],
-    control: control('Target angle', 20, 160, 1, 90, '°'),
-    challenge: 'Replace the fixed target with a slow sweep between 20° and 160°. Then use a potentiometer on GPIO34 to choose the target instead.',
-    question: question('Which part of the control signal tells a hobby servo its target position?', ['The pulse width', 'The USB baud rate', 'The number of supply wires'], 0, 'The servo interprets the width of each control pulse as a requested position.')
+    explanation: '舵机用脉冲宽度来选择目标位置，通常在 1–2 ms 之间，以 50 Hz 重复。具体角度范围因舵机而异。脉冲宽度与用于调节 LED 亮度的 PWM 占空比不同。',
+    specs: [spec('信号', 'GPIO18'), spec('控制频率', '50 Hz'), spec('配置的脉冲', '1000–2000 µs'), spec('电源', '外部电源并共地')],
+    control: control('目标角度', 20, 160, 1, 90, '°'),
+    challenge: '把固定目标改为在 20° 与 160° 之间缓慢扫描。然后改用 GPIO34 上的电位器来选择目标。',
+    question: question('控制信号的哪一部分告诉舵机目标位置？', ['脉冲宽度', 'USB 波特率', '电源线的数量'], 0, '舵机把每个控制脉冲的宽度解释为所请求的位置。')
   },
   {
-    id: 'stepper', title: 'Take it one step at a time', shortTitle: 'Spin the wheel', category: 'Motion', duration: '12 min', icon: 'rotate',
-    description: 'A stepper motor moves through a sequence of magnetic fields. Count steps to control a small geared motor’s rotation.',
-    objectives: ['Drive a 28BYJ-48 through a ULN2003 board.', 'Sequence coils with the Stepper library.', 'Understand open-loop positioning.'],
-    steps: ['Install the Arduino Stepper library if it is not already available.', 'Plug the 5 V 28BYJ-48 into its ULN2003 driver board.', 'Connect IN1, IN2, IN3 and IN4 to GPIO16, GPIO17, GPIO18 and GPIO19. Power the driver from a suitable 5 V supply and share ground.', 'Run the example to move once by the selected angle relative to its current starting position. Resetting or uploading runs setup() again and causes another relative move; this sketch does not find an absolute home position. The exact gearbox ratio varies between motors.'],
-    wiring: [wire('GPIO16 / 17', 'ULN2003 IN1 / IN2'), wire('GPIO18 / 19', 'ULN2003 IN3 / IN4'), wire('External 5 V / GND', 'Driver + / −', 'Join driver ground to ESP32 ground.'), wire('Motor connector', 'ULN2003 motor socket')],
-    code: `// Install: Stepper by Arduino
+    id: 'stepper', title: '一步一步来', shortTitle: '转动轮子', category: '运动', duration: '12 分钟', icon: 'rotate',
+    description: '步进电机按一系列磁场依次转动。通过计步来控制小型减速电机的旋转。',
+    objectives: ['通过 ULN2003 板驱动 28BYJ-48。', '用 Stepper 库依次给线圈通电。', '理解开环定位。'],
+    steps: ['如果尚未安装 Arduino 的 Stepper 库，请先安装。', '把 5 V 的 28BYJ-48 插到它的 ULN2003 驱动板上。', '把 IN1、IN2、IN3、IN4 分别接到 GPIO16、GPIO17、GPIO18 和 GPIO19。用合适的 5 V 电源给驱动器供电并共地。', '运行示例，使其相对当前起始位置转动所选角度一次。复位或重新上传都会再次运行 setup()，从而再产生一次相对移动；本示例不会寻找绝对原点。具体减速比因电机而异。'],
+    wiring: [wire('GPIO16 / 17', 'ULN2003 IN1 / IN2'), wire('GPIO18 / 19', 'ULN2003 IN3 / IN4'), wire('外部 5 V / GND', '驱动器 + / −', '把驱动器地线与 ESP32 的地相连。'), wire('电机连接器', 'ULN2003 电机插座')],
+    code: `// 安装：Arduino 的 Stepper 库
 #include <Stepper.h>
 
 const int STEPS_PER_TURN = 2048;
 const int TARGET_DEGREES = 180;
-// The 1-3-2-4 order matches this motor's coil sequence.
+// 1-3-2-4 顺序与该电机的线圈相序一致。
 Stepper motor(STEPS_PER_TURN, 16, 18, 17, 19);
 
 void setup() {
@@ -392,29 +392,29 @@ void setup() {
 }
 
 void loop() {
-  delay(1000); // No further steps; energized coils hold position.
+  delay(1000); // 不再走步；通电的线圈保持位置。
 }`,
-    explanation: 'TARGET_DEGREES is converted to a relative step count and executed once in setup(). This four-step drive uses approximately 2048 steps per output revolution. Energized coils then hold position and draw current. The motor gives no position feedback; overload can cause missed steps. Disconnect motor power when the experiment is finished.',
-    specs: [spec('Motor / driver', '5 V 28BYJ-48 / ULN2003'), spec('Example drive', 'Four-step sequence'), spec('Nominal steps/revolution', 'Approximately 2048'), spec('Example speed', '10 RPM')],
-    control: control('Target rotation', 0, 360, 5, 180, '°'),
-    challenge: 'Move approximately a quarter turn in each direction. Compare the final position after several cycles.',
-    question: question('Does this stepper circuit know whether the motor actually completed a step?', ['Yes, it reads a built-in encoder', 'No, it commands steps without position feedback', 'Only when the motor is disconnected'], 1, 'This is open-loop control. If the motor stalls, the program’s step count can differ from the actual position.')
+    explanation: 'TARGET_DEGREES 被转换为相对步数，并在 setup() 中执行一次。这种四拍驱动每输出一圈约需 2048 步。通电的线圈随后保持位置并持续耗电。电机没有位置反馈；过载可能导致丢步。实验结束后请断开电机电源。',
+    specs: [spec('电机 / 驱动器', '5 V 28BYJ-48 / ULN2003'), spec('示例驱动方式', '四拍相序'), spec('标称步数/圈', '约 2048'), spec('示例转速', '10 RPM')],
+    control: control('目标转角', 0, 360, 5, 180, '°'),
+    challenge: '让电机在每个方向各转约四分之一圈。比较若干周期后的最终位置。',
+    question: question('这个步进电路知道电机是否真的走过了一步吗？', ['知道，它读取内置编码器', '不知道，它只发步数指令而没有位置反馈', '只有在电机断开时才知道'], 1, '这是开环控制。如果电机堵转，程序记录的步数可能与实际位置不符。')
   },
   {
-    id: 'plant', title: 'Give your plant a voice', shortTitle: 'Smart plant', category: 'Projects', duration: '15 min', icon: 'sprout',
-    description: 'Combine an analog moisture sensor and an OLED display. Turn a calibrated reading into a simple watering reminder.',
-    objectives: ['Connect an I²C OLED.', 'Calibrate a relative moisture scale.', 'Combine input, logic and a display.'],
-    steps: ['Use a capacitive soil-moisture sensor rated for 3.3 V. Connect VCC to 3V3, GND to GND and analog output to GPIO34. Keep the sensor’s electronic components out of soil and water.', 'Upload the serial-only calibration sketch in Learn first; it works without an OLED. Open Serial Monitor at 115200 baud. Insert the probe to a repeatable depth in dry potting mix and record several stable raw readings.', 'Repeat in freshly watered, drained mix using the same depth. Record the stable wet reading. These two references describe your setup, not every possible soil. Replace DRY and WET in the combined sketch with your different measured values.', 'Connect a 3.3 V-compatible SSD1306 OLED: SDA (data) to GPIO21, SCL (clock) to GPIO22, VCC to 3V3 and GND to GND.', 'Run the I²C scanner in Learn with the OLED connected and read the detected address in Serial Monitor. A common address is 0x3C; if yours differs, use that address in display.begin().', 'Install Adafruit SSD1306 and Adafruit GFX Library, then upload the combined example with your calibration values and address. The display percentage is relative; check the real soil before deciding to water.'],
-    wiring: [wire('3V3 / GND', 'Moisture sensor VCC / GND'), wire('Sensor analog out', 'GPIO34', 'Output must remain within the ESP32 input limits.'), wire('GPIO21 / GPIO22', 'OLED SDA / SCL'), wire('3V3 / GND', 'OLED VCC / GND', 'Use an OLED module compatible with 3.3 V.')],
-    code: `// Install: Adafruit SSD1306 + Adafruit GFX Library
+    id: 'plant', title: '让你的植物开口说话', shortTitle: '智能植物', category: '项目', duration: '15 分钟', icon: 'sprout',
+    description: '把模拟湿度传感器和 OLED 显示屏结合起来。把校准后的读数变成一个简易的浇水提醒。',
+    objectives: ['连接 I²C OLED。', '校准相对湿度标尺。', '把输入、逻辑和显示结合起来。'],
+    steps: ['使用额定 3.3 V 的电容式土壤湿度传感器。把 VCC 接到 3V3、GND 接到 GND、模拟输出接到 GPIO34。别让传感器的电子部分接触土壤和水。', '先上传“学习”中仅用串口的校准草图，它无需 OLED 即可工作。打开 115200 波特率的串口监视器。把探头插入干燥培养土中到一个可重复的深度，记录几个稳定的原始读数。', '用相同深度在刚浇透并沥干的培养土中重复测量，记录稳定的湿润读数。这两个参考值只适用于你的这套装置，并非适用于所有土壤。把综合示例中的 DRY 和 WET 换成你测得的不同数值。', '连接一块兼容 3.3 V 的 SSD1306 OLED：SDA（数据）接 GPIO21，SCL（时钟）接 GPIO22，VCC 接 3V3，GND 接 GND。', '在 OLED 连接好的情况下运行“学习”中的 I²C 扫描程序，在串口监视器中读取检测到的地址。常见地址是 0x3C；如果不同，就在 display.begin() 中使用你的地址。', '安装 Adafruit SSD1306 和 Adafruit GFX Library，然后用你的校准值和地址上传综合示例。显示的百分比是相对值；决定是否浇水前请检查真实土壤。'],
+    wiring: [wire('3V3 / GND', '湿度传感器 VCC / GND'), wire('传感器模拟输出', 'GPIO34', '输出必须保持在 ESP32 的输入范围内。'), wire('GPIO21 / GPIO22', 'OLED SDA / SCL'), wire('3V3 / GND', 'OLED VCC / GND', '使用兼容 3.3 V 的 OLED 模块。')],
+    code: `// 安装：Adafruit SSD1306 + Adafruit GFX Library
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
 Adafruit_SSD1306 display(128, 64, &Wire, -1);
 const int SOIL = 34;
-const int DRY = 3000; // Replace with your dry reading
-const int WET = 1300; // Replace with your wet reading
+const int DRY = 3000; // 替换为你的干燥读数
+const int WET = 1300; // 替换为你的湿润读数
 
 void setup() {
   Serial.begin(115200);
@@ -441,18 +441,18 @@ void loop() {
   Serial.printf("Raw: %d | Relative: %d%%\\n", raw, moisture);
   delay(1000);
 }`,
-    explanation: 'The percentage is a relative scale between your two calibration points, not a laboratory measurement of water content. Different soils and sensor placements need different calibration. A capacitive sensor avoids the exposed resistive electrodes that corrode quickly.',
-    specs: [spec('Analog sensor', '3.3 V capacitive moisture probe'), spec('ADC', 'GPIO34 / ADC1'), spec('I²C bus', 'SDA21 / SCL22'), spec('OLED', 'SSD1306 128×64, usually 0x3C')],
-    control: control('Relative soil moisture', 0, 100, 1, 55, '%'),
-    challenge: 'Display three plant messages for dry, comfortable and very wet conditions.',
-    question: question('What does the displayed moisture percentage represent?', ['An exact water-content measurement for any soil', 'A relative scale based on your dry and wet calibration', 'The battery level'], 1, 'The sketch maps two measured reference values to 0–100%. Soil type and sensor placement affect that scale.')
+    explanation: '这个百分比是介于两个校准点之间的相对标尺，不是实验室级别的含水量测量。不同土壤和传感器位置需要不同的校准。电容式传感器避免了容易腐蚀的外露电阻电极。',
+    specs: [spec('模拟传感器', '3.3 V 电容式湿度探头'), spec('ADC', 'GPIO34 / ADC1'), spec('I²C 总线', 'SDA21 / SCL22'), spec('OLED', 'SSD1306 128×64，通常为 0x3C')],
+    control: control('相对土壤湿度', 0, 100, 1, 55, '%'),
+    challenge: '针对干燥、适宜和过湿三种情况显示三条不同的植物状态消息。',
+    question: question('显示的湿度百分比代表什么？', ['适用于任何土壤的精确含水量测量', '基于你干湿校准的相对标尺', '电池电量'], 1, '示例把两个测得的参考值映射到 0–100%。土壤类型和传感器位置都会影响这个标尺。')
   },
   {
-    id: 'force', title: 'Feel the pressure', shortTitle: 'Feel the force', category: 'Sensors', duration: '8 min', icon: 'fingerprint',
-    description: 'A force-sensing resistor reacts to pressure. Read its changing resistance and turn it into a visual response.',
-    objectives: ['Read an FSR with a voltage divider.', 'Distinguish a relative reading from a calibrated force.', 'Map pressure to LED brightness.'],
-    steps: ['Connect the FSR between 3V3 and GPIO34.', 'Connect 10 kΩ between GPIO34 and GND.', 'Connect an LED from GPIO23 through 330 Ω to GND.', 'Run the demonstration and adjust the pressure. On hardware, press gently within your sensor’s rated limits.'],
-    wiring: [wire('3V3', 'FSR → GPIO34'), wire('GPIO34', '10 kΩ → GND', 'Forms a voltage divider.'), wire('GPIO23', '330 Ω → LED → GND')],
+    id: 'force', title: '感受压力', shortTitle: '感知力度', category: '传感器', duration: '8 分钟', icon: 'fingerprint',
+    description: '力敏电阻会对压力作出反应。读取它变化的阻值，并转换为可视的反馈。',
+    objectives: ['用分压电路读取 FSR。', '区分相对读数与经过校准的力值。', '把压力映射为 LED 亮度。'],
+    steps: ['把 FSR 接在 3V3 与 GPIO34 之间。', '在 GPIO34 与 GND 之间接一个 10 kΩ 电阻。', '把 LED 从 GPIO23 经 330 Ω 接到 GND。', '运行演示并调节压力。在实物上，请在传感器额定范围内轻按。'],
+    wiring: [wire('3V3', 'FSR → GPIO34'), wire('GPIO34', '10 kΩ → GND', '构成分压电路。'), wire('GPIO23', '330 Ω → LED → GND')],
     code: `const int FORCE_PIN = 34;
 const int LED_PIN = 23;
 
@@ -470,18 +470,18 @@ void loop() {
   Serial.printf("Relative pressure: %d\\n", raw);
   delay(50);
 }`,
-    explanation: 'An FSR’s resistance generally falls as force increases. With this divider, the voltage at GPIO34 rises. The response is nonlinear and affected by contact area, so the sketch reports a relative value rather than claiming a force in newtons.',
-    specs: [spec('Sensor', 'Force-sensing resistor'), spec('Divider resistor', '10 kΩ'), spec('ADC input', 'GPIO34'), spec('Output', 'GPIO23 PWM')],
-    control: control('Applied pressure', 0, 100, 1, 35, '%'),
-    challenge: 'Add a threshold that announces a press, then experiment with averaging several samples to reduce noise.',
-    question: question('Can this uncalibrated FSR reading directly tell us the exact force in newtons?', ['Yes, raw ADC values are newtons', 'No, it needs calibration and has a nonlinear response', 'Yes, if we use a blue LED'], 1, 'FSRs are useful for detecting relative force. Accurate force measurement requires suitable calibration and often a different sensor.')
+    explanation: 'FSR 的阻值通常随压力增大而减小。在这种分压电路中，GPIO34 的电压会升高。其响应是非线性的，并受接触面积影响，因此示例报告的是相对值，而不是声称测得以牛顿为单位的力。',
+    specs: [spec('传感器', '力敏电阻'), spec('分压电阻', '10 kΩ'), spec('ADC 输入', 'GPIO34'), spec('输出', 'GPIO23 PWM')],
+    control: control('施加的压力', 0, 100, 1, 35, '%'),
+    challenge: '增加一个用于提示“已按下”的阈值，再尝试对多个采样求平均以降低噪声。',
+    question: question('这个未经校准的 FSR 读数能直接告诉我们以牛顿为单位的精确力值吗？', ['能，原始 ADC 值就是牛顿', '不能，它需要校准且响应是非线性的', '能，只要使用蓝色 LED'], 1, 'FSR 适合检测相对力度。精确的力测量需要适当的校准，通常还需换用其他传感器。')
   },
   {
-    id: 'wifi', title: 'Build your first connected project', shortTitle: 'Go wireless', category: 'Connected', duration: '15 min', icon: 'wifi',
-    description: 'Let a phone control your LED. The ESP32 creates its own Wi-Fi network and serves a small web page, with no router required.',
-    objectives: ['Create a Wi-Fi access point.', 'Serve a page with WebServer.', 'Connect a web request to a physical output.'],
-    steps: ['Connect an external LED to GPIO23 through 330 Ω and then to GND.', 'Upload the sketch and open Serial Monitor at 115200 baud to see the access-point address.', 'Join the “ESP32-Lab” Wi-Fi network from your phone or computer. It has no internet connection; stay connected when the device asks.', 'Open http://192.168.4.1 in that device’s browser and tap the LED buttons. This website’s demo illustrates the interaction locally; it does not connect to a physical ESP32.'],
-    wiring: [wire('GPIO23', '330 Ω → LED anode (+)'), wire('LED cathode (−)', 'GND'), wire('USB', 'Power + programming', 'Wireless control works after the sketch starts.')],
+    id: 'wifi', title: '搭建你的第一个联网项目', shortTitle: '进入无线世界', category: '联网', duration: '15 分钟', icon: 'wifi',
+    description: '让手机控制你的 LED。ESP32 会创建自己的 Wi-Fi 网络并提供一个小型网页，无需路由器。',
+    objectives: ['创建一个 Wi-Fi 接入点。', '用 WebServer 提供网页。', '把网页请求连接到物理输出。'],
+    steps: ['把外接 LED 经 330 Ω 接到 GPIO23，再接到 GND。', '上传示例，并打开 115200 波特率的串口监视器查看接入点地址。', '用手机或电脑加入“ESP32-Lab”Wi-Fi 网络。它没有互联网连接；设备提示时请选择保持连接。', '在该设备的浏览器中打开 http://192.168.4.1，点击 LED 按钮。本网站的演示只在本地展示交互，不会连接到实物 ESP32。'],
+    wiring: [wire('GPIO23', '330 Ω → LED 阳极 (+)'), wire('LED 阴极 (−)', 'GND'), wire('USB', '供电 + 编程', '草图启动后即可进行无线控制。')],
     code: `#include <WiFi.h>
 #include <WebServer.h>
 
@@ -517,147 +517,147 @@ void setup() {
 void loop() {
   server.handleClient();
 }`,
-    explanation: 'The ESP32 acts as an access point and web server. Your browser requests /on or /off, and the corresponding handler changes GPIO23. This learning example creates an open local network. You can add an access-point password by passing a second argument of at least eight characters to WiFi.softAP().',
-    specs: [spec('Network mode', 'SoftAP, 2.4 GHz'), spec('Network name', 'ESP32-Lab'), spec('Default local address', '192.168.4.1'), spec('Libraries', 'WiFi and WebServer, included with core')],
+    explanation: 'ESP32 充当接入点和 Web 服务器。浏览器请求 /on 或 /off，相应的处理函数会改变 GPIO23。本教学示例创建一个开放的本地网络。你可以给 WiFi.softAP() 传入第二个至少 8 个字符的参数，为接入点添加密码。',
+    specs: [spec('网络模式', 'SoftAP, 2.4 GHz'), spec('网络名称', 'ESP32-Lab'), spec('默认本地地址', '192.168.4.1'), spec('库', 'WiFi 和 WebServer，随核心一起提供')],
     control: null,
-    challenge: 'Combine this lesson with the DHT22 on GPIO27: add a /temperature route showing the latest valid Celsius reading. Sample every two seconds with millis() instead of a blocking delay, so /on and /off stay responsive.',
-    question: question('Does the phone need an internet connection to open the ESP32’s local page?', ['Yes, every web page needs the internet', 'No, it connects directly to the ESP32’s Wi-Fi network', 'Only if the LED is on'], 1, 'The phone and ESP32 communicate on a local Wi-Fi network. The ESP32 itself serves the page.')
+    challenge: '把本课与 GPIO27 上的 DHT22 结合：增加 /temperature 路由，显示最近一次有效的摄氏温度读数。用 millis() 每两秒采样一次，避免使用阻塞式延时，这样 /on 和 /off 才能保持响应。',
+    question: question('手机需要互联网连接才能打开 ESP32 的本地页面吗？', ['需要，每个网页都需要互联网', '不需要，它直接连接到 ESP32 的 Wi-Fi 网络', '只有在 LED 亮起时才需要'], 1, '手机与 ESP32 在本地 Wi-Fi 网络上通信，网页由 ESP32 本身提供。')
   }
 ];
 
-// Kept separate from the first-screen summaries so the UI can disclose teaching
-// progressively: predict, interact, observe, then explain the result.
+// 与首屏摘要分开保存，让界面可以逐步呈现教学内容：
+// 先预测、再交互、后观察，最后解释结果。
 const learningNotes = {
   board: {
-    interaction: 'Tap EN to restart the board. Explore a component to learn its purpose.',
+    interaction: '点击 EN 重启开发板。点选某个元件可了解它的用途。',
     concepts: [
-      { title: 'A computer for a physical job', text: 'A microcontroller repeatedly reads inputs, makes decisions and changes outputs. The ESP32 stores your sketch in flash memory, which survives a power cut. Its RAM holds temporary working values. Restarting clears that temporary state and begins the program again.' },
-      { title: 'Power, voltage and a shared ground', text: 'Voltage is the electrical difference between two points. GND, or ground, is the circuit’s shared 0 V reference and a return path for current. USB brings 5 V to the board; its regulator creates 3.3 V. The 3V3 power pin can supply a suitable small device connected between 3V3 and GND. It is not a programmable signal output.' },
-      { title: 'Signals and the program that controls them', text: 'GPIO means general-purpose input/output: a numbered pin your code can read or control. HIGH is about 3.3 V and LOW about 0 V relative to GND; never apply 5 V to an ESP32 GPIO. setup() runs once, then loop() repeats. This first sketch prints uptime through USB Serial at 115200 baud so you can see the program working.' }
+      { title: '为物理任务而生的计算机', text: '微控制器会反复读取输入、做出判断并改变输出。ESP32 把你的草图存储在 Flash 中，断电后仍会保留。它的 SRAM 保存临时的运算数据。重启会清除这些临时状态，并重新开始运行程序。' },
+      { title: '电源、电压与共地', text: '电压是两点之间的电势差。GND（地）是电路共用的 0 V 参考点，也是电流的回路。USB 为开发板提供 5 V，板上的稳压器产生 3.3 V。3V3 电源引脚可以给接在 3V3 与 GND 之间的合适小型设备供电。它并不是可编程的信号输出。' },
+      { title: '信号与控制它们的程序', text: 'GPIO 表示通用输入输出：一个你的代码可以读取或控制的带编号引脚。相对 GND，HIGH 约为 3.3 V，LOW 约为 0 V；切勿向 ESP32 的 GPIO 施加 5 V。setup() 运行一次，随后 loop() 反复执行。这第一个示例通过 115200 波特率的 USB 串口打印运行时间，让你看到程序正在工作。' }
     ],
     experiment: {
-      prediction: 'If you restart the board, will the uploaded program disappear, or will only its running state start again?',
-      action: 'Start the simulation, inspect the module and USB connector, then tap the board’s EN reset button. Compare the simulated restart with pressing EN after uploading the example to a real board.',
-      observe: 'The board starts its demonstration again. On hardware, the welcome message appears again and uptime returns close to zero; you do not need to upload the sketch again.',
-      why: 'EN resets the processor. The sketch remains in flash, while setup() and the temporary runtime state restart. BOOT serves a different purpose: it selects download mode when held during reset.'
+      prediction: '如果重启开发板，已上传的程序会消失，还是只有运行状态重新开始？',
+      action: '启动仿真，查看模组和 USB 接口，然后点击开发板上的 EN 复位按钮。把仿真中的重启与向实物开发板上传示例后按 EN 的情况作比较。',
+      observe: '开发板会重新开始演示。在实物上，欢迎消息会再次出现，运行时间回到接近零；你无需重新上传草图。',
+      why: 'EN 用于复位处理器。草图仍留在 Flash 中，而 setup() 和临时的运行时状态会重新开始。BOOT 的作用不同：复位时按住它可选择下载模式。'
     },
-    troubleshooting: ['No serial port appears: use a data-capable USB cable, then check the USB-to-UART driver required by your exact board.', 'Serial text is unreadable: set the monitor to 115200 baud. If uploading remains at “Connecting”, hold BOOT until the transfer starts, then release it.'],
-    takeaway: 'Trace the complete path: USB power → 3.3 V regulator → processor → GPIO. Your code starts in setup() and keeps working in loop().'
+    troubleshooting: ['没有出现串口：请使用支持数据传输的 USB 线，然后检查你的开发板所需的 USB 转 UART 驱动。', '串口文字乱码：把监视器设为 115200 波特率。如果上传一直停留在“Connecting”，按住 BOOT 直到开始传输，再松开。'],
+    takeaway: '理清完整路径：USB 供电 → 3.3 V 稳压器 → 处理器 → GPIO。你的代码从 setup() 开始，并在 loop() 中持续工作。'
   },
   blink: {
-    interaction: 'Tap the LED to change its blink interval.',
+    interaction: '点击 LED 可改变其闪烁间隔。',
     concepts: [
-      { title: 'Make a complete current path', text: 'Current flows from GPIO23 through the resistor and LED to GND when the pin is HIGH. The LED conducts in one direction, from anode to cathode. Reversing it usually leaves the LED dark even though the program is running correctly.' },
-      { title: 'Choose current, not just voltage', text: 'Ω means ohms, the unit of resistance; 1 kΩ is 1000 Ω. Current is measured in amperes (A); 1 mA is one thousandth of an ampere. A red LED drops roughly 2 V. With a 3.3 V output and 330 Ω resistor, an estimate is (3.3 − 2.0) / 330 ≈ 0.004 A, or 4 mA. The actual current depends on the LED and pin voltage. Removing the resistor can damage the LED or GPIO.' },
-      { title: 'Two delays make one cycle', text: 'digitalWrite() changes the output; delay() decides how long that state lasts. The example holds HIGH for 500 ms and LOW for 500 ms, making a one-second cycle: 1 Hz. delay() blocks this loop, which becomes limiting when a project must also watch buttons or handle requests.' }
+      { title: '形成完整的电流通路', text: '当引脚为 HIGH 时，电流从 GPIO23 经电阻和 LED 流向 GND。LED 只能单向导通，从阳极到阴极。把它接反通常会使 LED 不亮，即使程序运行正常。' },
+      { title: '选择电流，而不只是电压', text: 'Ω 表示欧姆，是电阻的单位；1 kΩ = 1000 Ω。电流以安培（A）计量；1 mA 是千分之一安培。红色 LED 的正向压降约为 2 V。在 3.3 V 输出和 330 Ω 电阻下，估算电流为 (3.3 − 2.0) / 330 ≈ 0.004 A，即 4 mA。实际电流取决于 LED 和引脚电压。去掉电阻可能损坏 LED 或 GPIO。' },
+      { title: '两次延时构成一个周期', text: 'digitalWrite() 改变输出，delay() 决定该状态持续多久。示例保持 HIGH 500 ms、LOW 500 ms，构成一个一秒的周期，即 1 Hz。delay() 会阻塞这个循环；当项目还需要监听按钮或处理请求时，这就会成为限制。' }
     ],
     experiment: {
-      prediction: 'If you double both the on and off intervals, does the LED blink twice as fast or half as fast?',
-      action: 'Run the simulation and tap the LED to cycle through intervals. Use the slider to compare 250 ms with 1000 ms. To reproduce your setting on hardware, download the updated sketch from Code and upload it using the Arduino IDE.',
-      observe: 'At 250 ms, one complete blink takes 500 ms. At 1000 ms, it takes two seconds. The on and off portions remain equal.',
-      why: 'The full period is the on-time plus the off-time. Increasing both intervals increases the period and decreases the frequency. The slider updates INTERVAL_MS in the demo and example sketch. It does not compile or upload code.'
+      prediction: '如果把亮和灭的时间都翻倍，LED 闪烁会快一倍还是慢一半？',
+      action: '运行仿真并点击 LED，循环切换不同的间隔。用滑块比较 250 ms 与 1000 ms。要在实物上复现你的设置，可从“代码”下载更新后的草图，并用 Arduino IDE 上传。',
+      observe: '间隔为 250 ms 时，一次完整闪烁耗时 500 ms；为 1000 ms 时，耗时两秒。亮和灭的时长始终相等。',
+      why: '完整周期等于亮的时间加上灭的时间。两个间隔都增大会使周期变长、频率降低。滑块会更新演示和示例草图中的 INTERVAL_MS，但不会编译或上传代码。'
     },
-    troubleshooting: ['The LED stays dark: power down, check its polarity and verify that the resistor and LED form a series path to GND.', 'The wrong LED blinks: this lesson uses an external LED on GPIO23. Built-in LEDs differ between ESP32 development boards.'],
-    takeaway: 'An output needs both correct code and a complete, current-limited circuit. Blink frequency depends on the whole on/off cycle.'
+    troubleshooting: ['LED 一直不亮：断电后检查其极性，并确认电阻和 LED 构成了通向 GND 的串联通路。', '闪烁的不是预期的 LED：本课使用的是 GPIO23 上的外接 LED。不同 ESP32 开发板上的板载 LED 各不相同。'],
+    takeaway: '一个输出既需要正确的代码，也需要完整且限流的电路。闪烁频率取决于整个亮灭周期。'
   },
   button: {
-    interaction: 'Hold the button down, then release it.',
+    interaction: '按住按钮，然后松开。',
     concepts: [
-      { title: 'An open input needs a reference', text: 'An unconnected input can float and react to electrical noise. INPUT_PULLUP connects a weak internal resistor to 3.3 V so GPIO18 reads HIGH when the button is open. GPIO34–39 on the original ESP32 do not have these internal pull resistors.' },
-      { title: 'Pressed can mean LOW', text: 'The button connects GPIO18 to GND when pressed. The pull-up is weak enough that the switch wins, giving a LOW input. The expression digitalRead(BUTTON_PIN) == LOW converts this electrical level into the useful idea “pressed”. The LED can then follow that boolean.' },
-      { title: 'Read the decision in plain language', text: 'bool is a true-or-false value. The double equals sign, ==, compares two values; a single = stores a value. Here the comparison asks “is the input LOW?” and stores the answer in pressed. if (pressed) chooses the LED-on instructions; else chooses LED-off. Curly braces group each branch. A future toggle or press counter also needs debouncing because real switch contacts can bounce.' }
+      { title: '悬空的输入需要参考电平', text: '未连接的输入可能悬空并受到电气噪声干扰。INPUT_PULLUP 把一个弱内部上拉电阻接到 3.3 V，使按钮断开时 GPIO18 读数为 HIGH。原版 ESP32 上的 GPIO34–39 没有这些内部上拉电阻。' },
+      { title: '按下可能意味着 LOW', text: '按钮按下时把 GPIO18 接地。上拉足够弱，开关会“胜出”，使输入为 LOW。表达式 digitalRead(BUTTON_PIN) == LOW 把这一电平转换为有用的概念“已按下”。LED 随后就可以跟随这个布尔值。' },
+      { title: '用通俗语言理解判断', text: 'bool 是真或假的值。双等号 == 比较两个值；单个 = 存储一个值。这里的比较是在问“输入是否为 LOW？”，并把答案存入 pressed。if (pressed) 选择点亮 LED 的指令，else 则选择熄灭 LED 的指令。花括号把每个分支的指令分组。将来做切换或计数还需要消抖，因为真实开关触点会抖动。' }
     ],
     experiment: {
-      prediction: 'When the LED turns on, will the button’s input be HIGH or LOW?',
-      action: 'Run the simulation, hold the 3D button and watch the input state and LED. Release it, then try several short presses. The panel button offers the same interaction.',
-      observe: 'Holding the button makes GPIO18 read LOW and lights the LED. Releasing it returns the input to HIGH and turns the LED off.',
-      why: 'The input level and the meaning of that level are separate. The circuit is active-low, and the comparison with LOW makes the pressed boolean true. digitalWrite() then drives the LED output HIGH.'
+      prediction: 'LED 亮起时，按钮输入是 HIGH 还是 LOW？',
+      action: '运行仿真，按住 3D 按钮，观察输入状态和 LED。松开后再试几次短按。面板上的按钮提供相同的交互。',
+      observe: '按住按钮使 GPIO18 读数为 LOW 并点亮 LED。松开后输入回到 HIGH，LED 熄灭。',
+      why: '输入电平和电平的含义是两回事。该电路是低电平有效的，与 LOW 的比较使“按下”这一布尔值为真。随后 digitalWrite() 把 LED 输出置为 HIGH。'
     },
-    troubleshooting: ['The input always reads LOW: check that the button contacts are not permanently bridging GPIO18 and GND. Two legs on the same side of many four-leg buttons are already joined.', 'The input changes unpredictably: confirm INPUT_PULLUP and a shared ground. Do not substitute an input-only pin without adding an external pull resistor.'],
-    takeaway: 'Define what released and pressed mean electrically before writing the condition. A pull resistor keeps an open switch from becoming an undefined input.'
+    troubleshooting: ['输入始终为 LOW：检查按钮触点是否一直把 GPIO18 与 GND 导通。许多四脚按钮同一侧的两个引脚本来就是连通的。', '输入变化不可预测：确认使用了 INPUT_PULLUP 并且共地。不要改用仅作输入的引脚，除非另加外部上拉电阻。'],
+    takeaway: '在编写条件之前，先明确松开和按下在电气上的含义。上拉电阻可防止开关断开时输入处于未定义状态。'
   },
   potentiometer: {
-    interaction: 'Drag the knob to change the input and LED brightness.',
+    interaction: '拖动旋钮可改变输入和 LED 亮度。',
     concepts: [
-      { title: 'Position becomes voltage', text: 'The potentiometer is a continuous resistor with a movable contact called a wiper. Its outer terminals span 3V3 and GND. The wiper divides that voltage according to its position; it does not generate voltage by itself. Swapping the two outer connections reverses the direction.' },
-      { title: 'Voltage becomes a number', text: 'ADC means analog-to-digital converter: it changes a voltage into a number. Twelve bits allow 2¹² = 4096 codes, from 0 to 4095. GPIO34 uses ADC1, one of the ESP32’s two converter units; this unit can read while Wi-Fi runs. The ADC_11db attenuation setting selects internal input scaling for a wider voltage range. It does not permit 5 V inputs. Real readings are nonlinear and may reach their limit before 3.3 V.' },
-      { title: 'A number becomes brightness', text: 'Pulse-width modulation (PWM) repeatedly switches an output on and off. Duty cycle means the fraction of that time spent on. The ESP32’s LEDC hardware generates these pulses; ledcAttach(LED_PIN, 5000, 8) selects 5000 cycles per second and 8 bits, or 256 duty settings from 0 to 255. map() rescales the 0–4095 input to that output range, and ledcWrite() applies it. A higher duty generally appears brighter.' }
+      { title: '位置变为电压', text: '电位器是一个带有可移动触点（滑动端）的连续可调电阻。它的两个外侧引脚跨接在 3V3 与 GND 之间。滑动端根据位置对该电压分压；它本身并不产生电压。对调两个外侧接线会反转方向。' },
+      { title: '电压变为数字', text: 'ADC 表示模数转换器：它把电压转换为数字。12 位可产生 2¹² = 4096 个编码，从 0 到 4095。GPIO34 使用 ADC1，即 ESP32 两个转换器单元之一；该单元可在 Wi-Fi 运行时进行读取。ADC_11db 衰减设置选择更宽电压范围的内部输入缩放，但它并不允许输入 5 V。真实读数是非线性的，可能在达到 3.3 V 之前就到达上限。' },
+      { title: '数字变为亮度', text: '脉宽调制（PWM）会反复开关输出。占空比指通电时间所占的比例。ESP32 的 LEDC 硬件产生这些脉冲；ledcAttach(LED_PIN, 5000, 8) 选择每秒 5000 个周期和 8 位精度，即 0 到 255 共 256 档占空比。map() 把 0–4095 的输入重映射到该输出范围，再由 ledcWrite() 施加。占空比越高，通常看起来越亮。' }
     ],
     experiment: {
-      prediction: 'At the middle of the dial, would you expect an input near zero, near half-scale or near full-scale?',
-      action: 'Start the simulation and drag the potentiometer from one end to the other. Pause near 25%, 50% and 75%, comparing the simulated ADC value and LED brightness.',
-      observe: 'The idealized ADC reading rises toward 4095 as the dial rises. The LED brightens gradually rather than switching at a single threshold. Half-scale is approximately 2048.',
-      why: 'The divider supplies a changing voltage. The ADC represents it as a number, and the mapping converts that number into PWM duty. A real ESP32 needs calibration for accurate voltage measurement; the raw value is useful for relative control.'
+      prediction: '旋钮转到中间时，你预计输入会接近零、接近半量程还是接近满量程？',
+      action: '启动仿真，把电位器从一端拖到另一端。在 25%、50% 和 75% 附近暂停，比较仿真的 ADC 值与 LED 亮度。',
+      observe: '随着旋钮转动，理想化的 ADC 读数向 4095 上升。LED 是逐渐变亮，而不是在某个单一阈值处突变。半量程约为 2048。',
+      why: '分压电路提供变化的电压。ADC 把它表示为数字，映射再把这个数字转换为 PWM 占空比。真实 ESP32 要精确测量电压需要校准；原始值适合做相对控制。'
     },
-    troubleshooting: ['The reading stays at one extreme: confirm that GPIO34 connects to the center wiper, with one outer terminal at 3V3 and the other at GND.', 'The LED behaves only as on/off: use ledcAttach()/ledcWrite() and the mapped 0–255 value. digitalWrite() cannot select intermediate duty cycles.'],
-    takeaway: 'This is the core of many interactive devices: physical position → voltage → ADC number → output behavior.'
+    troubleshooting: ['读数一直停在某个极端：确认 GPIO34 接到了中间滑动端，且一个外侧引脚接 3V3、另一个接 GND。', 'LED 只有亮/灭两种状态：请使用 ledcAttach()/ledcWrite() 和映射后的 0–255 数值。digitalWrite() 无法选择中间占空比。'],
+    takeaway: '这是许多交互设备的核心：物理位置 → 电压 → ADC 数字 → 输出行为。'
   },
   rgb: {
-    interaction: 'Tap the RGB LED to mix another color, or drag to sweep the hue.',
+    interaction: '点击 RGB LED 可混合出另一种颜色，拖动则可扫描色相。',
     concepts: [
-      { title: 'Add light to make color', text: 'An RGB LED contains three separate emitters. Red plus green makes yellow light; green plus blue makes cyan; blue plus red makes magenta. Combining all three can approach white. The exact appearance depends on the brightness and color of each emitter.' },
-      { title: 'Three branches need three resistors', text: 'A common-cathode package joins the negative terminals, which connect to GND. Each anode still needs its own series resistor. Sharing one resistor makes the channels affect one another because their forward voltages differ. Confirm the package’s lead order rather than guessing from its shape.' },
-      { title: 'Read the color function', text: 'Hue is an angle around the color wheel. The % operator gives a remainder, so the first line wraps angles into 0–359°; 360° becomes 0°. Integer division by 60 chooses one of six regions. hue % 60 gives progress inside it, producing rising and falling brightness values. switch chooses that region’s case, and break ends it. At 60°, region 1 uses rise = 0 and fall = 255: red 255 plus green 255 makes yellow, with blue zero.' }
+      { title: '叠加光线产生颜色', text: 'RGB LED 内含三个独立的发光单元。红加绿得到黄光，绿加蓝得到青色，蓝加红得到品红。三者叠加可接近白色。具体呈现取决于每个发光单元的亮度和颜色。' },
+      { title: '三条支路需要三个电阻', text: '共阴极封装把负端连在一起并接到 GND。每个阳极仍需各自的串联电阻。共用一个电阻会因各通道正向压降不同而使它们互相影响。请确认封装的引脚顺序，而不要凭外形猜测。' },
+      { title: '读懂颜色函数', text: '色相是色环上的一个角度。% 运算符取余数，因此第一行把角度折回 0–359°；360° 变为 0°。整除 60 会选中六个区间之一。hue % 60 给出在该区间内的进度，从而产生上升和下降的亮度值。switch 选中对应区间的 case，break 结束该分支。在 60° 时，区间 1 使用 rise = 0、fall = 255：红 255 加绿 255 得到黄色，蓝色为零。' }
     ],
     experiment: {
-      prediction: 'Which two light colors would you combine to produce yellow?',
-      action: 'Run the simulation and tap the RGB LED to cycle through colors. Drag it or use the hue slider to move through red, yellow, green, cyan, blue and magenta.',
-      observe: 'One physical package produces multiple colors. A hue value describes the selected color around the color wheel; it is not a single GPIO brightness value.',
-      why: 'The visible color comes from the relative brightness of three emitters. HUE_DEGREES and setHue() convert one color choice into three PWM values. Retain a separate resistor for every channel when reproducing it on hardware.'
+      prediction: '你会把哪两种光色混合来得到黄色？',
+      action: '运行仿真并点击 RGB LED，循环切换颜色。拖动它或使用色相滑块，依次经过红、黄、绿、青、蓝和品红。',
+      observe: '同一个物理封装能产生多种颜色。色相值描述的是色环上选定的颜色，而不是某个单一的 GPIO 亮度值。',
+      why: '可见颜色来自三个发光单元的相对亮度。HUE_DEGREES 和 setHue() 把一次颜色选择转换为三个 PWM 值。在实物上复现时，务必为每个通道保留独立的电阻。'
     },
-    troubleshooting: ['The wrong color appears: check the red, green and blue pin order against the LED datasheet and the GPIO assignments.', 'The controls seem inverted or the LED stays dark: verify that the LED is common-cathode. A common-anode part needs different wiring and inverted brightness control.'],
-    takeaway: 'Color is the combination of three controlled outputs. A hue control is a convenient way to choose a set of red, green and blue brightness values.'
+    troubleshooting: ['显示的颜色不对：请对照 LED 数据手册和 GPIO 分配，检查红、绿、蓝的引脚顺序。', '控件似乎反了，或 LED 一直不亮：确认 LED 是共阴极的。共阳极器件需要不同的接法和反向的亮度控制。'],
+    takeaway: '颜色是三个受控输出组合而成。色相控件是选择一组红、绿、蓝亮度值的便捷方式。'
   },
   light: {
-    interaction: 'Hold the light sensor to cover it; release to let the light back in.',
+    interaction: '按住光传感器将其遮住，松开让光线重新照入。',
     concepts: [
-      { title: 'Light changes resistance', text: 'An LDR becomes less resistive in brighter light. The ESP32 cannot directly read resistance, so the LDR and a 10 kΩ resistor form a divider. Here the LDR connects to 3V3 and the fixed resistor connects to GND, with GPIO34 at their junction.' },
-      { title: 'Understand the direction', text: 'The junction voltage is approximately 3.3 × 10 kΩ / (LDR resistance + 10 kΩ). In bright light the LDR resistance falls and the voltage rises. Covering the sensor does the opposite. Reversing the divider parts reverses this relationship.' },
-      { title: 'Choose a threshold from measurements', text: 'Read Serial Monitor with the real LDR covered and brightly lit. For example, covered = 400 and bright = 2000 give a midpoint of 1200. Put your chosen number in DARK_THRESHOLD near the top of the sketch, then upload again. light < DARK_THRESHOLD turns the LED on below that value. If readings flicker near it, use separate on/off thresholds, called hysteresis.' }
+      { title: '光线改变电阻', text: 'LDR 在光线变亮时阻值变小。ESP32 无法直接读取电阻，因此用 LDR 和一个 10 kΩ 电阻构成分压电路。这里 LDR 接 3V3，固定电阻接 GND，GPIO34 位于两者的节点。' },
+      { title: '理解变化方向', text: '节点电压约为 3.3 × 10 kΩ /（LDR 阻值 + 10 kΩ）。强光下 LDR 阻值下降，电压升高。遮住传感器则相反。对调分压的两个元件会反转这一关系。' },
+      { title: '根据测量选择阈值', text: '在实物 LDR 被遮住和强光照射时分别读取串口监视器。例如遮住 = 400、强光 = 2000，中点为 1200。把你选的数字填入草图顶部的 DARK_THRESHOLD，然后重新上传。light < DARK_THRESHOLD 会在低于该值时点亮 LED。如果读数在阈值附近跳动，可使用分开的开/关阈值，即滞回。' }
     ],
     experiment: {
-      prediction: 'When you cover this sensor, should the ADC value rise or fall, and should the LED turn on or off?',
-      action: 'Start the simulation at a bright ambient level. Hold the 3D LDR to cover it, then release it. Use the ambient-light slider to explore the region around the switching threshold.',
-      observe: 'Covering the sensor lowers its simulated reading and turns the night-light on. Releasing it restores the ambient level. In the idealized demo, 1200 out of 4095 is about 29% of the input scale.',
-      why: 'The higher dark resistance pulls less strongly toward 3.3 V, so the fixed resistor pulls the divider voltage lower. The code compares that number with a threshold; the number itself is not a calibrated lux measurement.'
+      prediction: '遮住这个传感器时，ADC 值应上升还是下降？LED 应点亮还是熄灭？',
+      action: '在明亮的环境光下启动仿真。按住 3D LDR 将其遮住，然后松开。用环境光滑块探索开关阈值附近的区域。',
+      observe: '遮住传感器会降低仿真读数并点亮小夜灯。松开后恢复环境光水平。在这个理想化演示中，4095 中的 1200 约占输入量程的 29%。',
+      why: '黑暗时阻值更大，向 3.3 V 的“拉力”更弱，因此固定电阻把分压电压拉低。代码把这个数字与阈值比较；该数字本身并不是经过校准的照度读数。'
     },
-    troubleshooting: ['The LED turns on in bright light: check which divider part connects to 3V3. If you intentionally reversed them, reverse the comparison too.', 'The LED flickers near the threshold: average several samples or add separate on/off thresholds. Keep the sensor wiring short and its ground secure.'],
-    takeaway: 'A sensor reading becomes useful when you know its direction and choose a decision threshold from measurements.'
+    troubleshooting: ['LED 在强光下点亮：检查分压的哪个元件接到了 3V3。如果你故意对调了它们，也要反转比较条件。', 'LED 在阈值附近闪烁：可对多个采样求平均，或增加分开的开/关阈值。让传感器接线尽量短，并确保接地可靠。'],
+    takeaway: '当你知道传感器读数的变化方向，并根据测量选定判断阈值时，它才真正有用。'
   },
   distance: {
-    interaction: 'Drag the obstacle closer to or farther from the sensor.',
+    interaction: '拖动障碍物，使其靠近或远离传感器。',
     concepts: [
-      { title: 'Measure time, infer distance', text: 'The ESP32 sends a 10 µs pulse to Trig. The HC-SR04 emits ultrasound and holds Echo HIGH for a time related to the round trip. At room temperature, sound travels about 0.0343 cm per microsecond. Divide by two because the sound travels out and back.' },
-      { title: 'Keep the Echo voltage safe', text: 'A standard HC-SR04 runs at 5 V and produces a 5 V Echo output. The 2.2 kΩ upper and 3.3 kΩ lower resistors form a divider: 5 × 3.3 / (2.2 + 3.3) = 3.0 V. That level is suitable for the ESP32 input; a direct 5 V connection is not.' },
-      { title: 'Missing data is not zero distance', text: 'pulseIn(ECHO, HIGH, 30000) waits at most 30,000 µs. If no valid pulse arrives, it returns zero and the sketch prints “No echo”. A soft, angled or distant object may fail to return a useful reflection. The program should handle that separately from a nearby obstacle.' }
+      { title: '测量时间，推算距离', text: 'ESP32 向 Trig 发送一个 10 µs 的脉冲。HC-SR04 发出超声波，并把 Echo 保持为 HIGH 一段时间，时长与往返路程相关。室温下声音每微秒传播约 0.0343 cm。由于声音是往返的，需要除以二。' },
+      { title: '保证 Echo 电压安全', text: '标准 HC-SR04 以 5 V 工作，并输出 5 V 的 Echo 信号。2.2 kΩ 上臂和 3.3 kΩ 下臂电阻构成分压：5 × 3.3 / (2.2 + 3.3) = 3.0 V。该电平适合 ESP32 输入；直接接 5 V 则不行。' },
+      { title: '数据缺失不等于距离为零', text: 'pulseIn(ECHO, HIGH, 30000) 最多等待 30,000 µs。如果没有有效脉冲到来，它返回零，示例会打印“No echo”。柔软、倾斜或较远的物体可能无法返回有效的反射。程序应把这种情况与“近处有障碍物”分开处理。' }
     ],
     experiment: {
-      prediction: 'If you move an obstacle from 20 cm to 40 cm, what should happen to the echo’s travel time?',
-      action: 'Run the simulation and drag the obstacle across the scene. Compare 20 cm, 40 cm and 80 cm using the distance control, then look at the serial scenario readings.',
-      observe: 'The reported distance follows the obstacle. Doubling the distance would approximately double the real echo duration: about 1166 µs at 20 cm and 2332 µs at 40 cm.',
-      why: 'The speed of sound is approximately constant for the same conditions, so distance and travel time scale together. The browser illustrates this relationship; real measurements also depend on temperature, object shape and reflections.'
+      prediction: '把障碍物从 20 cm 移到 40 cm，回波的传播时间会发生什么变化？',
+      action: '运行仿真并在场景中拖动障碍物。用距离控件比较 20 cm、40 cm 和 80 cm，再查看串口场景下的读数。',
+      observe: '报告的距离随障碍物变化。距离翻倍时，真实回波时长也大约翻倍：20 cm 时约 1166 µs，40 cm 时约 2332 µs。',
+      why: '在相同条件下声速近似恒定，因此距离与传播时间成正比。浏览器演示展示了这一关系；真实测量还受温度、物体形状和反射的影响。'
     },
-    troubleshooting: ['Every reading says “No echo”: check the 5 V supply, common ground and Trig/Echo assignments. Confirm that your module accepts a 3.3 V trigger.', 'Readings jump or look implausible: aim at a flat hard surface within the sensor’s range, leave time between pings and verify the Echo divider wiring.'],
-    takeaway: 'The sensor measures a round-trip time. Correct math, voltage conversion and a missing-echo case are all part of a useful distance reading.'
+    troubleshooting: ['每次读数都是“No echo”：检查 5 V 电源、共地以及 Trig/Echo 的接线。确认你的模块接受 3.3 V 触发信号。', '读数跳变或看起来不合理：对准传感器量程内平整坚硬的表面，两次测距之间留出间隔，并检查 Echo 分压电路的接线。'],
+    takeaway: '传感器测量的是往返时间。正确的计算、电压转换以及对回波丢失的处理，都是得到有效距离读数的必要环节。'
   },
   sound: {
-    interaction: 'Tap the piezo to change pitch, or drag to tune it.',
+    interaction: '点击压电片可改变音调，拖动可微调。',
     concepts: [
-      { title: 'Frequency is how often a wave repeats', text: 'A 440 Hz signal repeats 440 times per second. A small passive piezo flexes with this changing voltage and produces sound. Raising the frequency raises the pitch. Doubling it raises the pitch by one octave; it does not simply mean twice the volume.' },
-      { title: 'Choose the right sound component', text: 'A passive piezo needs a changing signal from the ESP32. An active buzzer has its own oscillator and often plays one built-in pitch when powered. A low-impedance speaker or high-current buzzer needs a driver; do not substitute one directly into this small-piezo circuit.' },
-      { title: 'Configure once, then choose a pitch', text: 'ledcAttach(PIEZO_PIN, 2000, 8) first creates a PWM output with an initial 2000 Hz setting and 8-bit resolution. The next call, ledcWriteTone(PIEZO_PIN, FREQUENCY_HZ), changes it to the selected tone frequency; it is not limited to 2000 Hz. The peripheral keeps that tone running while loop() waits. Passing zero to ledcWriteTone() stops it.' }
+      { title: '频率是波每秒重复的次数', text: '440 Hz 的信号每秒重复 440 次。小型无源压电片会随这种变化的电压弯曲振动并发声。提高频率会升高音调；频率翻倍使音调升高一个八度，并不只是音量翻倍。' },
+      { title: '选择合适的发声元件', text: '无源压电片需要 ESP32 提供变化的信号。有源蜂鸣器自带振荡器，通电后往往只发出一个固定音调。低阻抗扬声器或大电流蜂鸣器需要驱动电路；不要直接把它们替换到这个小功率压电片电路中。' },
+      { title: '先配置一次，再选择音调', text: 'ledcAttach(PIEZO_PIN, 2000, 8) 先创建一个 PWM 输出，初始设置为 2000 Hz、8 位分辨率。下一次调用 ledcWriteTone(PIEZO_PIN, FREQUENCY_HZ) 会把它改为所选的音调频率；频率并不局限于 2000 Hz。loop() 等待期间，外设持续输出该音调。向 ledcWriteTone() 传入零即可停止。' }
     ],
     experiment: {
-      prediction: 'How should 880 Hz sound compared with 440 Hz?',
-      action: 'Enable Sound in settings, start the simulation and tap or drag the piezo to change its pitch. Compare 440 Hz and 880 Hz with the slider. With sound off, follow the displayed frequency.',
-      observe: 'The higher frequency produces a higher pitch. The two test notes are one octave apart. Visual vibration is illustrative; it is slowed or simplified so you can see the response.',
-      why: 'Your ear interprets vibration frequency as pitch. The browser produces an audible demonstration, while the hardware sketch drives a passive piezo with LEDC. Both use frequency as the control variable.'
+      prediction: '880 Hz 听起来与 440 Hz 相比如何？',
+      action: '在设置中开启声音，启动仿真并点击或拖动压电片以改变音调。用滑块比较 440 Hz 与 880 Hz。关闭声音时，可观察显示的频率。',
+      observe: '频率越高，音调越高。两个测试音相差一个八度。可视化的振动仅为示意，被放慢或简化以便你观察响应。',
+      why: '耳朵把振动频率理解为音调。浏览器给出可听的演示，硬件示例则用 LEDC 驱动无源压电片。两者都以频率作为控制变量。'
     },
-    troubleshooting: ['The browser is silent: enable Sound and start the simulation with a click or tap, which allows browser audio to begin.', 'The real buzzer plays only one pitch: confirm that it is a passive piezo, check GPIO25 and GND, and verify that your chosen device is suitable for this drive circuit.'],
-    takeaway: 'Tone frequency controls pitch. Note duration controls rhythm. They are separate choices in your program.'
+    troubleshooting: ['浏览器没有声音：开启“声音”，并通过点击或触摸启动仿真，以允许浏览器开始播放音频。', '真实蜂鸣器只发一个音调：确认它是无源压电片，检查 GPIO25 和 GND，并确认你选用的器件适合该驱动电路。'],
+    takeaway: '音调频率控制音高，音符时长控制节奏。它们在程序中是相互独立的选择。'
   },
   piano: {
-    interaction: 'Hold a piano key to play it; release to stop the note.',
+    interaction: '按住琴键即演奏，松开即停止音符。',
     mapping: [
       { key: 'C4', gpio: 'GPIO13', index: 0, frequency: '262 Hz' },
       { key: 'D4', gpio: 'GPIO14', index: 1, frequency: '294 Hz' },
@@ -669,90 +669,90 @@ const learningNotes = {
       { key: 'C5', gpio: 'GPIO22', index: 7, frequency: '523 Hz' }
     ],
     concepts: [
-      { title: 'Arrays keep related values together', text: 'keys[] stores the eight GPIO numbers and notes[] stores their eight frequencies in matching order. Index zero selects the first key and 262 Hz; index seven selects the last key and 523 Hz. Changing the notes array changes the scale without rewriting the input logic.' },
-      { title: 'Scan inputs and make one choice', text: 'The for loop checks each INPUT_PULLUP button for LOW. When it finds one, it saves the corresponding frequency and breaks out of the loop. That gives earlier keys priority if several are held. This is a monophonic instrument: it plays one note at a time.' },
-      { title: 'Silence is also a state', text: 'Each pass starts with frequency = 0. If no button is pressed, that zero reaches ledcWriteTone() and stops the sound. Without an explicit released state, the last note could continue after the player lets go. The brief delay limits how often the loop repeats.' }
+      { title: '数组把相关的值放在一起', text: 'keys[] 按顺序存放八个 GPIO 编号，notes[] 存放对应的八个频率。索引 0 对应第一个琴键和 262 Hz；索引 7 对应最后一个琴键和 523 Hz。修改 notes 数组即可改变音阶，无需重写输入逻辑。' },
+      { title: '扫描输入并做出单一选择', text: 'for 循环逐个检查每个 INPUT_PULLUP 按钮是否为 LOW。一旦找到，就保存对应的频率并跳出循环。因此若同时按住多个键，靠前的键优先。这是单音乐器：一次只播放一个音符。' },
+      { title: '静音也是一种状态', text: '每一轮循环都以 frequency = 0 开始。如果没有按钮按下，这个零值传给 ledcWriteTone() 就会停止发声。若没有明确的“松开”状态，演奏者松手后前一个音符可能会持续。短暂的延时限制循环的重复频率。' }
     ],
     experiment: {
-      prediction: 'What must the program send to the piezo when you release the last pressed key?',
-      action: 'Enable Sound, run the simulation and hold individual 3D piano keys. Release between notes, then play the first C and the higher C at the other end. The panel keys are an alternative.',
-      observe: 'A held key selects its frequency, and releasing it stops the note. The upper C is approximately twice the frequency of the lower C, so they are an octave apart.',
-      why: 'A key does not contain its own tone generator. The program maps its input to a number in the frequency array, then gives that number to one piezo output. Returning to zero creates silence.'
+      prediction: '松开最后按住的琴键时，程序必须向压电片发送什么？',
+      action: '开启声音，运行仿真并逐个按住 3D 琴键。音符之间松开，然后弹奏第一个 C 和另一端更高的 C。面板上的琴键也可以用来操作。',
+      observe: '按住琴键会选择其频率，松开则停止音符。高音 C 的频率约为低音 C 的两倍，因此两者相差一个八度。',
+      why: '琴键本身并不包含发声器。程序把它的输入映射到频率数组中的某个数值，再把这个数值送给唯一的压电片输出。回到零即产生静音。'
     },
-    troubleshooting: ['A hardware note never stops: confirm the button becomes HIGH when released and that frequency is reset to zero on each loop.', 'The wrong key plays a note: check both arrays have the same order and that each button connects its assigned GPIO to GND, not to another input.'],
-    takeaway: 'A useful input interface needs clear press, hold and release behavior. Arrays and loops let the same logic scale to many buttons.'
+    troubleshooting: ['实物上的音符一直不停：确认按钮松开时变为 HIGH，且每轮循环都会把 frequency 重置为零。', '弹错了琴键：检查两个数组的顺序是否一致，以及每个按钮是否把分配的 GPIO 接到 GND，而不是接到其他输入。'],
+    takeaway: '好用的输入界面需要明确的按下、保持和松开行为。数组和循环让同一套逻辑可以扩展到许多按钮。'
   },
   motor: {
-    interaction: 'Drag the motor to adjust its drive duty cycle.',
+    interaction: '拖动电机可调整其驱动占空比。',
     concepts: [
-      { title: 'A GPIO gives instructions, not motor power', text: 'A MOSFET is a transistor used here as an electronic switch. Its gate (G) is the control input, drain (D) connects toward motor negative and source (S) toward ground. Read the exact package or breakout pinout rather than assuming a leg order. For the worked 3 V motor with stall current ≤300 mA, use a 2×AA holder, AO3400A G/D/S breakout and 1N5819 diode. The gate resistor is 100 Ω; the pull-down is 10 kΩ. The full connections are in the step guide.' },
-      { title: 'Inductance keeps current moving', text: 'The motor winding stores energy in a magnetic field. Switching off suddenly can create a large voltage spike. The flyback diode provides a path for that current, with its cathode toward motor positive. Shared ground gives the GPIO gate signal a meaningful voltage reference.' },
-      { title: 'Duty cycle controls average drive', text: 'At 20 kHz, LEDC switches the MOSFET thousands of times per second. DUTY stores the selected value; 128 out of 255 is about 50% on-time. ledcWrite() applies it and the peripheral maintains it. Real speed also depends on load, supply, friction and motor characteristics; duty percentage is not measured RPM.' }
+      { title: 'GPIO 给的是指令，不是电机电源', text: 'MOSFET 是一种在此用作电子开关的三极管。它的栅极（G）是控制输入，漏极（D）朝向电机负极，源极（S）朝向地。请以具体封装或转接板的引脚图为准，不要假定引脚顺序。对于堵转电流 ≤300 mA 的 3 V 示例电机，使用 2×AA 电池盒、AO3400A G/D/S 转接板和 1N5819 二极管。栅极电阻为 100 Ω，下拉电阻为 10 kΩ。完整接线见步骤指南。' },
+      { title: '电感让电流持续流动', text: '电机绕组把能量储存在磁场中。突然关断可能产生很大的电压尖峰。续流二极管为这股电流提供通路，其阴极朝向电机正极。共地为 GPIO 的栅极信号提供了有意义的电压参考。' },
+      { title: '占空比控制平均驱动', text: '在 20 kHz 下，LEDC 每秒把 MOSFET 开关数千次。DUTY 存放所选数值；255 中的 128 约为 50% 的通电时间。ledcWrite() 施加该值，外设负责维持。实际转速还取决于负载、电源、摩擦和电机特性；占空比百分比并不是实测的转速（RPM）。' }
     ],
     experiment: {
-      prediction: 'Will a real motor necessarily spin at exactly half its maximum speed when PWM duty is 50%?',
-      action: 'Start the simulation and drag the motor to change duty. Compare zero, a small duty and a high duty. Watch the direction stay the same while the illustrated speed changes.',
-      observe: 'The model slows or stops as duty falls and speeds up as duty rises. The control reports PWM duty, not a measured shaft speed. A real motor may need a minimum duty to overcome friction and start.',
-      why: 'PWM changes average electrical drive. It does not measure or guarantee speed. A tachometer or encoder and feedback controller are needed when a precise speed must be maintained under changing load.'
+      prediction: 'PWM 占空比为 50% 时，真实电机一定会以最大转速的一半旋转吗？',
+      action: '启动仿真并拖动电机改变占空比。比较零、较小占空比和高占空比。观察方向保持不变，而示意转速发生变化。',
+      observe: '占空比降低时，模型减速或停止；占空比升高时加速。控件显示的是 PWM 占空比，而不是实测的轴转速。真实电机可能需要一个最小占空比来克服摩擦并启动。',
+      why: 'PWM 改变的是平均电气驱动，它并不测量或保证转速。当需要在负载变化时保持精确转速时，需要转速计或编码器以及反馈控制器。'
     },
-    troubleshooting: ['The ESP32 resets when the motor starts: use a suitable separate motor supply, keep grounds joined, and check decoupling, wiring and stall-current requirements.', 'The motor or transistor gets hot: disconnect power and verify the MOSFET’s 3.3 V drive rating, diode orientation, motor load and component current ratings.'],
-    takeaway: 'Use the GPIO as a control signal, protect the switching circuit and distinguish requested drive from measured motion.'
+    troubleshooting: ['电机启动时 ESP32 复位：请使用合适的独立电机电源，保持共地，并检查去耦、接线和堵转电流要求。', '电机或三极管发热：断开电源，检查 MOSFET 的 3.3 V 驱动能力、二极管方向、电机负载以及元件的电流额定值。'],
+    takeaway: '把 GPIO 用作控制信号，保护开关电路，并区分请求的驱动与实际测得的运动。'
   },
   temperature: {
-    interaction: 'Drag the temperature sensor to explore warmer and cooler conditions.',
+    interaction: '拖动温度传感器，体验更暖和更冷的环境。',
     concepts: [
-      { title: 'A digital sensor does the conversion', text: 'The DHT22 measures temperature and relative humidity internally and sends encoded data on one line. GPIO27 reads that digital communication; it is not measuring an analog voltage proportional to temperature. The DHT library handles the timing details.' },
-      { title: 'Give the sensor time', text: 'The sketch waits at least two seconds between readings because a DHT22 is a slow environmental sensor. Polling faster does not create fresh information. A real sensor also takes time to reach the surrounding air temperature; changing the browser value is an accelerated illustration.' },
-      { title: 'Check a value before using it', text: 'readTemperature() returns degrees Celsius by default; readHumidity() returns relative humidity in percent. A failed measurement can return NaN. isnan() catches that case before printing or making a control decision, so an error is not mistaken for zero degrees.' }
+      { title: '数字传感器完成转换', text: 'DHT22 在内部测量温度和相对湿度，并通过一根线发送编码数据。GPIO27 读取的是这种数字通信，而不是测量与温度成比例的模拟电压。DHT 库负责处理时序细节。' },
+      { title: '给传感器留出时间', text: '两次读数之间示例至少等待两秒，因为 DHT22 是响应较慢的环境传感器。更快地轮询并不会产生新的信息。真实传感器还需要时间才能与环境空气温度一致；改变浏览器中的数值只是加速的示意。' },
+      { title: '使用前先检查数值', text: 'readTemperature() 默认返回摄氏温度；readHumidity() 返回百分比形式的相对湿度。测量失败可能返回 NaN。isnan() 会在打印或做出控制决策之前捕获这种情况，避免把错误误认为零度。' }
     ],
     experiment: {
-      prediction: 'If a sensor read fails, would “0 °C” be a safe substitute for the missing value?',
-      action: 'Run the simulation and drag the DHT22 to move between cooler and warmer conditions. Compare the temperature readout. Then examine the isnan() check in the example code.',
-      observe: 'The simulated temperature changes with the environment control. The hardware code has a separate “Sensor read failed” path instead of pretending every read succeeds.',
-      why: 'Measurements describe the world only when they are valid. Separating data from errors prevents a heater, alarm or display from reacting to a fabricated reading. Real changes and real sensor updates are slower than the guided demonstration.'
+      prediction: '如果传感器读取失败，用“0 °C”替代缺失的数值是否安全？',
+      action: '运行仿真并拖动 DHT22，在较冷与较暖的环境间切换。比较温度读数，然后查看示例代码中的 isnan() 检查。',
+      observe: '仿真温度随环境控件变化。硬件代码中有一条单独的“Sensor read failed”分支，而不是假装每次读取都成功。',
+      why: '只有有效的测量才能描述真实世界。把数据与错误区分开，可防止加热器、警报器或显示屏对虚构的读数作出反应。真实变化和真实传感器更新都比引导演示要慢。'
     },
-    troubleshooting: ['The real sketch repeatedly reports a failed read: verify the exact sensor pinout, DHT22 type, common ground and a data pull-up to 3V3.', 'Values do not update immediately: allow at least two seconds between requests and time for the sensor to adjust to its environment. Avoid warming it by touching the electronics.'],
-    takeaway: 'Useful sensing includes correct units, a suitable sampling interval and an explicit response to missing or invalid data.'
+    troubleshooting: ['真实草图反复报告读取失败：请核对传感器引脚排列、DHT22 型号、共地以及数据线到 3V3 的上拉电阻。', '数值不立即更新：两次请求之间至少间隔两秒，并给传感器时间适应环境。不要触摸电子部分以免使其升温。'],
+    takeaway: '有用的传感包括正确的单位、合适的采样间隔，以及对缺失或无效数据的明确处理。'
   },
   servo: {
-    interaction: 'Drag the servo horn to choose a target angle.',
+    interaction: '拖动舵机摇臂以选择目标角度。',
     concepts: [
-      { title: 'Ask for a position', text: 'A hobby servo contains a motor, gears, a position sensor and a controller. The ESP32 requests a target by sending pulses; the servo’s internal controller moves toward it. This is different from directly switching a bare DC motor, which has no built-in position control.' },
-      { title: 'Pulse width has a specific meaning', text: 'The example uses a 50 Hz frame, or one pulse every 20 ms, with configured widths from 1000 to 2000 µs. The library maps write(angle) into that pulse range. Unlike LED dimming, this signal communicates a position rather than directly setting average motor power.' },
-      { title: 'A target is not a measurement', text: 'The ESP32 sketch does not receive the servo’s actual angle. It only sends a requested position, and the physical angle depends on the servo and calibration. A separate supply handles movement current. Trying a conservative range protects against driving the mechanism into its stops.' }
+      { title: '请求一个位置', text: '航模舵机内含电机、齿轮、位置传感器和控制器。ESP32 通过发送脉冲来请求目标位置，舵机内部的控制器会朝该位置运动。这与直接开关一个裸直流电机不同，后者没有内置的位置控制。' },
+      { title: '脉冲宽度有特定含义', text: '示例使用 50 Hz 的帧，即每 20 ms 一个脉冲，配置脉宽为 1000 到 2000 µs。库会把 write(angle) 映射到该脉宽范围。与调节 LED 亮度不同，这个信号传达的是位置，而不是直接设置电机的平均功率。' },
+      { title: '目标不等于测量结果', text: 'ESP32 草图接收不到舵机的实际角度。它只发送所请求的位置，实际角度取决于舵机及其校准。运动电流由独立电源承担。先尝试保守的范围，可避免把机构顶到限位。' }
     ],
     experiment: {
-      prediction: 'If you ask for 90°, does the ESP32 automatically know that the horn actually reached 90°?',
-      action: 'Run the simulation and drag the servo horn from one target to another. Compare 20°, 90° and 160° with the target-angle control.',
-      observe: 'The illustrated horn follows the requested angle. The readout describes the target, not a sensor measurement sent back to the ESP32. A real servo may move more slowly or stop short under load.',
-      why: 'The servo closes its own internal position loop, but the three-wire interface used here does not send actual position back to your sketch. Mechanical calibration is still necessary for precise positioning.'
+      prediction: '如果请求 90°，ESP32 会自动知道摇臂真的到达了 90° 吗？',
+      action: '运行仿真，把舵机摇臂从一个目标拖到另一个目标。用目标角度控件比较 20°、90° 和 160°。',
+      observe: '示意摇臂会跟随请求的角度。读数描述的是目标，而不是回传给 ESP32 的传感器测量值。真实舵机在负载下可能移动更慢或达不到目标。',
+      why: '舵机会闭合自身的内部位置环，但这里使用的三线接口并不会把实际位置回传给草图。要实现精确定位，仍需机械校准。'
     },
-    troubleshooting: ['The board resets or the servo jitters: use a correctly rated external supply and a secure shared ground. A servo should not draw its movement current from a GPIO or the 3V3 rail.', 'The horn buzzes against a stop: remove power and reduce the angle or pulse-width range. Check the particular servo’s limits before expanding the sweep.'],
-    takeaway: 'Servo control sends a target through pulse width. Safe power and calibrated mechanical limits matter as much as the requested angle.'
+    troubleshooting: ['开发板复位或舵机抖动：请使用额定参数合适的外部电源，并确保共地可靠。舵机不应从 GPIO 或 3V3 供电轨获取运动电流。', '摇臂顶住限位嗡嗡作响：断开电源，减小角度或脉宽范围。扩大扫描范围前请查看该舵机的具体限位。'],
+    takeaway: '舵机控制通过脉宽发送目标。安全的电源和校准过的机械限位，与请求的角度同样重要。'
   },
   stepper: {
-    interaction: 'Tap the stepper to advance the target by 45°, or drag to choose it.',
+    interaction: '点击步进电机可把目标推进 45°，拖动则可直接选择。',
     concepts: [
-      { title: 'Rotate a magnetic pattern', text: 'The ULN2003 driver switches the motor’s coils in a sequence that pulls the rotor from one position to the next. The ESP32 supplies four control signals while an external supply provides coil power. The library’s 16, 18, 17, 19 order matches the sequence for this wiring.' },
-      { title: 'Turn steps into an angle', text: 'The 28BYJ-48’s gears reduce a fast internal rotation to a slower output. In this four-step example, 2048 steps approximate one output revolution, so about 512 make a quarter turn. Actual gear ratios vary. Half-step control would use a different number of steps per revolution.' },
-      { title: 'Count commands with care', text: 'TARGET_DEGREES becomes a step count that motor.step() executes once in setup(). This is a relative move from the current starting position. Every reset or upload runs setup() again, causing another move; the sketch has no home reference. The coils stay energized afterward. Without position feedback, the program cannot detect a stall or missed step.' }
+      { title: '旋转磁场', text: 'ULN2003 驱动器按顺序切换电机线圈，把转子从一个位置拉到下一个位置。ESP32 提供四路控制信号，外部电源为线圈供电。库中的 16、18、17、19 顺序与这种接法的相序一致。' },
+      { title: '把步数转换为角度', text: '28BYJ-48 的齿轮把内部的高速旋转减速为较慢的输出。在这个四拍示例中，2048 步约等于输出轴一圈，因此约 512 步为四分之一圈。实际减速比各有差异。半步控制的每圈步数则不同。' },
+      { title: '谨慎计步', text: 'TARGET_DEGREES 被转换为步数，由 motor.step() 在 setup() 中执行一次。这是相对当前起始位置的移动。每次复位或上传都会再次运行 setup()，从而再移动一次；草图没有原点参考。之后线圈保持通电。没有位置反馈，程序无法检测堵转或丢步。' }
     ],
     experiment: {
-      prediction: 'Using the example’s 2048-step model, approximately how many steps make a 90° turn?',
-      action: 'Run the simulation and tap the stepper to advance its target in 45° increments. Use dragging or the slider to compare a quarter turn, half turn and full turn.',
-      observe: 'The target angle progresses in a controlled direction. In the example’s model, 90° corresponds to about 512 steps and 180° to about 1024. The angle control changes a target, not a speed.',
-      why: 'The software translates desired rotation into a sequence of steps. Counting works only while the motor follows that sequence; a real mechanism needs sufficient torque and, when necessary, a home switch or position feedback.'
+      prediction: '按示例的 2048 步模型，转 90° 大约需要多少步？',
+      action: '运行仿真并点击步进电机，使目标以 45° 为步长推进。拖动或使用滑块比较四分之一圈、半圈和整圈。',
+      observe: '目标角度按受控方向推进。在示例模型中，90° 约对应 512 步，180° 约对应 1024 步。角度控件改变的是目标，而不是速度。',
+      why: '软件把期望的旋转转换为一系列步。只有在电机跟随该序列时，计步才有效；真实机构需要足够的扭矩，并在必要时配备原点开关或位置反馈。'
     },
-    troubleshooting: ['The motor vibrates without turning: verify IN1–IN4 wiring and the library’s 1-3-2-4 constructor order. Also check the motor and supply voltage match.', 'The final position drifts: reduce speed or load and check the real gearbox ratio. The sketch cannot detect missed steps by itself.'],
-    takeaway: 'Stepper positioning is a sequence of counted commands. It becomes reliable when the motor can follow them and the mechanism has a known reference.'
+    troubleshooting: ['电机只振动不转动：检查 IN1–IN4 的接线和库的 1-3-2-4 构造函数顺序。同时确认电机与电源电压匹配。', '最终位置有偏差：降低速度或负载，并核对实际减速比。草图本身无法检测丢步。'],
+    takeaway: '步进定位是一连串被计数的指令。只有当电机能跟随这些指令、且机构有已知参考点时，它才可靠。'
   },
   plant: {
-    interaction: 'Tap the soil or display to change the simulated moisture level.',
+    interaction: '点击土壤或显示屏可改变仿真的湿度水平。',
     snippets: [
       {
-        title: '1. Read the soil sensor without an OLED',
-        description: 'Upload this first and open Serial Monitor at 115200 baud. Record several stable readings in dry mix, then in watered, drained mix at the same probe depth. Use your two reference values as DRY and WET in the combined project. Keep the sensor electronics dry.',
-        code: `// No OLED or display libraries are needed for calibration.
+        title: '1. 不使用 OLED 读取土壤传感器',
+        description: '先上传这段程序，并打开 115200 波特率的串口监视器。在相同探头深度下，分别记录干燥培养土和浇透沥干培养土中的几个稳定读数。把这两个参考值作为综合项目中的 DRY 和 WET。保持传感器电子部分干燥。',
+        code: `// 校准不需要 OLED 或显示库。
 const int SOIL_PIN = 34;
 
 void setup() {
@@ -769,8 +769,8 @@ void loop() {
 }`
       },
       {
-        title: '2. Find the OLED’s I²C address',
-        description: 'Connect the OLED’s power, ground, SDA21 and SCL22, then upload this sketch. Open Serial Monitor at 115200 baud and press EN. With only the OLED on the I²C bus, use its reported address in display.begin(). An acknowledged address confirms communication, not that a different display chip is SSD1306-compatible.',
+        title: '2. 查找 OLED 的 I²C 地址',
+        description: '连接 OLED 的电源、地、SDA21 和 SCL22，然后上传这段程序。打开 115200 波特率的串口监视器并按 EN。当 I²C 总线上只有 OLED 时，把报告的地址用于 display.begin()。地址有应答只说明通信正常，并不代表不同的显示芯片兼容 SSD1306。',
         code: `#include <Wire.h>
 
 void setup() {
@@ -792,55 +792,55 @@ void setup() {
 }
 
 void loop() {
-  delay(1000); // Press EN to scan again.
+  delay(1000); // 按 EN 再次扫描。
 }`
       }
     ],
     concepts: [
-      { title: 'Calibrate before adding the display', text: 'Use the serial-only calibration sketch below before running the combined project. At the same insertion depth, record stable readings in dry potting mix and freshly watered, drained mix. Put those different values into DRY and WET. The example’s 3000 and 1300 are placeholders, not measurements of your probe. This separate sketch works even if the OLED is absent or fails to initialize.' },
-      { title: 'Map, constrain, decide', text: 'map(raw, DRY, WET, 0, 100) translates the two reference readings into a relative percentage. constrain() limits values outside that interval to 0–100. Below 30%, the example asks you to check the soil. This percentage is not an absolute measurement of water content or a universal watering rule.' },
-      { title: 'Address the screen, then send the picture', text: 'I²C means Inter-Integrated Circuit, a shared two-signal communication bus. SDA carries data on GPIO21; SCL carries its clock on GPIO22. 0x3C is a device address written in hexadecimal, not a pin number. The scanner below checks which address responds. clearDisplay(), setCursor() and print() draw into a memory buffer; display.display() sends that finished buffer to the OLED.' }
+      { title: '先校准，再接显示屏', text: '运行综合项目前，先用下面这段仅用串口的校准草图。在相同插入深度下，记录干燥培养土和刚浇透并沥干培养土中的稳定读数，把这些不同的数值填入 DRY 和 WET。示例中的 3000 和 1300 只是占位值，并不是你探头的实测值。即使 OLED 不存在或初始化失败，这段独立草图也能工作。' },
+      { title: '映射、约束、判断', text: 'map(raw, DRY, WET, 0, 100) 把两个参考读数转换为相对百分比。constrain() 把超出区间的值限制在 0–100。低于 30% 时，示例会提示你检查土壤。这个百分比既不是含水量的绝对测量值，也不是通用的浇水规则。' },
+      { title: '先寻址屏幕，再发送画面', text: 'I²C 即 Inter-Integrated Circuit，是一种共享的两线通信总线。SDA 在 GPIO21 上承载数据，SCL 在 GPIO22 上承载时钟。0x3C 是以十六进制表示的器件地址，不是引脚号。下面的扫描程序会检查哪个地址有应答。clearDisplay()、setCursor() 和 print() 把内容绘制到内存缓冲区，display.display() 再把完成的缓冲区发送到 OLED。' }
     ],
     experiment: {
-      prediction: 'With DRY = 3000 and WET = 1300, should a falling raw reading make the displayed moisture percentage rise or fall?',
-      action: 'Run the simulation and tap the soil or OLED to step through simulated moisture levels. Use the slider to compare 20%, 30% and 70%. This control changes a model value, not an instant physical watering process.',
-      observe: 'The relative percentage rises as the simulated soil gets wetter. Below 30% the reminder asks you to check the soil; at 30% and above the example’s message changes.',
-      why: 'The mapping reverses the numerical direction because the dry reference is greater than the wet reference. The message uses a simple threshold on that calibrated scale. Real watering decisions need the plant, soil and sensor placement to be considered together.'
+      prediction: '当 DRY = 3000、WET = 1300 时，原始读数下降会使显示的湿度百分比上升还是下降？',
+      action: '运行仿真并点击土壤或 OLED，逐步切换仿真湿度水平。用滑块比较 20%、30% 和 70%。此控件改变的是模型数值，而不是真实的即时浇水过程。',
+      observe: '仿真土壤越湿，相对百分比越高。低于 30% 时提醒你检查土壤；达到 30% 及以上时，示例的消息会改变。',
+      why: '因为干燥参考值大于湿润参考值，映射反转了数值方向。消息使用该校准标尺上的一个简单阈值。真实浇水决策需要综合考虑植物、土壤和传感器位置。'
     },
-    troubleshooting: ['The percentage is reversed or pinned at an endpoint: record actual raw dry/wet values, replace both constants and make sure DRY and WET are different.', 'The OLED stays blank: verify 3.3 V compatibility, SDA/SCL wiring, the I²C address and the final display.display() call. Keep the moisture probe’s electronics out of water.'],
-    takeaway: 'A meaningful dashboard starts with calibration, then converts the reading into a clearly labeled relative value and a useful decision.'
+    troubleshooting: ['百分比方向反了，或卡在某个端点：记录实际的干燥/湿润原始值，替换两个常量，并确保 DRY 与 WET 不相同。', 'OLED 一直空白：检查 3.3 V 兼容性、SDA/SCL 接线、I²C 地址以及最后的 display.display() 调用。别让湿度探头的电子部分沾水。'],
+    takeaway: '一个有意义的信息面板始于校准，然后把读数转换为标注清晰的相对值，并据此做出有用的决策。'
   },
   force: {
-    interaction: 'Hold the force pad to apply pressure; release to remove it.',
+    interaction: '按住压力垫施加压力，松开即移除。',
     concepts: [
-      { title: 'Pressure changes the current path', text: 'The FSR’s resistance falls when you press its sensing area. Connected above a 10 kΩ resistor in a divider, it pulls GPIO34 closer to 3.3 V as force increases. The ESP32 observes this voltage change, not mechanical force directly.' },
-      { title: 'Relative is not calibrated', text: 'An FSR is nonlinear and responds differently depending on contact area, mounting and previous loading. A raw ADC number cannot be labeled as newtons without a suitable calibration model. This lesson deliberately uses relative pressure and LED brightness to show the trend.' },
-      { title: 'Choose a useful response', text: 'The sketch maps the 12-bit input range to 8-bit PWM, so a higher reading creates a brighter LED. For a simple press detector, a threshold may be more useful than a continuous brightness value. Averaging several samples can reduce noise, at the cost of a slightly slower response.' }
+      { title: '压力改变电流通路', text: '按下 FSR 的感应区域时，其阻值下降。在分压电路中它位于 10 kΩ 电阻之上，随着压力增大，会把 GPIO34 拉向 3.3 V。ESP32 观察的是这一电压变化，而不是直接的机械力。' },
+      { title: '相对值不等于校准值', text: 'FSR 是非线性的，其响应会因接触面积、安装方式和先前受力情况而不同。没有合适的校准模型，原始 ADC 数值不能标注为牛顿。本课特意使用相对压力和 LED 亮度来展示变化趋势。' },
+      { title: '选择有用的响应方式', text: '示例把 12 位输入范围映射到 8 位 PWM，因此读数越高，LED 越亮。对于简单的按下检测，阈值可能比连续的亮度值更有用。对多个采样求平均可降低噪声，但响应会稍慢一些。' }
     ],
     experiment: {
-      prediction: 'When you release the pad, should the divider reading stay high or move back toward its unpressed level?',
-      action: 'Start the simulation and hold the 3D force pad, then release it. Drag while pressing or use the pressure control to explore different input levels.',
-      observe: 'Applying pressure raises the illustrated input and brightens the LED. Releasing the pad removes the simulated force and returns it toward zero. The values remain relative rather than a claim of measured newtons.',
-      why: 'Pressure lowers the upper divider resistance, raising the ADC voltage. Releasing reverses the process. The LED is an output representation of the input trend, not a calibrated force meter.'
+      prediction: '松开压力垫时，分压读数应保持高位，还是回到未按下时的水平？',
+      action: '启动仿真，按住 3D 压力垫后松开。可在按住时拖动，或用压力控件探索不同的输入水平。',
+      observe: '施加压力会提高示意输入值并使 LED 变亮。松开压力垫会移除仿真力，数值回到接近零。这些值始终是相对值，并非声称测得以牛顿为单位的力。',
+      why: '压力降低分压上臂电阻，使 ADC 电压升高。松开则过程相反。LED 是输入趋势的输出表示，并不是经过校准的测力计。'
     },
-    troubleshooting: ['The reading never changes: check that the FSR and 10 kΩ resistor form a divider with GPIO34 at their junction, rather than placing the input directly at a supply rail.', 'Readings vary between presses: use a consistent contact surface and mounting, then consider averaging. Keep force within the sensor’s rating.'],
-    takeaway: 'A sensor can be useful without pretending to be precise. Label relative measurements honestly and choose the response your application needs.'
+    troubleshooting: ['读数始终不变：检查 FSR 和 10 kΩ 电阻是否构成以 GPIO34 为节点的分压电路，而不是把输入直接接到电源轨上。', '每次按压的读数不同：使用一致的接触表面和安装方式，并考虑求平均。让力度保持在传感器额定范围内。'],
+    takeaway: '传感器不必假装精确也能发挥作用。如实标注相对测量值，并选择你的应用所需的响应方式。'
   },
   wifi: {
-    interaction: 'Tap the connected LED to send a virtual on/off request.',
+    interaction: '点击已连接的 LED，发送一个虚拟的开/关请求。',
     concepts: [
-      { title: 'The board can create the network', text: 'In station mode, a device joins an existing Wi-Fi network. This example instead uses access-point mode: WiFi.softAP("ESP32-Lab") creates a local network your phone can join. The ESP32 normally takes the local address 192.168.4.1. Internet access is not required.' },
-      { title: 'A request becomes an output', text: 'WebServer listens on HTTP port 80. A request for / displays the page; /on drives GPIO23 HIGH and /off drives it LOW. The page’s links send these requests. The browser does not directly change a pin: the ESP32’s request handler makes that electrical change.' },
-      { title: 'Keep the server responsive', text: 'server.handleClient() runs repeatedly inside loop() to process arriving requests. Long blocking delays would make the page slow to respond. The sample network is open for a local learning exercise; a second softAP() argument of at least eight characters adds a network password.' }
+      { title: '开发板也能创建网络', text: '在站点模式下，设备加入现有的 Wi-Fi 网络。本示例改用接入点模式：WiFi.softAP("ESP32-Lab") 创建一个你的手机可以加入的本地网络。ESP32 通常使用本地地址 192.168.4.1，无需互联网连接。' },
+      { title: '请求变为输出', text: 'WebServer 监听 HTTP 80 端口。请求 / 会显示页面；/on 把 GPIO23 置为 HIGH，/off 把它置为 LOW。页面上的链接会发送这些请求。浏览器并不直接改变引脚，而是由 ESP32 的请求处理函数完成电气变化。' },
+      { title: '让服务器保持响应', text: 'server.handleClient() 在 loop() 中反复运行，以处理到来的请求。长时间的阻塞延时会让页面响应变慢。示例网络是开放的，仅用于本地学习；给 softAP() 传入第二个至少 8 个字符的参数即可添加网络密码。' }
     ],
     experiment: {
-      prediction: 'Could a phone control this LED while the ESP32’s Wi-Fi network has no connection to the internet?',
-      action: 'Run the browser simulation and tap the LED or use its on/off control. To try the real network, upload the sketch, join ESP32-Lab from your phone and open http://192.168.4.1.',
-      observe: 'Each virtual request changes the demonstrated LED state. On a real board, the phone requests /on or /off from the ESP32 and the corresponding handler changes GPIO23. The website itself does not connect to your hardware.',
-      why: 'The entire exchange can stay on a local network: phone → HTTP request → ESP32 handler → GPIO output. The browser lesson illustrates that path; the uploaded sketch is what creates the actual access point and server.'
+      prediction: '如果 ESP32 的 Wi-Fi 网络没有连接互联网，手机还能控制这个 LED 吗？',
+      action: '运行浏览器仿真，点击 LED 或使用其开/关控件。要体验真实网络，请上传草图，用手机加入 ESP32-Lab 并打开 http://192.168.4.1。',
+      observe: '每次虚拟请求都会改变演示中的 LED 状态。在真实开发板上，手机向 ESP32 请求 /on 或 /off，相应的处理函数改变 GPIO23。本网站本身不会连接到你的硬件。',
+      why: '整个交互可以完全发生在本地网络内：手机 → HTTP 请求 → ESP32 处理函数 → GPIO 输出。浏览器课程演示了这条路径；真正创建接入点和服务器的是你上传的草图。'
     },
-    troubleshooting: ['The phone leaves ESP32-Lab automatically: choose to stay on the network even though it has no internet, then use the numeric local address.', 'The page does not load or respond: confirm the address printed by Serial, use http:// rather than https://, and keep server.handleClient() running without long blocking work.'],
-    takeaway: 'A connected project still follows the same pattern: input, decision, output. Here the input arrives as a network request instead of a physical button.'
+    troubleshooting: ['手机自动离开 ESP32-Lab：即使该网络没有互联网，也要选择保持连接，然后使用数字形式的本地地址。', '页面无法加载或没有响应：确认串口打印的地址，使用 http:// 而不是 https://，并让 server.handleClient() 持续运行，不要有长时间的阻塞任务。'],
+    takeaway: '联网项目依然遵循同样的模式：输入、判断、输出。这里的输入以网络请求的形式到来，而不是物理按钮。'
   }
 };
 for (const lesson of lessons) {
@@ -851,26 +851,26 @@ for (const lesson of lessons) {
 
 const part = (name, kicker, description, facts, tip) => ({ name, kicker, description, facts, tip });
 export const parts = {
-  module: part('ESP32-WROOM-32', 'THE BRAIN', 'Inside this shield are the ESP32 processor, flash memory and radio circuitry. Your program runs here and controls the pins around the board.', [spec('CPU', 'Dual-core Xtensa LX6'), spec('Clock', 'Up to 240 MHz'), spec('SRAM', '520 KB on-chip'), spec('Typical module flash', '4 MB')], 'This course uses the original ESP32. ESP32-C3, S3 and other family members have different capabilities and pinouts.'),
-  antenna: part('PCB antenna', 'THE WIRELESS CONNECTION', 'The patterned copper at the end of the module transmits and receives 2.4 GHz radio signals for Wi-Fi and Bluetooth.', [spec('Wi-Fi', '802.11 b/g/n, 2.4 GHz'), spec('Bluetooth', 'Classic + Bluetooth Low Energy')], 'Keep metal, wires and enclosures away from the antenna end when possible to improve radio performance.'),
-  usb: part('Micro-USB connector', 'POWER + PROGRAMMING', 'USB powers the development board and carries serial data through the USB-to-UART bridge. This original ESP32 module does not have native USB.', [spec('USB input', '5 V'), spec('Data path', 'USB-to-UART bridge'), spec('Typical bridge', 'CP2102 or CH340, varies by board')], 'A charge-only cable supplies power but cannot upload code. Use a cable that supports data.'),
-  regulator: part('3.3 V regulator', 'STEADY POWER', 'The regulator converts the board’s 5 V supply into the 3.3 V rail used by the ESP32 and suitable peripherals.', [spec('Board logic', '3.3 V'), spec('GPIO tolerance', 'Not 5 V tolerant')], 'Power-hungry motors and servos need an appropriate separate supply with a common ground.'),
-  en: part('EN / reset button', 'START AGAIN', 'Pressing EN pulls the enable line low and resets the processor. Your sketch starts again when you release it.', [spec('Signal', 'Chip enable / reset'), spec('Effect', 'Restarts setup()')], 'Resetting the board does not erase the uploaded program.'),
-  boot: part('BOOT button', 'UPLOAD MODE', 'BOOT connects GPIO0 to ground. Holding it during reset selects the serial download mode used to upload firmware.', [spec('Pin', 'GPIO0'), spec('Role', 'Boot-strapping input')], 'If uploading stays at “Connecting”, hold BOOT until the upload begins, then release it.'),
-  power: part('Power pins', 'SUPPLY + GROUND', '3V3 supplies the board’s regulated logic voltage. GND is the common electrical reference. VIN/5V labeling and power routing vary between DevKit clones.', [spec('Peripheral logic rail', '3.3 V'), spec('Ground', 'Shared by connected circuits')], 'Check your exact board schematic before using VIN or combining external power with USB. Never apply 5 V to a GPIO.'),
-  gpio: part('General-purpose I/O', 'THE CONNECTIONS', 'GPIO pins read inputs and control outputs. Some can also carry PWM, analog input, I²C, SPI or UART signals.', [spec('Logic', '0 V / 3.3 V'), spec('GPIO34–39', 'Input-only; no internal pull resistors'), spec('GPIO6–11', 'Used by module flash'), spec('ADC1', 'Suitable for analog reads alongside Wi-Fi')], 'Avoid boot-strapping pins for beginner circuits. GPIO16 and 17 are available on this WROOM board, but may be reserved on other modules.'),
-  led: part('LED + resistor', 'A VISIBLE OUTPUT', 'A light-emitting diode glows when current flows from its anode to its cathode. The series resistor keeps the current within a safe range.', [spec('Example pin', 'GPIO23'), spec('Series resistor', '330 Ω'), spec('Anode', 'Usually longer lead'), spec('Cathode', 'Usually shorter lead / flat edge')], 'The resistor may be placed on either side of the LED as long as it is in series.'),
-  button: part('Momentary push button', 'A DIGITAL INPUT', 'Pressing the button joins its switched contacts. With INPUT_PULLUP and a connection to ground, a press reads LOW.', [spec('Example input', 'GPIO18'), spec('Released', 'HIGH'), spec('Pressed', 'LOW')], 'Mechanical switches bounce. Add debouncing before using a button as a counter or toggle.'),
-  potentiometer: part('Potentiometer', 'AN ADJUSTABLE DIVIDER', 'A rotating wiper moves along a resistive track. With 3V3 and GND on the outer terminals, the center terminal provides an adjustable voltage.', [spec('Typical resistance', '10 kΩ'), spec('Wiper input', 'GPIO34 / ADC1'), spec('Read resolution', '12 bit')], 'Use 3.3 V, not 5 V, for the divider connected to the ESP32 ADC.'),
-  rgb: part('RGB LED', 'THREE COLORS, ONE PACKAGE', 'Separate red, green and blue emitters can be mixed using PWM. This example uses a common-cathode LED.', [spec('Outputs', 'GPIO25 / 26 / 27'), spec('Resistors', 'One per color'), spec('Common connection', 'GND')], 'Check the LED’s datasheet for pin order. A common-anode LED requires different wiring and inverted control.'),
-  ldr: part('Light-dependent resistor', 'LIGHT TO RESISTANCE', 'The resistance of an LDR falls as illumination increases. A fixed resistor turns that resistance change into a measurable voltage.', [spec('ADC', 'GPIO34'), spec('Divider resistor', '10 kΩ'), spec('Measurement', 'Relative light level')], 'Raw ADC values are not lux. Calibrate the switching threshold in the room where the circuit will be used.'),
-  distance: part('HC-SR04 distance sensor', 'LISTEN FOR THE ECHO', 'One transducer sends ultrasound; the other listens for its reflection. The time between them reveals the distance to an object.', [spec('Standard module supply', '5 V'), spec('Trig / Echo', 'GPIO23 / GPIO34'), spec('Echo divider', '2.2 kΩ + 3.3 kΩ')], 'A standard HC-SR04 outputs a 5 V Echo signal. Use the divider shown in this lesson before connecting it to the ESP32.'),
-  buzzer: part('Passive piezo', 'VOLTAGE INTO SOUND', 'A piezo element flexes as its voltage changes. Repeating that motion at an audible frequency produces a tone.', [spec('Output', 'GPIO25'), spec('Pitch', 'Set by frequency'), spec('Driver API', 'ledcWriteTone()')], 'A small passive piezo can use this circuit. A speaker or higher-current buzzer needs a suitable driver.'),
-  motor: part('DC motor + MOSFET', 'CONTROLLED MOTION', 'A transistor switches the motor’s external supply. The GPIO controls the transistor; it does not carry the motor current.', [spec('Control', 'GPIO25 PWM'), spec('Driver', '3.3 V logic-level N-MOSFET'), spec('Protection', 'Flyback diode')], 'Join the motor supply’s ground to ESP32 ground. Check the motor’s stall current when choosing the supply, transistor and diode.'),
-  temperature: part('DHT22 environmental sensor', 'READ THE ROOM', 'The DHT22 reports temperature and relative humidity over a digital data line. A library handles its timing-sensitive communication.', [spec('Data', 'GPIO27'), spec('Supply here', '3.3 V'), spec('Read interval', 'At least 2 seconds')], 'A bare sensor needs a pull-up on its data line. Many breakout modules already include one.'),
-  servo: part('Hobby servo', 'POSITION ON COMMAND', 'A servo contains a motor, gears and feedback electronics. A repeating control pulse tells it the desired position.', [spec('Signal', 'GPIO18'), spec('Pulse repetition', '50 Hz'), spec('Power', 'External regulated supply')], 'Do not force the horn or command beyond the mechanism’s limits. Actual angle ranges vary between servos.'),
-  stepper: part('28BYJ-48 + ULN2003', 'COUNT THE STEPS', 'The driver energizes motor coils in sequence. Gearing turns the small internal steps into slower output-shaft movement.', [spec('Inputs', 'GPIO16 / 17 / 18 / 19'), spec('Motor version', '5 V'), spec('Four-step revolution', 'Approximately 2048 steps')], 'The sketch counts requested steps; it cannot detect a stalled motor without extra feedback.'),
-  oled: part('SSD1306 OLED display', 'A SMALL WINDOW INTO YOUR CODE', 'This 128×64 display uses an I²C bus, so only two data wires are needed to draw text and simple graphics.', [spec('SDA', 'GPIO21'), spec('SCL', 'GPIO22'), spec('Common address', '0x3C'), spec('Supply here', '3.3 V-compatible module')], 'If the screen stays blank, verify its I²C address and call display.display() after drawing.'),
-  fsr: part('Force-sensing resistor', 'A SENSE OF TOUCH', 'Pressing the pad reduces its resistance. A voltage divider lets the ESP32 detect how strongly it is being pressed.', [spec('Input', 'GPIO34 / ADC1'), spec('Divider resistor', '10 kΩ'), spec('Output', 'Relative pressure')], 'The response is nonlinear and depends on contact area. Do not label an uncalibrated ADC value as a force in newtons.'),
-  wifi: part('Wi-Fi access point', 'YOUR BOARD, YOUR NETWORK', 'The ESP32 can create a local Wi-Fi network and serve a web page. A phone connected to that network can send requests to the board.', [spec('Network', 'ESP32-Lab'), spec('Default address', '192.168.4.1'), spec('Radio band', '2.4 GHz')], 'The browser lesson is a local scenario demonstration. Upload the sketch to a physical board to use the actual Wi-Fi network.')
+  module: part('ESP32-WROOM-32', '大脑', '这个屏蔽罩内是 ESP32 处理器、Flash 存储器和射频电路。你的程序在此运行，并控制开发板周围的引脚。', [spec('CPU', '双核 Xtensa LX6'), spec('时钟', '最高 240 MHz'), spec('SRAM', '片内 520 KB'), spec('典型模组 Flash', '4 MB')], '本课程使用原版 ESP32。ESP32-C3、S3 等其他家庭成员的能力和引脚排列有所不同。'),
+  antenna: part('PCB 天线', '无线连接', '模组末端的花纹铜箔负责收发用于 Wi-Fi 和 Bluetooth 的 2.4 GHz 无线电信号。', [spec('Wi-Fi', '802.11 b/g/n, 2.4 GHz'), spec('Bluetooth', 'Classic + Bluetooth Low Energy')], '尽量让金属、导线和外壳远离天线端，以改善无线性能。'),
+  usb: part('Micro-USB 接口', '供电 + 编程', 'USB 为开发板供电，并通过 USB 转 UART 桥接芯片传输串口数据。这款原版 ESP32 模组没有原生 USB。', [spec('USB 输入', '5 V'), spec('数据通路', 'USB 转 UART 桥接'), spec('典型桥接芯片', 'CP2102 或 CH340，因板而异')], '仅能充电的线缆只能供电，无法上传代码。请使用支持数据传输的线缆。'),
+  regulator: part('3.3 V 稳压器', '稳定供电', '稳压器把开发板的 5 V 电源转换为 ESP32 和合适外设所用的 3.3 V 供电轨。', [spec('板载逻辑', '3.3 V'), spec('GPIO 耐压', '不兼容 5 V')], '耗电较大的电机和舵机需要合适的独立电源，并共地。'),
+  en: part('EN / 复位按钮', '重新开始', '按下 EN 会把使能线拉低并复位处理器。松开后，你的草图会重新开始运行。', [spec('信号', '芯片使能 / 复位'), spec('效果', '重新运行 setup()')], '复位开发板不会擦除已上传的程序。'),
+  boot: part('BOOT 按钮', '上传模式', 'BOOT 把 GPIO0 接地。复位时按住它，可选择用于上传固件的串口下载模式。', [spec('引脚', 'GPIO0'), spec('作用', '启动配置输入')], '如果上传一直停留在“Connecting”，按住 BOOT 直到开始上传，再松开。'),
+  power: part('电源引脚', '电源 + 地', '3V3 提供开发板稳压后的逻辑电压。GND 是共同的电气参考点。不同 DevKit 克隆板的 VIN/5V 标注和电源走线各不相同。', [spec('外设逻辑供电轨', '3.3 V'), spec('地', '由所连接的电路共用')], '使用 VIN 或把外部电源与 USB 混用前，请查看你所用开发板的具体原理图。切勿向 GPIO 施加 5 V。'),
+  gpio: part('通用 I/O', '连接接口', 'GPIO 引脚读取输入并控制输出。部分引脚还可承载 PWM、模拟输入、I²C、SPI 或 UART 信号。', [spec('逻辑', '0 V / 3.3 V'), spec('GPIO34–39', '仅作输入；无内部上拉电阻'), spec('GPIO6–11', '由模组 Flash 占用'), spec('ADC1', '可在 Wi-Fi 运行时进行模拟读取')], '初学者电路应避开启动配置引脚。GPIO16 和 17 在这块 WROOM 板上可用，但在其他模组上可能被保留。'),
+  led: part('LED + 电阻', '看得见的输出', '当电流从阳极流向阴极时，发光二极管就会发光。串联电阻把电流限制在安全范围内。', [spec('示例引脚', 'GPIO23'), spec('串联电阻', '330 Ω'), spec('阳极', '通常引脚较长'), spec('阴极', '通常引脚较短 / 带平边')], '只要保持串联，电阻放在 LED 的任一侧都可以。'),
+  button: part('轻触按钮', '数字输入', '按下按钮会接通其开关触点。配合 INPUT_PULLUP 并接地，按下时读数为 LOW。', [spec('示例输入', 'GPIO18'), spec('松开', 'HIGH'), spec('按下', 'LOW')], '机械开关会抖动。把按钮用作计数器或切换开关前，需要加入消抖。'),
+  potentiometer: part('电位器', '可调分压器', '旋转的滑动端沿电阻轨道移动。外侧引脚接 3V3 和 GND 时，中间引脚提供可调电压。', [spec('典型阻值', '10 kΩ'), spec('滑动端输入', 'GPIO34 / ADC1'), spec('读取分辨率', '12 bit')], '连接 ESP32 ADC 的分压电路应使用 3.3 V，而不是 5 V。'),
+  rgb: part('RGB LED', '三色一体', '独立的红、绿、蓝发光单元可用 PWM 混合。本示例使用共阴极 LED。', [spec('输出', 'GPIO25 / 26 / 27'), spec('电阻', '每种颜色一个'), spec('公共端', 'GND')], '请查看 LED 数据手册确认引脚顺序。共阳极 LED 需要不同的接法和反向控制。'),
+  ldr: part('光敏电阻', '光变电阻', '光照增强时，LDR 的阻值下降。固定电阻把这一阻值变化转换为可测量的电压。', [spec('ADC', 'GPIO34'), spec('分压电阻', '10 kΩ'), spec('测量值', '相对光照强度')], '原始 ADC 值并不是勒克斯。请在使用电路的房间里校准开关阈值。'),
+  distance: part('HC-SR04 测距传感器', '聆听回波', '一个换能器发出超声波，另一个聆听反射回波。两者的时间差即可得出到物体的距离。', [spec('标准模块供电', '5 V'), spec('Trig / Echo', 'GPIO23 / GPIO34'), spec('Echo 分压', '2.2 kΩ + 3.3 kΩ')], '标准 HC-SR04 输出 5 V 的 Echo 信号。连接到 ESP32 之前，请使用本课所示的分压电路。'),
+  buzzer: part('无源压电片', '电压变声音', '压电片会随电压变化而弯曲。以可听频率重复这种运动就会产生音调。', [spec('输出', 'GPIO25'), spec('音调', '由频率决定'), spec('驱动 API', 'ledcWriteTone()')], '小型无源压电片可以使用这个电路。扬声器或大电流蜂鸣器需要合适的驱动器。'),
+  motor: part('直流电机 + MOSFET', '受控运动', '三极管切换电机的外部电源。GPIO 控制三极管，并不承载电机电流。', [spec('控制', 'GPIO25 PWM'), spec('驱动器', '3.3 V 逻辑电平 N 沟道 MOSFET'), spec('保护', '续流二极管')], '把电机电源的地与 ESP32 的地相连。选择电源、三极管和二极管时，请查看电机的堵转电流。'),
+  temperature: part('DHT22 环境传感器', '感知室内环境', 'DHT22 通过数字数据线报告温度和相对湿度。传感器库负责处理其对时序要求严格的通信。', [spec('数据', 'GPIO27'), spec('此处供电', '3.3 V'), spec('读取间隔', '至少 2 秒')], '裸露的传感器需要在数据线上加上拉电阻。许多转接模块已经内置。'),
+  servo: part('航模舵机', '按指令定位', '舵机内含电机、齿轮和反馈电路。重复的控制脉冲告诉它期望的位置。', [spec('信号', 'GPIO18'), spec('脉冲重复频率', '50 Hz'), spec('电源', '外部稳压电源')], '不要强行扳动摇臂，也不要指令超出机构的限位。不同舵机的实际角度范围各不相同。'),
+  stepper: part('28BYJ-48 + ULN2003', '计步', '驱动器按顺序给电机线圈通电。齿轮把内部的小步距转换为较慢的输出轴运动。', [spec('输入', 'GPIO16 / 17 / 18 / 19'), spec('电机版本', '5 V'), spec('四拍一圈', '约 2048 步')], '草图只统计请求的步数；没有额外反馈时，它无法检测电机堵转。'),
+  oled: part('SSD1306 OLED 显示屏', '代码的小窗口', '这块 128×64 显示屏使用 I²C 总线，因此绘制文字和简单图形只需两根数据线。', [spec('SDA', 'GPIO21'), spec('SCL', 'GPIO22'), spec('常见地址', '0x3C'), spec('此处供电', '兼容 3.3 V 的模块')], '如果屏幕一直空白，请核对其 I²C 地址，并在绘制后调用 display.display()。'),
+  fsr: part('力敏电阻', '触觉感知', '按压感应垫会使其阻值减小。分压电路让 ESP32 能检测被按压的强度。', [spec('输入', 'GPIO34 / ADC1'), spec('分压电阻', '10 kΩ'), spec('输出', '相对压力')], '其响应是非线性的，且取决于接触面积。不要把未经校准的 ADC 值标注为以牛顿为单位的力。'),
+  wifi: part('Wi-Fi 接入点', '你的开发板，你的网络', 'ESP32 可以创建本地 Wi-Fi 网络并提供网页。连接到该网络的手机可以向开发板发送请求。', [spec('网络', 'ESP32-Lab'), spec('默认地址', '192.168.4.1'), spec('射频频段', '2.4 GHz')], '浏览器课程只是本地场景演示。把草图上传到实物开发板，才能使用真实的 Wi-Fi 网络。')
 };

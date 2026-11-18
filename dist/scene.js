@@ -3,8 +3,8 @@ import * as THREE from './vendor/three.module.js';
 const C = { pcb:0x164d49, edge:0x0b3432, gold:0xd9b76a, silver:0xbfc8c6, dark:0x222c2b, white:0xe9eee7, teal:0x2aa58d, red:0xe9654c };
 const PINS_LEFT=['EN','VP','VN','34','35','32','33','25','26','27','14','12','13','GND','VIN'];
 const PINS_RIGHT=['23','22','TX0','RX0','21','19','18','5','TX2','RX2','4','2','15','GND','3V3'];
-// Approximate DOIT 30-pin dimensions, scaled from the 18 mm WROOM module.
-// One set of anchors keeps header geometry, silkscreen and circuit wires aligned.
+// 近似采用 DOIT 30 引脚开发板尺寸，由 18 mm 的 WROOM 模组按比例换算。
+// 使用同一组锚点，确保排针几何、丝印和电路导线对齐。
 const PCB_WIDTH=3.98, PCB_LENGTH=7.3, HEADER_X=1.8, HEADER_PITCH=.358, HEADER_Z0=-2.70;
 const headerZ=index=>HEADER_Z0+index*HEADER_PITCH;
 
@@ -16,7 +16,7 @@ export function createScene(container, callbacks = {}) {
   catch (error) {
     const fallback=document.createElement('div');
     fallback.style.cssText='height:100%;display:grid;place-content:center;text-align:center;padding:28px;color:#284944;font:14px/1.6 sans-serif';
-    fallback.innerHTML='<strong>Explore the ESP32</strong><span>The interactive board needs WebGL.<br>Try a recent version of Chrome, Edge, Firefox or Safari.<br>You can still read every lesson and use the pin guide.</span>';
+    fallback.innerHTML='<strong>探索 ESP32</strong><span>交互式开发板需要 WebGL。<br>请尝试使用较新版本的 Chrome、Edge、Firefox 或 Safari。<br>你仍然可以阅读所有课程并使用引脚指南。</span>';
     container.append(fallback); callbacks.onReady?.();
     return {setLesson:noop,setRunning:noop,setValue:noop,setPressed:noop,setLabels:noop,setFlow:noop,setBuildState:noop,setBuildRunning:noop,setBuildHighlight:noop,setBuildSelection:noop,setBuildConnections:noop,setBuildWirePending:noop,setBuildWireDraft:noop,cancelBuildGesture:noop,setBuildTool:noop,setBuildGhost:noop,setBuildZoom:noop,getBuildZoom:()=>1,projectBuildEndpoint:()=>null,setBuildInputs:noop,setBuildSimulation:noop,focusBuildTargets:()=>({resolved:[],unresolved:[]}),reset:noop,rotate:noop,zoom:noop,focus:({targets=[]}={})=>({resolved:[],unresolved:targets}),clearFocus:noop,dispose:()=>fallback.remove()};
   }
@@ -30,7 +30,7 @@ export function createScene(container, callbacks = {}) {
   renderer.domElement.style.cssText='display:block;width:100%;height:100%;touch-action:pan-y;outline:none;';
   if(buildMode)renderer.domElement.style.touchAction='none';
   renderer.domElement.tabIndex=0;
-  renderer.domElement.setAttribute('aria-label',buildMode?'Your assembled ESP32 circuit in 3D. Drag empty space left or right to rotate. Scroll or pinch to zoom. Select a contact, component or wire; use Top view for precise placement.':'Interactive ESP32 circuit. Drag empty space left or right to rotate. Scroll or pinch gently to zoom. Drag or press lesson devices to interact. Hold Shift while clicking a device to inspect it.');
+  renderer.domElement.setAttribute('aria-label',buildMode?'你组装的 ESP32 电路的 3D 视图。向左或向右拖动空白处可旋转，滚动或双指捏合可缩放。选择触点、元件或导线；可使用顶视图进行精确放置。':'交互式 ESP32 电路。向左或向右拖动空白处可旋转，滚动或双指捏合可缩放。拖动或按课程中的器件即可交互。按住 Shift 点击器件可对其进行查看。');
   container.append(renderer.domElement);
   if(getComputedStyle(container).position==='static')container.style.position='relative';
   const scene=new THREE.Scene();
@@ -79,14 +79,14 @@ export function createScene(container, callbacks = {}) {
   function print(w,d,t,p,pos,id){const m=new THREE.MeshBasicMaterial({map:t,transparent:true,side:THREE.DoubleSide,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-2});materials.add(m);const o=mesh(new THREE.PlaneGeometry(w,d),m,p,pos,id);o.rotation.x=-Math.PI/2;o.castShadow=false;return o;}
   function line(points,color,r=.02,parent=board,id){const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));return mesh(new THREE.TubeGeometry(curve,32,r,7,false),mat(color,{roughness:.7}),parent,null,id);}
   function label(id,text,pos,side='left'){
-    const b=document.createElement('button');b.type='button';b.textContent=text;b.setAttribute('aria-label','Inspect '+text);
+    const b=document.createElement('button');b.type='button';b.textContent=text;b.setAttribute('aria-label','查看 '+text);
     b.style.cssText=`position:absolute;pointer-events:auto;white-space:nowrap;transform:translate(-50%,-50%);border:1px solid #d4d9cf;background:rgba(252,253,247,.93);border-radius:6px;padding:7px 10px;color:#3d5a52;font:500 10px/1.1 'DM Sans',sans-serif;letter-spacing:.04em;box-shadow:0 3px 12px #19382f08;cursor:pointer;transition:opacity .2s;`;
     b.addEventListener('click',()=>callbacks.onInspect?.(id));for(const event of ['pointerenter','pointermove'])b.addEventListener(event,e=>callbacks.onHover?.(id,{x:e.clientX,y:e.clientY}));b.addEventListener('pointerleave',e=>callbacks.onHover?.(null,{x:e.clientX,y:e.clientY}));labelsEl.append(b);labels.push({id,el:b,pos:new THREE.Vector3(...pos),side});
   }
   const pcb=mat(C.pcb,{roughness:.7}), edge=mat(C.edge),gold=mat(C.gold,{metalness:.7,roughness:.48}),silver=mat(C.silver,{metalness:.68,roughness:.52}),black=mat(C.dark,{roughness:.65}),white=mat(C.white);
   rounded(PCB_WIDTH,PCB_LENGTH,.16,.16,pcb,board,[0,.03,0],'gpio');
   rounded(PCB_WIDTH+.02,PCB_LENGTH+.02,.035,.16,edge,board,[0,-.063,0]);
-  // Plated mounting holes are deliberately visible through their dark centers.
+  // 沉金安装孔特意透过深色孔心可见。
   for(const x of [-1.7,1.7])for(const z of [-3.34,3.34]){
     const ring=mesh(new THREE.TorusGeometry(.112,.027,8,28),gold,board,[x,.125,z]);ring.rotation.x=-Math.PI/2;
     cyl(.083,.011,black,board,[x,.128,z]);
@@ -106,13 +106,13 @@ export function createScene(container, callbacks = {}) {
     PINS_LEFT.forEach((p,i)=>{const yy=(headerZ(i)+3.56)/7.12*h+10;c.textAlign='left';c.fillText(p,94,yy);c.textAlign='right';c.fillText(PINS_RIGHT[i],w-94,yy);});
     c.textAlign='center';c.fillStyle='#b3cec2';c.font='700 38px monospace';c.fillText('ESP32',w/2,1395);c.font='24px monospace';c.fillText('DEVKIT V1 · 30 PIN',w/2,1445);
     c.font='22px monospace';c.fillText('EN',315,1790);c.fillText('BOOT',705,1790);
-    c.font='18px monospace';c.fillText('3.3V LOGIC',w/2,1992);
+    c.font='18px monospace';c.fillText('3.3V 逻辑',w/2,1992);
     c.strokeStyle='#5e8476';c.lineWidth=3;
     for(let i=0;i<7;i++){let yy=980+i*70;c.beginPath();c.moveTo(240,yy);c.lineTo(280+i*22,yy);c.lineTo(340+i*22,yy+60);c.lineTo(340+i*22,1630);c.stroke();}
   });print(3.85,7.12,silk,board,[0,.117,0]);
-  // ESP-WROOM-32 module, castellated pads, RF shield and etched antenna.
+  // ESP-WROOM-32 模组、半孔焊盘、射频屏蔽罩和蚀刻天线。
   rounded(2.54,3.45,.075,.05,mat(0x273e35),board,[0,.19,-1.55],'module');
-  // WROOM-32 has 38 castellated terminals: 14 per side and 10 on the bottom.
+  // WROOM-32 有 38 个半孔端子：每侧 14 个，底部 10 个。
   for(let i=0;i<14;i++)for(const side of [-1,1])box(.1,.065,.115,gold,board,[side*1.28,.21,-2.26+i*.18],'module');
   for(let i=0;i<10;i++)box(.115,.065,.1,gold,board,[-.81+i*.18,.21,.19],'module');
   rounded(2.43,2.47,.29,.06,silver,board,[0,.39,-1.13],'module');
@@ -121,21 +121,21 @@ export function createScene(container, callbacks = {}) {
     c.fillStyle='#495552';c.textAlign='center';c.font='600 76px sans-serif';c.fillText('ESP',w/2,235);
     c.strokeStyle='#495552';c.lineWidth=12;for(let i=0;i<3;i++){c.beginPath();c.arc(w/2,120,38+i*26,Math.PI*1.1,Math.PI*1.9);c.stroke();}
     c.font='500 67px monospace';c.fillText('ESP-WROOM-32',w/2,390);c.font='29px monospace';c.fillText('Wi-Fi + Bluetooth',w/2,455);
-    c.font='25px monospace';c.fillText('FCC ID: 2AC7Z-ESPWROOM32',w/2,550);c.fillText('2.4 GHz · DUAL CORE',w/2,598);
+    c.font='25px monospace';c.fillText('FCC ID: 2AC7Z-ESPWROOM32',w/2,550);c.fillText('2.4 GHz · 双核',w/2,598);
     c.font='600 54px sans-serif';c.fillText('CE   ◇   RoHS',w/2,760);
     c.strokeStyle='#6f7a70';c.lineWidth=1;for(let i=0;i<14;i++)for(let j=0;j<14;j++)if((i*31+j*17)%5<3)c.strokeRect(430+i*8,835+j*8,6,6);
   });print(2.14,2.14,shield,board,[0,.558,-1.13],'module');
   const antPoints=[[-1.04,.255,-2.65],[-1.04,.255,-3.05],[-.67,.255,-3.05],[-.67,.255,-2.7],[-.3,.255,-2.7],[-.3,.255,-3.05],[.07,.255,-3.05],[.07,.255,-2.7],[.44,.255,-2.7],[.44,.255,-3.05],[1.03,.255,-3.05]];
   line(antPoints,C.gold,.031,board,'antenna');box(2.3,.06,.67,mat(0x28392b,{transparent:true,opacity:.1}),board,[0,.22,-2.87],'antenna');
-  // USB-to-UART bridge and voltage regulation circuitry.
+  // USB 转 UART 桥接芯片与稳压电路。
   box(.74,.13,.74,black,board,[0,.22,1.51],'usb');
-  // CP2102 is a QFN28: seven short contacts along each of four package edges.
+  // CP2102 采用 QFN28 封装：四条封装边各有七个短触点。
   for(let i=0;i<7;i++)for(const side of [-1,1]){
     box(.07,.025,.05,silver,board,[side*.375,.165,1.21+i*.1],'usb');
     box(.05,.025,.07,silver,board,[-.3+i*.1,.165,1.51+side*.375],'usb');
   }
   print(.6,.52,texture(256,256,(c)=>{c.fillStyle='#9da6a0';c.textAlign='center';c.font='24px monospace';c.fillText('CP2102',128,100);c.font='17px monospace';c.fillText('USB / UART',128,145);}),board,[0,.291,1.51],'usb');
-  // SOT-223: three leads across its wide edge, with a narrower opposite tab.
+  // SOT-223：宽边一侧有三个引脚，对面是一个较窄的散热片。
   box(.85,.13,.47,black,board,[-.73,.2,2.42],'regulator');box(.42,.035,.23,silver,board,[-.73,.16,2.1],'regulator');
   for(let i=0;i<3;i++)box(.095,.035,.23,silver,board,[-1.01+i*.28,.16,2.75],'regulator');
   for(const [x,z,s] of [[.72,2.4,.2],[.71,1.82,.12],[-.76,1.4,.15],[.65,.55,.12],[-.76,.56,.14],[.36,2.55,.1],[.72,1.15,.15]]){
@@ -157,15 +157,15 @@ export function createScene(container, callbacks = {}) {
   }
   function rebuildLabels(){labels.forEach(l=>l.el.remove());labels=[];
     if(lesson==='board'){
-      label('antenna','2.4 GHz ANTENNA',[1.9,.5,-3.25],'right');
+      label('antenna','2.4 GHz 天线',[1.9,.5,-3.25],'right');
       label('module','ESP-WROOM-32',[-2.1,.5,-1.3],'left');
-      label('gpio','30 PIN HEADERS',[2.1,.2,.3],'right');
+      label('gpio','30 引脚排针',[2.1,.2,.3],'right');
       label('usb','MICRO USB',[-.1,.4,4.1],'bottom');
-      label('regulator','3.3V REGULATOR',[-2.15,.3,2.2],'left');
+      label('regulator','3.3V 稳压器',[-2.15,.3,2.2],'left');
     }else{
       label('module','ESP32',[-3.4,.5,-2.6],'left');
-      const names={blink:'LED + RESISTOR',button:'PUSH BUTTON',potentiometer:'POTENTIOMETER',rgb:'RGB LED',light:'PHOTORESISTOR',distance:'ULTRASONIC SENSOR',sound:'PIEZO BUZZER',piano:'TOUCH THE KEYS',motor:'DC MOTOR',temperature:'DHT22 SENSOR',servo:'SERVO MOTOR',stepper:'STEPPER MOTOR',plant:'SOIL + OLED',force:'FORCE SENSOR',wifi:'WI-FI + LED'};
-      label(({blink:'led',light:'ldr',sound:'buzzer',piano:'buzzer',plant:'oled'})[lesson]||lesson,names[lesson]||'CIRCUIT',[2.9,.5,-2.9],'right');
+      const names={blink:'LED + 电阻',button:'按键',potentiometer:'电位器',rgb:'RGB LED',light:'光敏电阻',distance:'超声波传感器',sound:'压电蜂鸣器',piano:'触摸琴键',motor:'直流电机',temperature:'DHT22 传感器',servo:'舵机',stepper:'步进电机',plant:'土壤湿度 + OLED',force:'力传感器',wifi:'Wi-Fi + LED'};
+      label(({blink:'led',light:'ldr',sound:'buzzer',piano:'buzzer',plant:'oled'})[lesson]||lesson,names[lesson]||'电路',[2.9,.5,-2.9],'right');
     }
   }
   function breadboard(){
@@ -174,8 +174,8 @@ export function createScene(container, callbacks = {}) {
     const t=texture(1024,1536,(c,w,h)=>{
       c.strokeStyle='#d76956';c.lineWidth=4;c.beginPath();c.moveTo(70,60);c.lineTo(70,h-60);c.moveTo(w-70,60);c.lineTo(w-70,h-60);c.stroke();
       c.strokeStyle='#6a929d';c.beginPath();c.moveTo(115,60);c.lineTo(115,h-60);c.moveTo(w-115,60);c.lineTo(w-115,h-60);c.stroke();
-      // A common 400-tie-point board: 30 rows of 10, plus four 25-hole rails.
-      // The e/f gap is centered on the molded channel at texture x=512.
+      // 常见的 400 孔面包板：30 行，每行 10 孔，另有四条 25 孔电源轨。
+      // e/f 之间的凹槽以纹理坐标 x=512 处的成型槽为中心。
       const columnX=col=>222+(col<5?col:col+1)*58, rowY=row=>100+row*45;
       c.fillStyle='#777e73';c.font='21px monospace';c.textAlign='center';['a','b','c','d','e','f','g','h','i','j'].forEach((v,i)=>c.fillText(v,columnX(i),48));
       for(let row=0;row<30;row++)for(let col=0;col<10;col++){const x=columnX(col),y=rowY(row);c.fillStyle='#c1c4b8';c.fillRect(x-9,y-10,18,20);c.fillStyle='#727d70';c.fillRect(x-5,y-7,10,13);}
@@ -188,7 +188,7 @@ export function createScene(container, callbacks = {}) {
   function led(x,z,id='led',color=0xe96249){
     const g=new THREE.Group();g.position.set(x,.13,z);circuit.add(g);
     const isRGB=id==='rgb', radius=isRGB?.32:.23;
-    // A common-cathode RGB package has four separate leads, unlike a plain LED.
+    // 共阴极 RGB 封装有四个独立引脚，与普通 LED 不同。
     for(const dx of isRGB?[-.27,-.09,.09,.27]:[-.11,.11])cyl(.025,.58,silver,g,[dx,.22,0],id,8);
     const m=mat(color,{transparent:true,opacity:.92,roughness:.65,emissive:color,emissiveIntensity:.07});
     cyl(radius,.31,m,g,[0,.65,0],id);mesh(new THREE.SphereGeometry(radius,24,16,0,Math.PI*2,0,Math.PI/2),m,g,[0,.805,0],id);cyl(radius+.04,.045,m,g,[0,.48,0],id);anim.led=m;anim.ledGroup=g;return g;
@@ -222,9 +222,9 @@ export function createScene(container, callbacks = {}) {
     for(let i=0;i<4;i++){const px=x-.45+i*.3;cyl(.065,.014,gold,circuit,[px,.322,z+.59],'oled',12);box(.045,.42,.045,gold,circuit,[px,.39,z+.59],'oled');}
     print(1.38,.15,texture(512,64,c=>{c.fillStyle='#d7e2db';c.textAlign='center';c.font='26px monospace';c.fillText('GND  VCC  SCL  SDA',256,42);}),circuit,[x,.322,z+.39],'oled');
   }
-  function updateOled(){if(!anim.oledTexture)return;const pct=Math.round(THREE.MathUtils.clamp(value,0,100)),key=running?String(pct):'off';if(anim.oledLast===key)return;anim.oledLast=key;const c=anim.oledTexture.image.getContext('2d');c.clearRect(0,0,512,256);if(running){c.fillStyle='#91dfcb';c.textAlign='center';c.font='25px monospace';c.fillText('SOIL MOISTURE',256,48);c.font='65px monospace';c.fillText(pct+'%',256,133);c.font='27px monospace';c.fillText(pct<30?'TIME TO WATER':'LOOKING GOOD',256,200);}anim.oledTexture.needsUpdate=true;}
-  // Builder coordinates follow the printed holes, so the preview uses the same
-  // connections as the editable top view and the circuit model.
+  function updateOled(){if(!anim.oledTexture)return;const pct=Math.round(THREE.MathUtils.clamp(value,0,100)),key=running?String(pct):'off';if(anim.oledLast===key)return;anim.oledLast=key;const c=anim.oledTexture.image.getContext('2d');c.clearRect(0,0,512,256);if(running){c.fillStyle='#91dfcb';c.textAlign='center';c.font='25px monospace';c.fillText('土壤湿度',256,48);c.font='65px monospace';c.fillText(pct+'%',256,133);c.font='27px monospace';c.fillText(pct<30?'该浇水了':'状态良好',256,200);}anim.oledTexture.needsUpdate=true;}
+  // 搭建器坐标依据丝印插孔，因此预览与可编辑的顶视图及电路模型使用相同的
+  // 连接关系。
   function buildEndpointPosition(endpoint){
     const id=String(endpoint),hole=/^bb:([a-j])([1-9]|[12]\d|30)$/.exec(id);
     if(hole){const col=hole[1].charCodeAt(0)-97,row=Number(hole[2])-1;return[.9+(222+(col<5?col:col+1)*58)/1024*4,.14,-2.85+(100+row*45)/1536*5.8];}
@@ -254,11 +254,11 @@ export function createScene(container, callbacks = {}) {
     }else if(kind==='led'){
       const g=led(x,z),oldLeads=g.children.slice(0,2);
       removeBuildChildren(g,oldLeads);
-      // Keep the LED body round while fitting both leads into their exact holes.
+      // 保持 LED 外壳为圆形，同时让两根引脚准确插入各自的插孔。
       for(const body of g.children){body.position.multiplyScalar(.65);body.scale.setScalar(.65);}
       g.position.y=.14;g.rotation.y=angle;
       for(const sx of [-span/2,span/2])line([[sx,0,0],[sx,.22,0],[Math.sign(sx)*.07,.31,0]],C.silver,.018,g,'led');
-      // The cathode-side flat is a physical polarity cue, visible on close-up.
+      // 阴极一侧的平面是物理极性标识，特写时可见。
       box(.025,.025,.17,mat(0xb64e39),g,[.155,.313,0],'led');
       buildPartMeshes(g,kind);return g;
     }else if(kind==='button'){
@@ -274,8 +274,8 @@ export function createScene(container, callbacks = {}) {
       const w=buildEndpointPosition(part.w);if(!w)return;
       const scale=span/.6,g=knob(x,z),oldLeads=g.children.slice(3,6);
       removeBuildChildren(g,oldLeads);
-      // The three terminals sit in front of the case; moving the body back
-      // leaves each silver lead visibly seated in its actual breadboard hole.
+      // 三个端子位于外壳前方；将主体后移，
+      // 让每根银色引脚清晰落入其实际面包板插孔。
       g.scale.setScalar(scale);g.rotation.y=angle;
       g.position.set(x-Math.sin(angle)*.69*scale,.14+.22*scale,z-Math.cos(angle)*.69*scale);g.updateMatrix();
       const inverse=g.matrix.clone().invert();
@@ -394,7 +394,7 @@ export function createScene(container, callbacks = {}) {
     breadboard();for(const kind of ['led','resistor','button','potentiometer'])buildComponent(kind,buildState.parts[kind]);
     for(const w of buildState.wires){if(!w||typeof w!=='object')continue;const a=buildEndpointPosition(w.from),b=buildEndpointPosition(w.to);if(!a||!b)continue;
       const color=/^#[\da-f]{6}$/i.test(w.color||'')?w.color:'#c67c4d',o=wire(a,b,color);o.userData.part='build-wire';o.userData.buildWire=w.id;meshes.push(o);
-      // Small sockets show that the jumper actually terminates at each contact.
+      // 小插座用于显示跳线确实端接在每个触点上。
       for(const p of [a,b])box(.065,.13,.065,black,circuit,[p[0],p[1]+.04,p[2]]);
     }
     labels.forEach(l=>l.el.remove());labels=[];refreshBuildWireMaterials();refreshBuildWireHandles();setBuildConnections(buildConnectionTargets);setBuildHighlight(buildHighlightTargets);if(!wireOnly||!frameBounds)captureBounds();resize();cameraAnimatingUntil=performance.now()+450;
@@ -431,8 +431,8 @@ export function createScene(container, callbacks = {}) {
     board.position.x=id==='board'?0:-2.25;
     if(id==='board'){rebuildLabels();captureBounds();resize();return;}
     breadboard();
-    // These board-side connections use the lesson's real GPIO locations. The
-    // breadboard layout is an illustration; the lesson wiring table is the reference.
+    // 这些开发板侧的连接使用课程中真实的 GPIO 位置。
+    // 面包板布局仅为示意；接线表才是参考依据。
     const pinPosition=(pin,preferRight=false)=>{const key=({16:'RX2',17:'TX2'})[pin]||String(pin),left=PINS_LEFT.indexOf(key),right=PINS_RIGHT.indexOf(key);if(right>=0&&(preferRight||left<0))return[board.position.x+HEADER_X,.25,headerZ(right)];if(left>=0)return[board.position.x-HEADER_X,.25,headerZ(left)];return[board.position.x+HEADER_X,.25,headerZ(13)];};
     const signalPins={blink:[23],button:[18,23],potentiometer:[34,23],rgb:[25,26,27],light:[34,23],distance:[23,34],sound:[25],piano:[25,13,14,16,17,18,19,21,22],motor:[25],temperature:[27],servo:[18],stepper:[16,17,18,19],plant:[34,21,22],force:[34,23],wifi:[23]}[id]||[];
     const wireColors=[0xd4ac58,0x68a19a,0x8a8bb0,0xd07964];
@@ -441,9 +441,9 @@ export function createScene(container, callbacks = {}) {
     wire(pinPosition('GND',true),[1.25,.13,2.35],0x3e5350);
     if(['potentiometer','light','temperature','plant','force'].includes(id))wire(pinPosition('3V3'),[1.25,.13,1.9],C.red);
     if(['motor','servo','stepper','distance'].includes(id)){
-      // Power for motion and the HC-SR04 comes from a separate supply, never 3V3.
+      // 运动部件和 HC-SR04 的电源来自独立电源，绝不取自 3V3。
       const supplyStart=circuit.children.length;rounded(1.25,.75,.45,.06,mat(0x4e5b58),circuit,[4.2,.3,3.6]);
-      print(1.1,.59,texture(384,192,c=>{c.fillStyle='#d7e0ce';c.textAlign='center';c.font='26px monospace';c.fillText(id==='motor'?'EXT. SUPPLY':'EXT. 5 V',192,78);c.font='23px monospace';c.fillText('+        −',192,135);}),circuit,[4.2,.537,3.6]);
+      print(1.1,.59,texture(384,192,c=>{c.fillStyle='#d7e0ce';c.textAlign='center';c.font='26px monospace';c.fillText(id==='motor'?'外接电源':'外接 5 V',192,78);c.font='23px monospace';c.fillText('+        −',192,135);}),circuit,[4.2,.537,3.6]);
       groupRecent(supplyStart,'component:supply');
       wire([3.9,.4,3.3],[1.25,.13,1.9],C.red);wire([4.5,.4,3.3],[1.25,.13,2.35],0x3e5350);
     }
@@ -457,7 +457,7 @@ export function createScene(container, callbacks = {}) {
         for(const dx of [-.18,.18])cyl(.02,.5,silver,circuit,[2.7+dx,.37,-.6],'ldr',8);
         print(.6,.6,texture(256,256,(c)=>{c.strokeStyle='#714b37';c.lineWidth=13;c.beginPath();for(let i=0;i<8;i++){let x=42+i*24;c.lineTo(x,i%2?60:195);}c.stroke();}),circuit,[2.7,.699,-.6],'ldr');led(3.4,1.15);resistor(1.9,.1,10000);resistor(2.1,1.9);break;}
       case 'distance':{
-        // The cans stand normal to an upright PCB and face the movable obstacle.
+        // 两个探头垂直于直立的 PCB，朝向可移动的障碍物。
         const sensor=new THREE.Group();sensor.position.set(2.9,.84,-.8);circuit.add(sensor);
         rounded(2.5,1.1,.09,.07,mat(0x2a7889),sensor,[0,0,0],'distance').rotation.x=Math.PI/2;
         const grille=texture(256,256,c=>{c.fillStyle='#465351';for(let y=30;y<230;y+=12)for(let x=30;x<230;x+=12)if(Math.hypot(x-128,y-128)<105){c.beginPath();c.arc(x,y,2.4,0,Math.PI*2);c.fill();}});
@@ -473,7 +473,7 @@ export function createScene(container, callbacks = {}) {
       case 'sound':buzzer(2.9,-.35);resistor(2.1,1.1,100);break;
       case 'piano':{buzzer(2.9,-1.55);resistor(1.9,-1.3,100);anim.keys=[];for(let i=0;i<8;i++){const k=rounded(.37,1.15,.15,.025,mat(0xf5f4eb),circuit,[1.48+i*.4,.28,.7],'buzzer');k.userData.note=i;anim.keys.push(k);const t=print(.24,.28,texture(128,128,c=>{c.fillStyle='#50685e';c.textAlign='center';c.font='56px monospace';c.fillText(['C','D','E','F','G','A','B','C'][i],64,84);}),circuit,[1.48+i*.4,.362,1],'buzzer');t.userData.note=i;t.userData.keyLabel=i;}break;}
       case 'motor':{
-        // AO3400A is a tiny SOT-23 MOSFET, mounted here on a labeled breakout.
+        // AO3400A 是一颗小型 SOT-23 MOSFET，此处安装在带丝印的转接板上。
         const driverStart=circuit.children.length;
         rounded(1,.95,.07,.05,mat(0x357364),circuit,[4,.22,1.3],'motor');
         box(.3,.12,.17,black,circuit,[4,.325,1.17],'motor');
@@ -490,8 +490,8 @@ export function createScene(container, callbacks = {}) {
         for(const side of [-1,1])line([[3.2+side*.21,.35,1.8],[3.2+side*.35,.35,1.8],[3.2+side*.42,.12,1.8]],C.silver,.02,circuit,'motor');
         groupRecent(diodeStart,'component:diode');
         const a=cyl(.44,1.18,silver,circuit,[2.8,.69,-.3],'motor');a.rotation.x=Math.PI/2;
-        // A bare brushed motor has a rear insulating cap and two electrical tabs;
-        // the small front fan simply makes its shaft rotation visible.
+        // 裸的有刷电机后端有绝缘盖和两个接线片；
+        // 前端的小风扇只是让转轴的旋转更容易看清。
         cyl(.43,.15,black,circuit,[2.8,.69,.36],'motor').rotation.x=Math.PI/2;
         for(const x of [2.58,3.02])box(.09,.13,.23,silver,circuit,[x,.69,.5],'motor');
         cyl(.065,.25,silver,circuit,[2.8,.69,-.95],'motor').rotation.x=Math.PI/2;
@@ -500,13 +500,13 @@ export function createScene(container, callbacks = {}) {
         for(let i=0;i<3;i++){const wing=box(.22,.93,.06,mat(C.teal),anim.rotor,[Math.sin(i*2.094)*.3,Math.cos(i*2.094)*.3,0],'motor');wing.rotation.z=-i*2.094;}break;}
       case 'temperature':{
         const housing=mat(0xe8e9df,{roughness:.88});rounded(1.03,1.35,.55,.09,housing,circuit,[2.9,.65,-.3],'temperature');
-        // The bare DHT22 has four leads and a slotted white vented enclosure.
+        // 裸 DHT22 有四根引脚和带槽的白色通风外壳。
         for(let i=0;i<4;i++){const x=2.58+i*.21;line([[x,.5,.34],[x,.5,.59],[x,.43,.7],[x,.12,.78]],C.silver,.026,circuit,'temperature');}
         for(let row=0;row<7;row++)for(const side of [-1,1])rounded(.32,.055,.012,.02,mat(0x6f817a,{roughness:.9}),circuit,[2.9+side*.23,.934,-.82+row*.15],'temperature');
         for(const x of [2.38,3.42])for(let row=0;row<5;row++)box(.012,.22,.055,mat(0x8d9990),circuit,[x,.66,-.7+row*.2],'temperature');
         print(.72,.2,texture(384,128,c=>{c.fillStyle='#5b6a62';c.font='37px monospace';c.textAlign='center';c.fillText('DHT22',192,80);}),circuit,[2.9,.94,.24],'temperature');resistor(1.9,1.2,10000);break;}
       case 'servo':{
-        // SG90-style 23 × 12.2 × 29 mm envelope, including its raised output.
+        // 采用 SG90 风格的 23 × 12.2 × 29 mm 外形，包含凸出的输出轴。
         const servoBlue=mat(0x46778e,{roughness:.77});
         rounded(.93,1.75,1.5,.08,servoBlue,circuit,[2.9,.96,.1],'servo');
         rounded(.87,1.3,.2,.07,servoBlue,circuit,[2.9,1.8,-.06],'servo');
@@ -520,7 +520,7 @@ export function createScene(container, callbacks = {}) {
       case 'stepper':{
         const driverStart=circuit.children.length;
         rounded(1.65,1.55,.1,.04,mat(0x477857),circuit,[2.9,.2,1.9],'stepper');box(.4,.16,1.02,black,circuit,[2.82,.33,1.9],'stepper');
-        // ULN2003 DIP16, four logic inputs, supply pair and a five-position socket.
+        // ULN2003 为 DIP16 封装，有四个逻辑输入、一对电源端和一个五针插座。
         for(let i=0;i<8;i++)for(const side of [-1,1])box(.16,.045,.052,silver,circuit,[2.82+side*.27,.272,1.48+i*.12],'stepper');
         box(.14,.13,1.13,black,circuit,[2.25,.32,1.9],'stepper');
         for(let i=0;i<4;i++)box(.045,.37,.045,gold,circuit,[2.25,.35,1.48+i*.28],'stepper');
@@ -531,7 +531,7 @@ export function createScene(container, callbacks = {}) {
         cyl(.8,.9,silver,circuit,[2.9,.62,0],'stepper');
         rounded(2.1,.35,.1,.13,silver,circuit,[2.9,.25,0],'stepper');for(const x of [1.98,3.82])cyl(.075,.012,black,circuit,[x,.308,0],'stepper',16);
         rounded(.63,.35,.55,.04,mat(0x376c89),circuit,[2.9,.51,.72],'stepper');
-        // The reduction gear's output shaft is offset from the motor can center.
+        // 减速齿轮的输出轴与电机外壳中心错开。
         cyl(.22,.065,silver,circuit,[2.9,1.105,-.31],'stepper');cyl(.12,.35,gold,circuit,[2.9,1.29,-.31],'stepper');
         anim.stepper=new THREE.Group();anim.stepper.position.set(2.9,1.49,-.31);circuit.add(anim.stepper);rounded(.2,1.3,.08,.05,mat(C.teal),anim.stepper,[0,0,.45],'stepper');
         const motorWires=[0x477cab,0xc585a3,0xd5b94b,0xd48d45,0xbf5d50];
@@ -539,7 +539,7 @@ export function createScene(container, callbacks = {}) {
       case 'plant':{
         plant(3.2,-1.05);oled(2.85,1.7);
         const probeStart=circuit.children.length, probePCB=mat(0x39745a);
-        // A capacitive probe is a broad PCB blade with its electronics above soil.
+        // 电容式探头是一片较宽的 PCB，电子部分位于土壤之上。
         rounded(.43,1.25,.055,.08,probePCB,circuit,[3.51,.8,-1.03],'oled').rotation.x=Math.PI/2;
         rounded(.6,.57,.055,.04,probePCB,circuit,[3.51,1.49,-1.03],'oled').rotation.x=Math.PI/2;
         for(const dx of [-.12,.12])box(.025,.8,.008,gold,circuit,[3.51+dx,.72,-.996],'oled');
@@ -547,8 +547,8 @@ export function createScene(container, callbacks = {}) {
         box(.43,.2,.2,white,circuit,[3.51,1.68,-.94],'oled');for(let i=0;i<3;i++)box(.038,.065,.1,gold,circuit,[3.39+i*.12,1.68,-.81],'oled');
         for(const [i,color] of [0x3d4d47,0xc85848,0xd4ac58].entries())line([[3.39+i*.12,1.68,-.8],[3.81+i*.1,1.48,-.44],[4.02+i*.11,.16,.15]],color,.025,circuit,'oled');
         const probeAssembly=groupRecent(probeStart,'component:soil');
-        // Present its broad face at the near/right rim, clear of the foliage.
-        // Rotate the connected assembly around its soil-entry point.
+        // 将其宽面朝向右前方边缘，避开枝叶。
+        // 让相连组件绕其入土点旋转。
         const probePivot=new THREE.Vector3(3.51,.76,-1.03);
         for(const child of probeAssembly.children)child.position.sub(probePivot);
         probeAssembly.position.set(3.42,.76,-.83);probeAssembly.rotation.y=.7;
@@ -564,19 +564,19 @@ export function createScene(container, callbacks = {}) {
   function isChildOf(obj,parent){let o=obj;while(o){if(o===parent)return true;o=o.parent;}return false;}
   function captureBounds(){
     board.updateMatrixWorld(true);circuit.updateMatrixWorld(true);
-    // Final model coordinates form a conservative envelope. Transform its corners
-    // into camera space on every yaw update; framing therefore cannot lose an edge.
+    // 最终模型坐标构成一个保守包围盒。每次更新偏航角时将其角点
+    // 变换到相机空间，因此取景不会丢失任何边缘。
     frameBounds=new THREE.Box3();
     for(const parent of [board,circuit])parent.traverse(o=>{if(!o.isMesh)return;o.geometry.computeBoundingBox();const local=o.geometry.boundingBox.clone();const relative=new THREE.Matrix4().copy(world.matrixWorld).invert().multiply(o.matrixWorld);local.applyMatrix4(relative);frameBounds.union(local);});
     frameBounds.expandByScalar(.3);
-    // Reserve jumper height up front so adding a wire never reframes the workbench.
+    // 预先留出跳线高度，使添加导线不会重新调整工作台取景。
     if(buildMode)frameBounds.max.y=Math.max(frameBounds.max.y,1.6);
-    // Interactive obstacles may move after the static layout was captured.
+    // 可交互的障碍物可能在静态布局捕获之后移动。
     if(lesson==='distance')frameBounds.max.z=Math.max(frameBounds.max.z,3.05);
   }
   function frameCamera(){
-    // The grabbed contact must stay under the pointer while the opening/focus
-    // animation is still settling. Resume its existing tween after the drop.
+    // 在开场/聚焦动画尚未稳定时，被抓住的触点必须保持在指针下方。
+    // 松开后恢复其原有的补间动画。
     if(!frameBounds||buildDragLocksView())return;
     const bounds=focusState?.bounds||frameBounds;
     const yawMatrix=new THREE.Matrix4().makeRotationY(rotation), aspect=viewWidth/viewHeight;
@@ -589,7 +589,7 @@ export function createScene(container, callbacks = {}) {
       framePoint.set(x,y,z).applyMatrix4(yawMatrix).applyMatrix4(camera.matrixWorldInverse);
       minX=Math.min(minX,framePoint.x);maxX=Math.max(maxX,framePoint.x);minY=Math.min(minY,framePoint.y);maxY=Math.max(maxY,framePoint.y);
     }
-    // Default fit includes padding; Build can deliberately zoom in past that fit.
+    // 默认取景包含留白；Build 模式可以故意放大到超出该取景范围。
     const needed=Math.max(Math.abs(minY),Math.abs(maxY),Math.abs(minX)/aspect,Math.abs(maxX)/aspect)*2*1.18/zoomLevel;
     fittedHeight=fittedHeight?Math.max(needed,fittedHeight+(needed-fittedHeight)*.18):needed;const height=fittedHeight;
     camera.left=-height*aspect/2;camera.right=height*aspect/2;camera.top=height/2;camera.bottom=-height/2;camera.updateProjectionMatrix();
@@ -627,7 +627,7 @@ export function createScene(container, callbacks = {}) {
     for(const parent of objects)parent.traverse(o=>{if(!o.isMesh)return;o.geometry.computeBoundingBox();bounds.union(o.geometry.boundingBox.clone().applyMatrix4(new THREE.Matrix4().copy(inverse).multiply(o.matrixWorld)));});
     return bounds;
   }
-  function focusName(token){const[kind,id,qualifier]=token.split(':');if(id==='resistor'&&qualifier)return qualifier.endsWith('k')?qualifier.slice(0,-1)+' kΩ':qualifier+' Ω';if(kind==='pin')return /^\d+$/.test(id)?'GPIO '+id:id;return({usb:'USB CONNECTOR',module:'ESP-WROOM-32',antenna:'2.4 GHz ANTENNA',regulator:'3.3 V REGULATOR',en:'RESET / EN',boot:'BOOT',temperature:'DHT22',soil:'MOISTURE PROBE',driver:lesson==='stepper'?'ULN2003 DRIVER':'MOSFET DRIVER',supply:'EXTERNAL SUPPLY',ldr:'LIGHT SENSOR',fsr:'FORCE SENSOR',oled:'OLED DISPLAY'})[id]||id.toUpperCase();}
+  function focusName(token){const[kind,id,qualifier]=token.split(':');if(id==='resistor'&&qualifier)return qualifier.endsWith('k')?qualifier.slice(0,-1)+' kΩ':qualifier+' Ω';if(kind==='pin')return /^\d+$/.test(id)?'GPIO '+id:id;return({usb:'USB 接口',module:'ESP-WROOM-32',antenna:'2.4 GHz 天线',regulator:'3.3 V 稳压器',en:'复位 / EN',boot:'BOOT',temperature:'DHT22',soil:'湿度探头',driver:lesson==='stepper'?'ULN2003 驱动器':'MOSFET 驱动器',supply:'外接电源',ldr:'光线传感器',fsr:'力传感器',oled:'OLED 显示屏'})[id]||id.toUpperCase();}
   function removeFocusVisuals(){
     for(const o of [...focusLayer.children]){o.traverse(n=>{n.geometry?.dispose();if(n.material)for(const m of(Array.isArray(n.material)?n.material:[n.material]))m.dispose();});focusLayer.remove(o);}
     focusLabels.replaceChildren();
@@ -641,8 +641,8 @@ export function createScene(container, callbacks = {}) {
   }
   function focus({targets=[],view='connection'}={}){
     cancelGesture(true);
-    // A deliberate guide selection settles an in-flight lesson switch first, so
-    // target resolution can never accidentally refer to the outgoing lesson.
+    // 主动选择引导项时，会先结束正在进行的课程切换，
+    // 从而避免目标解析误指向即将离开的课程。
     if(transition){transition=null;board.position.y=0;externalSetup(lesson);container.dataset.transitioning='false';}
     const prior=focusState?.prior||{yaw:targetRotation,zoom:zoomLevel};removeFocusVisuals();
     const resolved=[],unresolved=[],entries=[];
@@ -685,8 +685,8 @@ export function createScene(container, callbacks = {}) {
       const ax=(temp.x*.5+.5)*viewWidth,ay=(-temp.y*.5+.5)*viewHeight,w=u.label.offsetWidth||90,h=u.label.offsetHeight||24;
       const minX=Math.min(w/2+8,viewWidth/2),maxX=Math.max(viewWidth/2,viewWidth-w/2-8),maxY=Math.max(h+8,viewHeight-30);
       let best=null,bestScore=Infinity;
-      // Search nearby annotation lanes instead of pushing labels into a stack
-      // against the bottom edge on narrow screens.
+      // 在附近的标注通道中搜索位置，而不是在窄屏上
+      // 把标签堆叠到底部边缘。
       for(const dy of [-24,-54,32,-84,62,-114,92])for(const dx of [0,-60,60,-110,110]){
         const x=THREE.MathUtils.clamp(ax+dx,minX,maxX),y=THREE.MathUtils.clamp(ay+dy,h+8,maxY);
         let overlaps=0;for(const p of placed)if(Math.abs(x-p.x)<(w+p.w)/2+7&&y-h<p.y+6&&y>p.y-p.h-6)overlaps++;
@@ -808,7 +808,7 @@ export function createScene(container, callbacks = {}) {
       }
       releaseAction();pointerDown=null;
     }
-    // A remaining finger after a pinch starts a fresh orbit, never a component click.
+    // 双指缩放后剩下的一根手指会开始新的旋转，而不会点击元件。
     if(pointers.size===1){const[id,p]=[...pointers.entries()][0];pointerDown={id,x:p.x,y:p.y,startX:p.x,startY:p.y,moved:true,hit:null};}
     renderer.domElement.style.cursor='grab';
   }
@@ -828,7 +828,7 @@ export function createScene(container, callbacks = {}) {
     if(!animate||reducedMotion.matches){transition=null;container.dataset.transitioning='false';return;}
     const parts=circuit.children.map((node,i)=>({node,position:node.position.clone(),scale:node.scale.clone(),rotation:node.rotation.clone(),delay:node.userData.wire?.4+Math.min(.18,i*.003):Math.min(.17,i*.003),lift:node.userData.wire?0:.6+(i%5)*.05,drawCount:node.userData.wire?node.geometry.index.count:0}));
     transition={phase:'in',start:performance.now(),duration:590,parts,fromX:oldX,toX:id==='board'?0:-2.25};
-    // Keep both endpoints of the retained board's move inside the camera envelope.
+    // 让保留的开发板移动过程的两个端点都处于相机取景范围内。
     frameBounds.expandByPoint(new THREE.Vector3(oldX-2,.9,-4));frameBounds.expandByPoint(new THREE.Vector3(oldX+2,-.6,4));
     board.position.x=oldX;board.position.y=.14;
     for(const p of parts){p.node.position.y+=p.lift;p.node.scale.copy(p.scale).multiplyScalar(.12);if(p.drawCount)p.node.geometry.setDrawRange(0,0);}
@@ -866,7 +866,7 @@ export function createScene(container, callbacks = {}) {
     const normalized=THREE.MathUtils.clamp(value/100,0,1);let brightness=0;
     if(running&&!transition){
       brightness=buildMode?(buildSimulation?.valid===false?0:buildState.project==='blink'?(Math.floor(elapsed*1000/buildState.interval)%2===0?1:0):THREE.MathUtils.clamp(Number(buildSimulation?.ledBrightness)||0,0,1)):lesson==='blink'?(Math.floor(elapsed*1000/(100+normalized*1400))%2===0?1:0):['button','wifi'].includes(lesson)?(pressed?1:0):lesson==='light'?(normalized<1200/4095?1:0):['force','potentiometer'].includes(lesson)?normalized:1;
-      // External lesson LEDs do not imply that a particular built-in LED exists.
+      // 课程中的外接 LED 并不意味着某个板载 LED 一定存在。
       onboardLED.emissiveIntensity=.08;
       if(anim.rotor)anim.rotor.rotation.z+=dt*normalized*30;
       if(anim.stepper)anim.stepper.rotation.y=normalized*Math.PI*2;
