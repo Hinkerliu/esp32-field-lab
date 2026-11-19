@@ -143,7 +143,7 @@ const assert=require('node:assert/strict');
   test('the fixed Blink task excludes additional GPIO branches on its active path',()=>{
     for(const pin of ['pin:1','pin:34']){
       const s=valid();s.wires.push(wire('extra',pin,'bb:b9'));const result=verdict(s,'extra_gpio');
-      assert.match(result.message,/other GPIO states are not modeled/);
+      assert.match(result.message,/不模拟其他 GPIO 状态/);
     }
     const isolated=valid();isolated.wires.push(wire('extra','pin:34','bb:a20'));verdict(isolated,'complete');
   });
@@ -536,7 +536,7 @@ const assert=require('node:assert/strict');
     const [move,connect]=plan.operations;assert.equal(move.kind,'moveWire');assert.equal(move.wireId,'signal');assert.equal(move.end,'to');
     assert.equal(move.from,'pin:23');assert.equal(move.to,'bb:d7');assert.equal(move.target,'bb:d7');assert.ok(move.targets.includes('bb:b5'));
     assert.equal(connect.kind,'connect');assert.equal(M.netOf(connect.from),'strip:L:10');assert.equal(M.netOf(connect.to),'strip:L:5');
-    assert.match(move.title,/B5.*D7/);assert.match(connect.why,/long \(\+\) lead/);
+    assert.match(move.title,/B5.*D7/);assert.match(connect.why,/长引脚 \(\+\)/);
     assert.equal(JSON.stringify(s),before);const repaired=applyRepair(s,plan);verdict(repaired,'complete');
     assert.equal(repaired.wires[0].id,s.wires[0].id);assert.equal(repaired.wires[0].color,s.wires[0].color);
   });

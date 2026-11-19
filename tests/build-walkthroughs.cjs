@@ -52,8 +52,8 @@ const assert=require('node:assert/strict');
   test('a valid resistor after the LED is explained without requesting a rewire',()=>{
     const state=afterLed();assert.equal(M.validateCircuit(state).ok,true);
     const steps=getWalkthrough(state),source=steps.find(s=>s.id==='indicator-source'),junction=steps.find(s=>s.id==='indicator-junction');
-    assert.equal(source.complete,true);assert.equal(source.action,null);assert.match(source.why,/ground side/);
-    assert.match(junction.title,/cathode/);assert.equal(junction.complete,true);assert.match(junction.instruction,/hidden metal strip/);
+    assert.equal(source.complete,true);assert.equal(source.action,null);assert.match(source.why,/接地的一侧/);
+    assert.match(junction.title,/阴极/);assert.equal(junction.complete,true);assert.match(junction.instruction,/隐藏的金属条/);
     assert.ok(steps.filter(s=>s.type==='connection').every(s=>s.complete&&!s.action));
   });
   test('a partial resistor-after-LED draft retains its route and completes through actions',()=>{
@@ -69,7 +69,7 @@ const assert=require('node:assert/strict');
     const steps=getWalkthrough(state),source=steps.find(s=>s.id==='indicator-source'),back=steps.find(s=>s.id==='indicator-return');
     for(const id of ['pin:23','rail:L+:1','rail:L+:25','bb:a6'])assert.ok(source.targets.includes(id),id);
     for(const id of ['bb:a10','rail:R-:4','rail:R-:24','pin:GND2'])assert.ok(back.targets.includes(id),id);
-    assert.equal(source.action,null);assert.equal(back.action,null);assert.match(source.instruction,/highlighted contacts and jumper/);
+    assert.equal(source.action,null);assert.equal(back.action,null);assert.match(source.instruction,/高亮的触点和跳线/);
   });
   test('reversed potentiometer outer wiring is honored and the wiper remains GPIO34',()=>{
     const state=build('potentiometer');[state.wires[2].to,state.wires[4].to]=[state.wires[4].to,state.wires[2].to];
@@ -77,14 +77,14 @@ const assert=require('node:assert/strict');
     const guide=getWalkthrough(state),high=guide.find(s=>s.id==='pot-power'),low=guide.find(s=>s.id==='pot-ground'),wiper=guide.find(s=>s.id==='pot-wiper');
     assert.ok(high.targets.includes('bb:h18'));assert.ok(low.targets.includes('bb:h20'));assert.ok(wiper.targets.includes('bb:h19'));
     for(const step of [high,low,wiper])assert.equal(step.complete,true);
-    assert.match(high.why,/reverses the dial direction/);assert.match(wiper.code.explanation,/physical ADC readings can differ/);
+    assert.match(high.why,/旋钮方向反转/);assert.match(wiper.code.explanation,/实际 ADC 读数可能不同/);
   });
   test('the opposite button pair can be GPIO18 without changing the input explanation',()=>{
     const state=build('button');state.wires[2].to='bb:j18';state.wires[3].from='bb:a18';
     assert.equal(M.validateCircuit(state).ok,true);const guide=getWalkthrough(state);
     const input=guide.find(s=>s.id==='button-input'),ground=guide.find(s=>s.id==='button-ground');
     assert.equal(input.complete,true);assert.ok(input.targets.includes('bb:f16'));assert.equal(ground.complete,true);
-    assert.match(input.why,/pull-up.*HIGH/);assert.match(ground.why,/LOW/);
+    assert.match(input.why,/上拉.*HIGH/);assert.match(ground.why,/LOW/);
   });
   test('existing parts, aliases, wire colors and IDs are never changed by guidance',()=>{
     for(const id of ['blink','button','potentiometer']){
@@ -116,14 +116,14 @@ const assert=require('node:assert/strict');
     for(const project of ['blink','button','potentiometer']){
       const state=build(project);state.interval=250;const sketch=buildSketch(state),guide=getWalkthrough(state);
       for(const step of guide)if(step.code)assert.ok(sketch.includes(step.code.line),project+': '+step.code.line);
-      assert.match(guide.find(s=>s.id==='run').why,/does not compile/);
-      if(project==='blink')assert.match(guide.find(s=>s.id==='run').code.explanation,/250 ms.*500 ms/);
+      assert.match(guide.find(s=>s.id==='run').why,/不会编译/);
+      if(project==='blink')assert.match(guide.find(s=>s.id==='run').code.explanation,/250 毫秒.*500 毫秒/);
     }
   });
   test('existing walkthrough-like wire IDs cannot corrupt hypothetical planning',()=>{
     const state=afterLed();state.wires.pop();state.wires[0].id='walkthrough-0';
     const guide=getWalkthrough(state);assert.equal(guide.find(s=>s.id==='indicator-source').complete,true);
-    assert.match(guide.find(s=>s.id==='indicator-source').why,/ground side/);complete(state);
+    assert.match(guide.find(s=>s.id==='indicator-source').why,/接地的一侧/);complete(state);
   });
   test('a partial reversed potentiometer keeps its chosen power polarity',()=>{
     const state=build('potentiometer');[state.wires[2].to,state.wires[4].to]=[state.wires[4].to,state.wires[2].to];
@@ -162,7 +162,7 @@ const assert=require('node:assert/strict');
       const state=placed(project);state.parts[kind]=part;
       const before=JSON.stringify(state),step=getWalkthrough(state).find(s=>s.id==='part-'+kind);
       assert.equal(step.complete,false);assert.equal(step.action,null);
-      assert.match(step.instruction,/rotate|Rotate/);assert.equal(JSON.stringify(state),before);
+      assert.match(step.instruction,/旋转/);assert.equal(JSON.stringify(state),before);
     }
   });
   console.log(JSON.stringify({result:'passed',tests:passed}));

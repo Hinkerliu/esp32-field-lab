@@ -6,3 +6,6 @@ node_modules/
 playwright-report/
 test-results/
 .openai/
+
+# Internal WorkBuddy translation helpers
+.work/
