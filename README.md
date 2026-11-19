@@ -1,8 +1,10 @@
-# ESP32 Field Lab
+# ESP32 Field Lab（简体中文版）
 
 一个基于浏览器的交互式课堂，面向搭载 ESP32-WROOM-32 的原版 30 引脚 ESP32 DevKit V1。你可以在桌面电脑或手机上探索 3D 开发板、操作元件，并学习 16 节课程。
 
-**[打开实验室](https://ardchain.github.io/esp32-field-lab/)**
+> 本项目是 [ardchain/esp32-field-lab](https://github.com/ardchain/esp32-field-lab) 的简体中文版本，原项目及其许可证声明予以保留。
+
+**[打开实验室](https://hinkerliu.github.io/esp32-field-lab-zh/)**
 
 ![ESP32 Field Lab 中引导式的 GND 连接视图](docs/preview.png)
 
@@ -24,8 +26,8 @@
 本站由纯 HTML、CSS 和 JavaScript 构成。Three.js 与字体均在本地打包，无需构建步骤。
 
 ```sh
-git clone https://github.com/ardchain/esp32-field-lab.git
-cd esp32-field-lab
+git clone https://github.com/Hinkerliu/esp32-field-lab-zh.git
+cd esp32-field-lab-zh
 python3 -m http.server 4173 -d dist
 ```
 
@@ -50,9 +52,9 @@ python3 -m http.server 4173 -d dist
 
 | 项目 | 电路与行为 |
 | --- | --- |
-| [Blink](https://ardchain.github.io/esp32-field-lab/#build-blink) | GPIO23 通过电阻驱动 LED；可改变其闪烁间隔。 |
-| [Button](https://ardchain.github.io/esp32-field-lab/#build-button) | 将四脚开关连接到 GPIO18 和 GND；按下时读数为 LOW 并点亮 LED。 |
-| [Potentiometer](https://ardchain.github.io/esp32-field-lab/#build-potentiometer) | 用 3.3 V 为 10 kΩ 电位器供电；其滑动端接入 GPIO34 并控制 LED 亮度。 |
+| [Blink](https://hinkerliu.github.io/esp32-field-lab-zh/#build-blink) | GPIO23 通过电阻驱动 LED；可改变其闪烁间隔。 |
+| [Button](https://hinkerliu.github.io/esp32-field-lab-zh/#build-button) | 将四脚开关连接到 GPIO18 和 GND；按下时读数为 LOW 并点亮 LED。 |
+| [Potentiometer](https://hinkerliu.github.io/esp32-field-lab-zh/#build-potentiometer) | 用 3.3 V 为 10 kΩ 电位器供电；其滑动端接入 GPIO34 并控制 LED 亮度。 |
 
 ![引导式装配展示电阻与 LED 之间共用的面包板导电条](docs/build.png)
 
