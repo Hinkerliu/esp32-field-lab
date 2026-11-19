@@ -14,9 +14,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Hinkerliu/esp32-field-lab-zh.git"
+    "url": "git+https://github.com/Hinkerliu/esp32-field-lab.git"
   },
-  "homepage": "https://hinkerliu.github.io/esp32-field-lab-zh/",
+  "homepage": "https://hinkerliu.github.io/esp32-field-lab/",
   "engines": {
     "node": ">=20"
   },
